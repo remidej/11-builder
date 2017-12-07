@@ -28,7 +28,10 @@ class SearchPlayer extends Component {
 
   updateSearch(event) {
     this.setState({value: event.target.value})
-    console.log(this.state.value)
+    // TODO: find better fix
+    window.setTimeout(() => {
+      populateResults(this.state.value)
+    }, 10)
   }
 
   render() {
@@ -39,6 +42,7 @@ class SearchPlayer extends Component {
         value={this.state.value}
         onChange={this.updateSearch}
         placeholder="Search for a player..."
+        autoFocus
       />
     )
   }
@@ -48,7 +52,6 @@ class Results extends Component {
   render() {
     return (
       <div className="Results">
-        <p>This is a result</p>
       </div>
     )
   }
@@ -60,6 +63,10 @@ class Pitch extends Component {
       <div className="Pitch basic"></div>
     )
   }
+}
+
+const populateResults = (searchValue) => {
+  console.log(searchValue)
 }
 
 export default App
