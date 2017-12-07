@@ -1,5 +1,17 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "open sans", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #681b27;
+  color: #fafafa;
+}
+
+h1 {
+  margin: 20px 0;
+  font-size: 50px;
+  text-align: center;
+  font-family: "suez one", "open sans", Arial, Helvetica, sans-serif;
+  letter-spacing: 4px;
 }
