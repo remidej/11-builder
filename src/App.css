@@ -1,12 +1,26 @@
 .App {
   display: flex;
+  margin: 0 auto;
   flex-direction: row;
   justify-content: space-between;
-  width: 1000px;
+  width: 900px;
   border: 2px dashed orange;
 }
 
 .Settings {
   width: 340px;
   height: 540px;
+  border: 1px dashed pink;
+}
+
+.Settings .Sub-title {
+  margin: 25px 0;
+  font-size: 25px;
+  font-family: "suez one", "open sans", Arial, Helvetica, sans-serif;
+  letter-spacing: 4px;
+}
+
+.Pitch {
+  width: 500px;
+  border: 1px dashed pink;
 }

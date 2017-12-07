@@ -6,7 +6,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="Settings"></div>
+        <div className="Settings">
+          <h2 className="Sub-title">Create your lineup!</h2>
+        </div>
         <div className="Pitch"></div>
       </div>
     );
