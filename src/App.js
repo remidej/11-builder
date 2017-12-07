@@ -9,11 +9,37 @@ class App extends Component {
       <div className="App">
         <div className="Settings">
           <h2 className="Sub-title">Create your lineup!</h2>
-          <input className="Search-player" type="search" placeholder="Search for a player..."/>
+          <SearchPlayer/>
           <Results/>
         </div>
-        <div className="Pitch"></div>
+        <Pitch/>
       </div>
+    )
+  }
+}
+
+class SearchPlayer extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { value: '' }
+    // Force method binding to React component
+    this.updateSearch = this.updateSearch.bind(this);
+  }
+
+  updateSearch(event) {
+    this.setState({value: event.target.value})
+    console.log(this.state.value)
+  }
+
+  render() {
+    return (
+      <input
+        className="Search-player"
+        type="search"
+        value={this.state.value}
+        onChange={this.updateSearch}
+        placeholder="Search for a player..."
+      />
     )
   }
 }
@@ -24,6 +50,14 @@ class Results extends Component {
       <div className="Results">
         <p>This is a result</p>
       </div>
+    )
+  }
+}
+
+class Pitch extends Component {
+  render() {
+    return (
+      <div className="Pitch basic"></div>
     )
   }
 }

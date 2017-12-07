@@ -9,7 +9,7 @@
 
 .Settings {
   width: 340px;
-  height: 640px;
+  height: 638px;
   border: 1px dashed pink;
 }
 
@@ -28,9 +28,24 @@
   font-size: 16px;
   border-radius: 3px;
   border: none;
+  box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
+}
+
+.Settings .Results {
+  background: #fafafa;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
 
 .Pitch {
-  width: 500px;
+  width: 540px;
+  background: #279223;
   border: 1px dashed pink;
+  box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
+}
+
+.Pitch.basic {
+  background: url('/pitches/basic.svg');
+  background-size: cover;
+  background-position: center center;
 }

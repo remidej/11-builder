@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="458px" height="552px" viewBox="0 0 458 552" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>pitch</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="444" height="538"></rect>
+        <filter x="-2.7%" y="-1.7%" width="105.4%" height="104.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="3" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.06 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-Copy-4" transform="translate(-464.000000, -139.000000)">
+            <g id="pitch" transform="translate(471.000000, 143.000000)">
+                <g id="Rectangle">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#279223" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <rect stroke="#FFFFFF" stroke-width="4" x="2" y="2" width="440" height="534"></rect>
+                </g>
+                <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="267" width="444" height="4"></rect>
+                <g id="Group" transform="translate(76.000000, 0.000000)" stroke="#FFFFFF" stroke-width="4">
+                    <rect id="Rectangle-10" x="2" y="2" width="287" height="141"></rect>
+                    <path d="M101.77902,143 C111.547713,156.909156 127.712216,166 146,166 C164.287784,166 180.452287,156.909156 190.22098,143 L101.77902,143 Z" id="Combined-Shape"></path>
+                    <rect id="Rectangle-2" x="100" y="2" width="92" height="34"></rect>
+                </g>
+                <g id="Group-Copy" transform="translate(221.500000, 455.000000) scale(1, -1) translate(-221.500000, -455.000000) translate(76.000000, 372.000000)" stroke="#FFFFFF" stroke-width="4">
+                    <rect id="Rectangle-10" x="2" y="2" width="287" height="141"></rect>
+                    <path d="M101.77902,143 C111.547713,156.909156 127.712216,166 146,166 C164.287784,166 180.452287,156.909156 190.22098,143 L101.77902,143 Z" id="Combined-Shape"></path>
+                    <rect id="Rectangle-2" x="100" y="2" width="92" height="34"></rect>
+                </g>
+                <circle id="Oval-2" stroke="#FFFFFF" stroke-width="4" cx="222" cy="270" r="44"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
