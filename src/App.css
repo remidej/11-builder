@@ -43,7 +43,8 @@
 
 .Settings .Results .Result-player {
   height: 56px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2)
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .Settings .Results .Result-player .Photo {
@@ -53,11 +54,32 @@
   vertical-align: top;
 }
 
+.Settings .Result-player .Icon, .Settings .Result-player .Flag {
+  height: 40px;
+  margin-top: 8px;
+  display: inline-block;
+  vertical-align: top;
+  position: absolute;
+}
+
+.Settings .Result-player .Icon {
+  right: 71px;
+}
+
+.Settings .Result-player .Flag {
+  right: 10px;
+  height: 26px;
+  margin-top: 15px;
+}
+
 .Settings .Results .Result-player .Name {
   display: inline-block;
   line-height: 50px;
   margin: 6px 0 0 0;
   vertical-align: top;
+  max-width: 144px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .Settings .Customize {
@@ -90,6 +112,7 @@
   border-radius: 3px;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.95);
+  cursor: pointer;
 }
 
 .Pitch {

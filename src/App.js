@@ -19,13 +19,13 @@ class App extends Component {
         <div className="Settings">
           <h2 className="Sub-title">Create your lineup!</h2>
           <SearchPlayer />
-          <a href="#" title="Generate lineup" className="CTA">
+          <div href="#" title="Generate lineup" className="CTA">
             Download your lineup as a JPEG
-          </a>
+          </div>
           <div className="Customize">
-            <select className="Tactic">
+            <select className="Tactic" defaultValue="433">
               <option value="442">4 - 4 - 2</option>
-              <option value="433" selected>4 - 3 - 3</option>
+              <option value="433">4 - 3 - 3</option>
               <option value="352">3 - 5 - 2</option>
             </select>
             <select className="Pitch-style">
@@ -76,6 +76,8 @@ class SearchPlayer extends Component {
             <div key={player.id} className="Result-player grabbable">
               <img alt={player.name} src={player.photo} className="Photo"/>
               <p className="Name">{player.name}</p>
+              <img className="Icon" alt={`${player.name}'s club`} src={player.club}/>
+              <img className="Flag" alt={`${player.name}'s nation`} src={player.flag}/>
             </div>
           )}
         </div>
@@ -109,7 +111,7 @@ const getPlayersData = (searchValue) => {
             // Filter out duplicates and undefined results
             if (
               typeof requestResults[j] !== 'undefined' &&
-              (requestResults[j].id == requestResult.items[i].baseId)
+              (requestResults[j].id === requestResult.items[i].baseId)
             ) {
               unique = false // is duplicate
             }
