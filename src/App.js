@@ -4,9 +4,10 @@ import React, { Component } from 'react'
 import './App.css'
 
 // Prepare API calls
+// https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22name%22:%22m%22%7D
 const proxy = 'https://cors-anywhere.herokuapp.com/'
-const urlStart = 'https://www.easports.com/uk/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B"name":"'
-const urlEnd = '"%7D'
+const urlStart = 'https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22name%22:%22'
+const urlEnd = '%22%7D'
 const request = new XMLHttpRequest();
 request.overrideMimeType("application/json")
 let requestResult
@@ -19,7 +20,6 @@ class App extends Component {
         <div className="Settings">
           <h2 className="Sub-title">Create your lineup!</h2>
           <SearchPlayer/>
-          <Results/>
         </div>
         <Pitch/>
       </div>
@@ -50,14 +50,21 @@ class SearchPlayer extends Component {
 
   render() {
     return (
-      <input
-        className="Search-player"
-        type="search"
-        value={this.state.value}
-        onChange={this.updateSearch}
-        placeholder="Search for a player..."
-        autoFocus
-      />
+      <div>
+        <input
+          className="Search-player"
+          type="search"
+          value={this.state.value}
+          onChange={this.updateSearch}
+          placeholder="Search for a player..."
+          autoFocus
+        />
+        <div className="Results">
+          {this.state.results.map(player =>
+            <div key={player.id}>{player.name}</div>
+          )}
+        </div>
+      </div>
     )
   }
 }
@@ -91,12 +98,27 @@ const getPlayersData = (searchValue) => {
         requestResult = request.response
         requestResults = [] // Reset array
         for (let i=0; i<requestResult.items.length; i++) {
-          // TODO: Filter out duplicates using baseId property
-          requestResults[i] = {
-            name: requestResult.items[i].lastName,
-            photo: requestResult.items[i].headshotImgUrl,
-            flag: requestResult.items[i].nation.imageUrls.small,
-            club: requestResult.items[i].club.imageUrls.normal.small
+          let unique = true
+          for (let j=0; j<requestResults.length; j++) {
+            // Filter out duplicates and undefined results
+            if (
+              typeof requestResults[j] !== 'undefined' &&
+              (requestResults[j].id == requestResult.items[i].baseId)
+            ) {
+              unique = false; // is duplicate
+            }
+          }
+          if (unique) {
+            requestResults[i] = {
+              name: requestResult.items[i].lastName,
+              photo: requestResult.items[i].headshotImgUrl,
+              flag: requestResult.items[i].nation.imageUrls.small,
+              club: requestResult.items[i].club.imageUrls.normal.small,
+              id: requestResult.items[i].baseId
+            }
+            if (requestResult.items[i].commonName.length > 0) {
+              requestResults[i].name = requestResult.items[i].commonName
+            }
           }
         }
       }

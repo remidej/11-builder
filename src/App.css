@@ -4,13 +4,11 @@
   flex-direction: row;
   justify-content: space-between;
   width: 900px;
-  border: 2px dashed orange;
 }
 
 .Settings {
   width: 340px;
   height: 638px;
-  border: 1px dashed pink;
 }
 
 .Settings .Sub-title {
@@ -35,13 +33,13 @@
 .Settings .Results {
   background: #fafafa;
   border-radius: 3px;
+  color: rgba(0, 0, 0, 0.95);
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
 
 .Pitch {
   width: 540px;
   background: #279223;
-  border: 1px dashed pink;
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
 
