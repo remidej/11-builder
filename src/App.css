@@ -7,6 +7,7 @@
 }
 
 .Settings {
+  position: relative;
   width: 340px;
   height: 638px;
 }
@@ -32,9 +33,44 @@
 
 .Settings .Results {
   background: #fafafa;
+  margin-top: 20px;
+  max-height: 340px;
+  overflow-y: scroll;
   border-radius: 3px;
   color: rgba(0, 0, 0, 0.95);
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
+}
+
+.Settings .Results .Result-player {
+  height: 56px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+.Settings .Results .Result-player .Photo {
+  height: 56px;
+  margin: 0 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.Settings .Results .Result-player .Name {
+  display: inline-block;
+  line-height: 50px;
+  margin: 6px 0 0 0;
+  vertical-align: top;
+}
+
+.Settings .CTA {
+  position: absolute;
+  bottom: 5px;
+  display: block;
+  width: 100%;
+  line-height: 56px;
+  text-align: center;
+  background: #fafafa;
+  border-radius: 3px;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.95);
 }
 
 .Pitch {
@@ -47,4 +83,13 @@
   background: url('/pitches/basic.svg');
   background-size: cover;
   background-position: center center;
+}
+
+.grabbable {
+  cursor: move;
+  /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  user-select: none;
 }

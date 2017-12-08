@@ -8,7 +8,7 @@ import './App.css'
 const proxy = 'https://cors-anywhere.herokuapp.com/'
 const urlStart = 'https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22name%22:%22'
 const urlEnd = '%22%7D'
-const request = new XMLHttpRequest();
+const request = new XMLHttpRequest()
 request.overrideMimeType("application/json")
 let requestResult
 let requestResults = []
@@ -20,6 +20,7 @@ class App extends Component {
         <div className="Settings">
           <h2 className="Sub-title">Create your lineup!</h2>
           <SearchPlayer/>
+          <a href="#" title="Generate lineup" className="CTA">Download your lineup as a JPEG</a>
         </div>
         <Pitch/>
       </div>
@@ -35,7 +36,7 @@ class SearchPlayer extends Component {
       results: []
     }
     // Force method binding to React component
-    this.updateSearch = this.updateSearch.bind(this);
+    this.updateSearch = this.updateSearch.bind(this)
   }
 
   updateSearch(event) {
@@ -61,18 +62,12 @@ class SearchPlayer extends Component {
         />
         <div className="Results">
           {this.state.results.map(player =>
-            <div key={player.id}>{player.name}</div>
+            <div key={player.id} className="Result-player grabbable">
+              <img alt={player.name} src={player.photo} className="Photo"/>
+              <p className="Name">{player.name}</p>
+            </div>
           )}
         </div>
-      </div>
-    )
-  }
-}
-
-class Results extends Component {
-  render() {
-    return (
-      <div className="Results">
       </div>
     )
   }
@@ -105,7 +100,7 @@ const getPlayersData = (searchValue) => {
               typeof requestResults[j] !== 'undefined' &&
               (requestResults[j].id == requestResult.items[i].baseId)
             ) {
-              unique = false; // is duplicate
+              unique = false // is duplicate
             }
           }
           if (unique) {
