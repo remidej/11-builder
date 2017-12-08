@@ -33,7 +33,7 @@
 
 .Settings .Results {
   background: #fafafa;
-  margin-top: 20px;
+  margin-top: 15px;
   max-height: 340px;
   overflow-y: scroll;
   border-radius: 3px;
@@ -58,6 +58,25 @@
   line-height: 50px;
   margin: 6px 0 0 0;
   vertical-align: top;
+}
+
+.Settings .Customize {
+  position: absolute;
+  bottom: 75px;
+}
+
+.Settings .Customize select {
+  width: 162px;
+  height: 56px;
+  display: inline-block;
+  background: #fafafa;
+  border-radius: 3px;
+  padding: 0 20px;
+  border: none;
+}
+
+.Settings .Customize .Tactic {
+  margin-right: 15px;
 }
 
 .Settings .CTA {

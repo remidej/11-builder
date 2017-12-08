@@ -15,16 +15,27 @@ let requestResults = []
 
 class App extends Component {
   render() {
-    return (
-      <div className="App">
+    return <div className="App">
         <div className="Settings">
           <h2 className="Sub-title">Create your lineup!</h2>
-          <SearchPlayer/>
-          <a href="#" title="Generate lineup" className="CTA">Download your lineup as a JPEG</a>
+          <SearchPlayer />
+          <a href="#" title="Generate lineup" className="CTA">
+            Download your lineup as a JPEG
+          </a>
+          <div className="Customize">
+            <select className="Tactic">
+              <option value="442">4 - 4 - 2</option>
+              <option value="433" selected>4 - 3 - 3</option>
+              <option value="352">3 - 5 - 2</option>
+            </select>
+            <select className="Pitch-style">
+              <option value="simple" selected>Simple</option>
+              <option value="352">Futuristic</option>
+            </select>
+          </div>
         </div>
-        <Pitch/>
-      </div>
-    )
+        <Pitch />
+      </div>;
   }
 }
 
