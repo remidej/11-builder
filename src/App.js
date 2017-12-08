@@ -51,6 +51,7 @@ class SearchPlayer extends Component {
   }
 
   updateSearch(event) {
+    console.log('search changed')
     this.setState({ value: event.target.value })
     // TODO: find better fix
     window.setTimeout(() => {
@@ -100,23 +101,29 @@ const getPlayersData = (searchValue) => {
   // Abort previous requests
   request.abort()
 
-  request.addEventListener("readystatechange", e => {
-    if (request.readyState === 4) {
-      if (request.status === 200) {
-        requestResult = request.response
-        requestResults = [] // Reset array
-        for (let i=0; i<requestResult.items.length; i++) {
-          let unique = true
-          for (let j=0; j<requestResults.length; j++) {
-            // Filter out duplicates and undefined results
-            if (
-              typeof requestResults[j] !== 'undefined' &&
-              (requestResults[j].id === requestResult.items[i].baseId)
-            ) {
-              unique = false // is duplicate
-            }
+  request.send()
+  return requestResults
+}
+
+request.addEventListener("readystatechange", e => {
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      console.log("xhr ready");
+      requestResult = request.response;
+      requestResults = []; // Reset array
+      for (let i = 0; i < requestResult.items.length; i++) {
+        let unique = true;
+        for (let j = 0; j < requestResults.length; j++) {
+          // Filter out undefined, duplicate and icons from results
+          if (
+            typeof requestResults[j] == "undefined" ||
+            requestResults[j].id == requestResult.items[i].baseId
+          ) {
+            unique = false; // is duplicate
           }
-          if (unique) {
+        }
+        if (unique) {
+          if (requestResult.items[i].league.id != 2118) {
             requestResults[i] = {
               name: requestResult.items[i].lastName,
               photo: requestResult.items[i].headshotImgUrl,
@@ -124,6 +131,7 @@ const getPlayersData = (searchValue) => {
               club: requestResult.items[i].club.imageUrls.normal.small,
               id: requestResult.items[i].baseId
             }
+            // Set common name if available
             if (requestResult.items[i].commonName.length > 0) {
               requestResults[i].name = requestResult.items[i].commonName
             }
@@ -131,11 +139,7 @@ const getPlayersData = (searchValue) => {
         }
       }
     }
-  })
-
-  request.send()
-  console.log(requestResults)
-  return requestResults
-}
+  }
+});
 
 export default App
