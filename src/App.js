@@ -98,48 +98,41 @@ class Pitch extends Component {
 const getPlayersData = (searchValue) => {
   request.open("GET", `${proxy}${urlStart}${searchValue}${urlEnd}`, true)
   request.responseType = "json"
+
   // Abort previous requests
   request.abort()
 
-  request.send()
-  return requestResults
-}
-
-request.addEventListener("readystatechange", e => {
-  if (request.readyState === 4) {
-    if (request.status === 200) {
-      console.log("xhr ready");
-      requestResult = request.response;
-      requestResults = []; // Reset array
-      for (let i = 0; i < requestResult.items.length; i++) {
-        let unique = true;
-        for (let j = 0; j < requestResults.length; j++) {
-          // Filter out undefined, duplicate and icons from results
-          if (
-            typeof requestResults[j] == "undefined" ||
-            requestResults[j].id == requestResult.items[i].baseId
-          ) {
-            unique = false; // is duplicate
-          }
-        }
-        if (unique) {
-          if (requestResult.items[i].league.id != 2118) {
-            requestResults[i] = {
-              name: requestResult.items[i].lastName,
-              photo: requestResult.items[i].headshotImgUrl,
-              flag: requestResult.items[i].nation.imageUrls.small,
-              club: requestResult.items[i].club.imageUrls.normal.small,
-              id: requestResult.items[i].baseId
+  request.addEventListener("readystatechange", e => {
+    if (request.readyState === 4) {
+      if (request.status === 200) {
+        // JSON is loaded
+        console.log("xhr ready")
+        requestResult = request.response
+        requestResults = [] // Reset array
+        for (let i = 0; i < requestResult.items.length; i++) {
+          let unique = true
+          for (let j = 0; j < requestResults.length; j++) {
+            // Filter out undefined, duplicate and icons from results
+            if (typeof requestResults[j] == "undefined" || requestResults[j].id == requestResult.items[i].baseId) {
+              unique = false // is duplicate
             }
-            // Set common name if available
-            if (requestResult.items[i].commonName.length > 0) {
-              requestResults[i].name = requestResult.items[i].commonName
+          }
+          if (unique) {
+            if (requestResult.items[i].league.id != 2118) {
+              requestResults[i] = { name: requestResult.items[i].lastName, photo: requestResult.items[i].headshotImgUrl, flag: requestResult.items[i].nation.imageUrls.small, club: requestResult.items[i].club.imageUrls.normal.small, id: requestResult.items[i].baseId }
+              // Set common name if available
+              if (requestResult.items[i].commonName.length > 0) {
+                requestResults[i].name = requestResult.items[i].commonName
+              }
             }
           }
         }
       }
+      // Force data update here
     }
-  }
-});
+  })
+  request.send()
+  return requestResults
+}
 
 export default App

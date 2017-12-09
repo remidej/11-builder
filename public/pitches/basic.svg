@@ -19,20 +19,20 @@
                 <g id="Rectangle">
                     <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
                     <use fill="#279223" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    <rect stroke="#FFFFFF" stroke-width="4" x="2" y="2" width="440" height="534"></rect>
+                    <rect stroke="#FFFFFF" stroke-width="2" x="1" y="1" width="442" height="536"></rect>
                 </g>
-                <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="267" width="444" height="4"></rect>
-                <g id="Group" transform="translate(76.000000, 0.000000)" stroke="#FFFFFF" stroke-width="4">
-                    <rect id="Rectangle-10" x="2" y="2" width="287" height="141"></rect>
-                    <path d="M101.77902,143 C111.547713,156.909156 127.712216,166 146,166 C164.287784,166 180.452287,156.909156 190.22098,143 L101.77902,143 Z" id="Combined-Shape"></path>
-                    <rect id="Rectangle-2" x="100" y="2" width="92" height="34"></rect>
+                <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="268" width="444" height="2"></rect>
+                <g id="Group" transform="translate(76.000000, 0.000000)" stroke="#FFFFFF" stroke-width="2">
+                    <rect id="Rectangle-10" x="1" y="1" width="289" height="143"></rect>
+                    <path d="M101.77902,144 C111.547713,157.909156 127.712216,167 146,167 C164.287784,167 180.452287,157.909156 190.22098,144 L101.77902,144 Z" id="Combined-Shape"></path>
+                    <rect id="Rectangle-2" x="99" y="1" width="94" height="36"></rect>
                 </g>
-                <g id="Group-Copy" transform="translate(221.500000, 455.000000) scale(1, -1) translate(-221.500000, -455.000000) translate(76.000000, 372.000000)" stroke="#FFFFFF" stroke-width="4">
-                    <rect id="Rectangle-10" x="2" y="2" width="287" height="141"></rect>
-                    <path d="M101.77902,143 C111.547713,156.909156 127.712216,166 146,166 C164.287784,166 180.452287,156.909156 190.22098,143 L101.77902,143 Z" id="Combined-Shape"></path>
-                    <rect id="Rectangle-2" x="100" y="2" width="92" height="34"></rect>
+                <g id="Group-Copy" transform="translate(221.500000, 454.500000) scale(1, -1) translate(-221.500000, -454.500000) translate(76.000000, 371.000000)" stroke="#FFFFFF" stroke-width="2">
+                    <rect id="Rectangle-10" x="1" y="1" width="289" height="143"></rect>
+                    <path d="M101.77902,144 C111.547713,157.909156 127.712216,167 146,167 C164.287784,167 180.452287,157.909156 190.22098,144 L101.77902,144 Z" id="Combined-Shape"></path>
+                    <rect id="Rectangle-2" x="99" y="1" width="94" height="36"></rect>
                 </g>
-                <circle id="Oval-2" stroke="#FFFFFF" stroke-width="4" cx="222" cy="270" r="44"></circle>
+                <circle id="Oval-2" stroke="#FFFFFF" stroke-width="2" cx="222" cy="270" r="44"></circle>
             </g>
         </g>
     </g>
