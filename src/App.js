@@ -43,22 +43,69 @@ class SearchPlayer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: '',
+      value: "",
       results: []
     }
     // Force method binding to React component
     this.updateSearch = this.updateSearch.bind(this)
+    this.getPlayersData = this.getPlayersData.bind(this)
+  }
+
+  getPlayersData = searchValue => {
+    request.open("GET", `${proxy}${urlStart}${searchValue}${urlEnd}`, true)
+    console.log(`${proxy}${urlStart}${searchValue}${urlEnd}`)
+    request.responseType = "json"
+
+    // Abort previous requests
+    request.abort()
+
+    request.addEventListener("readystatechange", e => {
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+          // JSON is loaded
+          console.log("xhr ready")
+          requestResult = request.response
+          console.log(request.response)
+          requestResults = [] // Reset array
+          for (let i = 0; i < requestResult.items.length; i++) {
+            let unique = true
+            for (let j = 0; j < requestResults.length; j++) {
+              // Filter out undefined, duplicate and icons from results
+              if (
+                typeof requestResults[j] == "undefined" ||
+                requestResults[j].id == requestResult.items[i].baseId
+              ) {
+                unique = false // is duplicate
+              }
+            }
+            if (unique) {
+              if (requestResult.items[i].league.id != 2118) {
+                requestResults[i] = {
+                  name: requestResult.items[i].lastName,
+                  photo: requestResult.items[i].headshotImgUrl,
+                  flag: requestResult.items[i].nation.imageUrls.small,
+                  club: requestResult.items[i].club.imageUrls.normal.small,
+                  id: requestResult.items[i].baseId
+                }
+                // Set common name if available
+                if (requestResult.items[i].commonName.length > 0) {
+                  requestResults[i].name = requestResult.items[i].commonName
+                }
+                console.log('results: ' + requestResults)
+              }
+            }
+          }
+        }
+        // Add results to the UI
+        this.setState({ results: requestResults })
+      }
+    })
+    request.send()
   }
 
   updateSearch(event) {
-    console.log('search changed')
     this.setState({ value: event.target.value })
-    // TODO: find better fix
-    window.setTimeout(() => {
-      this.setState({
-        results: getPlayersData(this.state.value)
-      })
-    }, 10)
+    this.getPlayersData(event.target.value)
   }
 
   render() {
@@ -73,14 +120,22 @@ class SearchPlayer extends Component {
           autoFocus
         />
         <div className="Results">
-          {this.state.results.map(player =>
+          {this.state.results.map(player => (
             <div key={player.id} className="Result-player grabbable">
-              <img alt={player.name} src={player.photo} className="Photo"/>
+              <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
-              <img className="Icon" alt={`${player.name}'s club`} src={player.club}/>
-              <img className="Flag" alt={`${player.name}'s nation`} src={player.flag}/>
+              <img
+                className="Icon"
+                alt={`${player.name}'s club`}
+                src={player.club}
+              />
+              <img
+                className="Flag"
+                alt={`${player.name}'s nation`}
+                src={player.flag}
+              />
             </div>
-          )}
+          ))}
         </div>
       </div>
     )
@@ -93,46 +148,6 @@ class Pitch extends Component {
       <div className="Pitch basic"></div>
     )
   }
-}
-
-const getPlayersData = (searchValue) => {
-  request.open("GET", `${proxy}${urlStart}${searchValue}${urlEnd}`, true)
-  request.responseType = "json"
-
-  // Abort previous requests
-  request.abort()
-
-  request.addEventListener("readystatechange", e => {
-    if (request.readyState === 4) {
-      if (request.status === 200) {
-        // JSON is loaded
-        console.log("xhr ready")
-        requestResult = request.response
-        requestResults = [] // Reset array
-        for (let i = 0; i < requestResult.items.length; i++) {
-          let unique = true
-          for (let j = 0; j < requestResults.length; j++) {
-            // Filter out undefined, duplicate and icons from results
-            if (typeof requestResults[j] == "undefined" || requestResults[j].id == requestResult.items[i].baseId) {
-              unique = false // is duplicate
-            }
-          }
-          if (unique) {
-            if (requestResult.items[i].league.id != 2118) {
-              requestResults[i] = { name: requestResult.items[i].lastName, photo: requestResult.items[i].headshotImgUrl, flag: requestResult.items[i].nation.imageUrls.small, club: requestResult.items[i].club.imageUrls.normal.small, id: requestResult.items[i].baseId }
-              // Set common name if available
-              if (requestResult.items[i].commonName.length > 0) {
-                requestResults[i].name = requestResult.items[i].commonName
-              }
-            }
-          }
-        }
-      }
-      // Force data update here
-    }
-  })
-  request.send()
-  return requestResults
 }
 
 export default App
