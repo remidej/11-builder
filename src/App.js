@@ -13,7 +13,7 @@ request.overrideMimeType("application/json")
 let requestResult
 let requestResults = []
 
-// Add support for ES6's startWith() method
+// Add fallback support for ES6's startWith() method
 if (!String.prototype.startsWith) {
   String.prototype.startsWith = (searchString, position) => {
     position = position || 0
@@ -53,6 +53,7 @@ class SearchPlayer extends Component {
     this.state = {
       value: "",
       isLoading: false,
+      noMatches: false,
       results: []
     }
     // Force method binding to React component
@@ -62,7 +63,6 @@ class SearchPlayer extends Component {
 
   getPlayersData = searchValue => {
     request.open("GET", `${proxy}${urlStart}${searchValue}${urlEnd}`, true)
-    console.log(`${proxy}${urlStart}${searchValue}${urlEnd}`)
     request.responseType = "json"
 
     // Abort previous requests
@@ -74,9 +74,7 @@ class SearchPlayer extends Component {
           // Display loading message
           this.setState({ isLoading: false})
           // JSON is loaded
-          console.log("xhr ready")
           requestResult = request.response
-          console.log(request.response)
           requestResults = [] // Reset array
           for (let i = 0; i < requestResult.items.length; i++) {
             let unique = true
@@ -91,13 +89,10 @@ class SearchPlayer extends Component {
             }
             if (unique) {
               let matchesSearch = false
-              console.log(requestResult.items[i].lastName.toLowerCase() + ' ' +searchValue)
               if (requestResult.items[i].lastName.toLowerCase().startsWith(searchValue)) {
                 matchesSearch = true
-                console.log('illegal')
               } else if (requestResult.items[i].commonName.toLowerCase().startsWith(searchValue)) {
                 matchesSearch = true
-                console.log('illegal')
               }
               if (requestResult.items[i].league.id == 2118) {
                 // Remove icons
@@ -121,6 +116,12 @@ class SearchPlayer extends Component {
         }
         // Remove loading message
         this.setState({ isLoading: false})
+        // Inform if no player was found
+        if (requestResults.length == 0 && searchValue.length > 0) {
+          this.setState({ noMatches: true })
+        } else {
+          this.setState({ noMatches: false })
+        }
         // Add results to the UI
         this.setState({ results: requestResults })
       }
@@ -139,8 +140,8 @@ class SearchPlayer extends Component {
     return <div>
         <input className="Search-player" type="search" value={this.state.value} onChange={this.updateSearch} placeholder="Search for a player..." autoFocus />
         <div className="Results">
-          {!this.state.isLoading && this.state.results.length == 0 &&
-            <div key="loadingMessage" className="Result-player">
+          {this.state.noMatches &&
+            <div className="Result-player">
               <p className="Status">No matching player</p>
             </div>
           }
@@ -161,7 +162,7 @@ class SearchPlayer extends Component {
             </div>
           ))}
           {this.state.isLoading &&
-            <div key="loadingMessage" className="Result-player">
+            <div className="Result-player">
               <p className="Status">Loading players...</p>
             </div>
           }
