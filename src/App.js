@@ -13,6 +13,14 @@ request.overrideMimeType("application/json")
 let requestResult
 let requestResults = []
 
+// Add support for ES6's startWith() method
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = (searchString, position) => {
+    position = position || 0
+    return this.substr(position, searchString.length) === searchString
+  }
+}
+
 class App extends Component {
   render() {
     return <div className="App">
@@ -44,6 +52,7 @@ class SearchPlayer extends Component {
     super(props)
     this.state = {
       value: "",
+      isLoading: false,
       results: []
     }
     // Force method binding to React component
@@ -62,6 +71,8 @@ class SearchPlayer extends Component {
     request.addEventListener("readystatechange", e => {
       if (request.readyState === 4) {
         if (request.status === 200) {
+          // Display loading message
+          this.setState({ isLoading: false})
           // JSON is loaded
           console.log("xhr ready")
           requestResult = request.response
@@ -79,7 +90,20 @@ class SearchPlayer extends Component {
               }
             }
             if (unique) {
-              if (requestResult.items[i].league.id != 2118) {
+              let matchesSearch = false
+              console.log(requestResult.items[i].lastName.toLowerCase() + ' ' +searchValue)
+              if (requestResult.items[i].lastName.toLowerCase().startsWith(searchValue)) {
+                matchesSearch = true
+                console.log('illegal')
+              } else if (requestResult.items[i].commonName.toLowerCase().startsWith(searchValue)) {
+                matchesSearch = true
+                console.log('illegal')
+              }
+              if (requestResult.items[i].league.id == 2118) {
+                // Remove icons
+                matchesSearch = false
+              }
+              if (matchesSearch) {
                 requestResults[i] = {
                   name: requestResult.items[i].lastName,
                   photo: requestResult.items[i].headshotImgUrl,
@@ -91,11 +115,12 @@ class SearchPlayer extends Component {
                 if (requestResult.items[i].commonName.length > 0) {
                   requestResults[i].name = requestResult.items[i].commonName
                 }
-                console.log('results: ' + requestResults)
               }
             }
           }
         }
+        // Remove loading message
+        this.setState({ isLoading: false})
         // Add results to the UI
         this.setState({ results: requestResults })
       }
@@ -106,20 +131,19 @@ class SearchPlayer extends Component {
   updateSearch(event) {
     this.setState({ value: event.target.value })
     this.getPlayersData(event.target.value)
+    // Display loading message
+    this.setState({ isLoading: true})
   }
 
   render() {
-    return (
-      <div>
-        <input
-          className="Search-player"
-          type="search"
-          value={this.state.value}
-          onChange={this.updateSearch}
-          placeholder="Search for a player..."
-          autoFocus
-        />
+    return <div>
+        <input className="Search-player" type="search" value={this.state.value} onChange={this.updateSearch} placeholder="Search for a player..." autoFocus />
         <div className="Results">
+          {!this.state.isLoading && this.state.results.length == 0 &&
+            <div key="loadingMessage" className="Result-player">
+              <p className="Status">No matching player</p>
+            </div>
+          }
           {this.state.results.map(player => (
             <div key={player.id} className="Result-player grabbable">
               <img alt={player.name} src={player.photo} className="Photo" />
@@ -136,9 +160,13 @@ class SearchPlayer extends Component {
               />
             </div>
           ))}
+          {this.state.isLoading &&
+            <div key="loadingMessage" className="Result-player">
+              <p className="Status">Loading players...</p>
+            </div>
+          }
         </div>
       </div>
-    )
   }
 }
 

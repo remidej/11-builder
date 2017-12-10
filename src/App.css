@@ -43,8 +43,19 @@
 
 .Settings .Results .Result-player {
   height: 56px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   position: relative;
+}
+
+.Settings .Results .Result-player:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.Settings .Results .Result-player .Status {
+  display: inline-block;
+  line-height: 50px;
+  margin: 6px 0 0 0;
+  vertical-align: top;
+  transform: translateX(10px);
 }
 
 .Settings .Results .Result-player .Photo {
