@@ -1,6 +1,7 @@
 {
   "name": "11-builder",
   "version": "0.1.0",
+  "license": "CC BY-NC-ND 3.0",
   "private": true,
   "dependencies": {
     "normalize.css": "^7.0.0",
