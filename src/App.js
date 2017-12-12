@@ -1,4 +1,5 @@
 // Team of the week: https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22page%22:1,%22quality%22:%22totw_gold%22,%22position%22:%22GK%22%7D
+// 604 pages of fifa players: https://www.fifaindex.com/fr/players/604/
 
 import React, { Component } from 'react'
 import './App.css'
