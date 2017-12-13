@@ -2,7 +2,9 @@ const cheerio = require("cheerio")
 const jsonframe = require("jsonframe-cheerio")
 const requestPromise = require('request-promise')
 
-const urlToScrape = "https://www.fifaindex.com/fr/players/1/"
+const urlToScrape = "https://www.fifaindex.com/fr/players/"
+
+const scrapedData = {}
 
 const frame = {
   'players': {
@@ -19,13 +21,24 @@ const frame = {
   }
 }
 
-requestPromise(urlToScrape)
-  .then((html) => {
-    // Scrape data
-    let $ = cheerio.load(html)
-    jsonframe($)
-    console.log( $(".table.table-striped.players tbody").scrape(frame, { string: true }) )
-  })
-  .catch((error) => {
-    console.log('Crawling failed')
-  })
+const getData = () => {
+  for (let i=1; i<=6; i++) {
+    requestPromise(`${urlToScrape}${i}/`)
+      .then((html) => {
+        // Scrape data
+        let $ = cheerio.load(html)
+        jsonframe($)
+        //let index = i.toString()
+        scrapedData[i] = $(".table.table-striped.players tbody").scrape(frame, { string: true })
+      })
+      .catch((error) => {
+        console.log('Crawling failed')
+      })
+  }
+}
+
+getData()
+
+setTimeout(() => {
+  console.log(scrapedData)
+}, 2000)
