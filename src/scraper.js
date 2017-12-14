@@ -1,6 +1,7 @@
 const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system') // file system
+const removeAccents = require('remove-accents')
 
 let dataList = []
 
@@ -42,10 +43,10 @@ const getData = () => {
 }
 
 const saveData = () => {
-  console.log(dataList[0])
-  fs.writeFile("data/playersData.json", JSON.stringify(dataList), error => {
-    console.log(error)
-  })
+  for (const playerObject of dataList) {
+    const formattedName = removeAccents(playerObject.name.replace(/\s/g, "").normalize('NFC'))
+    fs.writeFile(`data/${formattedName}.json`, JSON.stringify(playerObject))
+  }
 }
 
 getData()
