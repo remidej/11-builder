@@ -1,35 +1,38 @@
 const cheerio = require("cheerio")
-const jsonframe = require("jsonframe-cheerio")
 const requestPromise = require('request-promise')
+const fs = require('file-system') // file system
+
+let dataList = []
 
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
-
-const scrapedData = {}
-
-const frame = {
-  'players': {
-    '_s': 'tr',
-    '_d': [{
-      'name': 'td[data-title=Nom] a',
-      'rating': 'span.label.rating.r1',
-      'photo': 'img.player.small',
-      'club': {
-        'name': 'td[data-title=Équipe] a @ title',
-        'logo': 'img.team.small'
-      }
-    }]
-  }
-}
+const urlRoot = "https://www.fifaindex.com"
 
 const getData = () => {
-  for (let i=1; i<=6; i++) {
+  for (let i=1; i<=2; i++) {
     requestPromise(`${urlToScrape}${i}/`)
       .then((html) => {
         // Scrape data
         let $ = cheerio.load(html)
-        jsonframe($)
-        //let index = i.toString()
-        scrapedData[i] = $(".table.table-striped.players tbody").scrape(frame, { string: true })
+        const rows = $(".table.table-striped.players tbody tr").toArray()
+        for (const row of rows) {
+          // Setup player JSON structure
+          const player = {
+            'name': $(row).find("td[data-title='Nom'] a").text(),
+            'rating': $(row).find('span.label.rating').first().text(),
+            'photo': urlRoot + $(row).find('img.player.small').attr('src'),
+            'club': {
+              'name': $(row).find('td[data-title=Équipe] a').attr('title'),
+              'logo': urlRoot + $(row).find('img.team.small').attr('src')
+            }
+          }
+          dataList.push(player)
+        }
+      })
+      .then(() => {
+        if (i==2) {
+          // Scraping is done, save data to JSON
+          saveData()
+        }
       })
       .catch((error) => {
         console.log('Crawling failed')
@@ -37,8 +40,10 @@ const getData = () => {
   }
 }
 
-getData()
+const saveData = () => {
+  fs.writeFile("data/playersData.json", JSON.stringify(dataList), error => {
+    console.log(error)
+  })
+}
 
-setTimeout(() => {
-  console.log(scrapedData)
-}, 2000)
+getData()
