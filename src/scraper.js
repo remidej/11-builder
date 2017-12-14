@@ -17,6 +17,7 @@ const getData = () => {
         for (const row of rows) {
           // Setup player JSON structure
           const player = {
+            'id': $(row).attr('data-playerid'),
             'name': $(row).find("td[data-title='Nom'] a").text(),
             'rating': $(row).find('span.label.rating').first().text(),
             'photo': urlRoot + $(row).find('img.player.small').attr('src'),
@@ -41,6 +42,7 @@ const getData = () => {
 }
 
 const saveData = () => {
+  console.log(dataList[0])
   fs.writeFile("data/playersData.json", JSON.stringify(dataList), error => {
     console.log(error)
   })
