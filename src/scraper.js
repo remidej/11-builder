@@ -10,8 +10,8 @@ const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
 const getData = () => {
-  for (let i=1; i<=2; i++) {
-    requestPromise(`${urlToScrape}${i}/`)
+  for (let i=0; i<2; i++) {
+    requestPromise(`${urlToScrape}${i+1}/`)
       .then((html) => {
         // Scrape data
         let $ = cheerio.load(html)
@@ -31,9 +31,10 @@ const getData = () => {
           }
           dataList.push(player)
         }
-      })
+			})
       .then(() => {
-        if (i==2) {
+        console.log(i+1)
+        if (i==1) {
           // Scraping is done, save data to JSON
           saveImages()
         }
