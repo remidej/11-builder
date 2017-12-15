@@ -5,44 +5,46 @@ const removeAccents = require('remove-accents')
 const downloadImage = require('image-downloader')
 
 let dataList = []
-
+let i = 1 // count url pages
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
-const getData = () => {
-  for (let i=0; i<2; i++) {
-    requestPromise(`${urlToScrape}${i+1}/`)
-      .then((html) => {
-        // Scrape data
-        let $ = cheerio.load(html)
-        const rows = $(".table.table-striped.players tbody tr:not(.table-ad, .hidden)").toArray()
-        for (const row of rows) {
-          // Setup player JSON structure
-          const player = {
-            'id': $(row).attr('data-playerid'),
-            'name': $(row).find("td[data-title='Nom'] a").text(),
-            'rating': $(row).find('span.label.rating').first().text(),
-            'photo': urlRoot + $(row).find('img.player.small').attr('src'),
-            'club': {
-              'name': $(row).find("td[data-title='Équipe'] a").attr('title'),
-              'logo': urlRoot + $(row).find('img.team.small').attr('src')
-            },
-            'flag': urlRoot + $(row).find("td[data-title='Nationalité'] .nation.small").attr('src')
-          }
-          dataList.push(player)
-        }
-			})
-      .then(() => {
-        console.log(i+1)
-        if (i==1) {
-          // Scraping is done, save data to JSON
-          saveImages()
-        }
-      })
-      .catch((error) => {
-        console.log('Crawling failed')
-      })
-  }
+const getData = (url) => {
+	console.log('getting data ' + i)
+	requestPromise(url)
+		.then((html) => {
+			// Scrape data
+			let $ = cheerio.load(html)
+			const rows = $(".table.table-striped.players tbody tr:not(.table-ad, .hidden)").toArray()
+			for (const row of rows) {
+				// Setup player JSON structure
+				const player = {
+					'id': $(row).attr('data-playerid'),
+					'name': $(row).find("td[data-title='Nom'] a").text(),
+					'rating': $(row).find('span.label.rating').first().text(),
+					'photo': urlRoot + $(row).find('img.player.small').attr('src'),
+					'club': {
+						'name': $(row).find("td[data-title='Équipe'] a").attr('title'),
+						'logo': urlRoot + $(row).find('img.team.small').attr('src')
+					},
+					'flag': urlRoot + $(row).find("td[data-title='Nationalité'] .nation.small").attr('src')
+				}
+				dataList.push(player)
+			}
+		})
+		.then(() => {
+			i++
+			if (i==105) {
+				console.log('stopped before loading page ' + i)
+				// Scraping is done, save data to JSON
+				saveImages()
+			} else {
+				getData(`${urlToScrape}${i}/`)
+			}
+		})
+		.catch((error) => {
+			console.log('Crawling failed')
+		})
 }
   
 const saveImages = () => {
@@ -60,14 +62,10 @@ const saveImages = () => {
     
     // Download club logo if not done already
     const formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g, "").normalize('NFC'))
-    fs.exists(`/public/data/images/clubs/${formattedClubName}`, (exists) => {
-      if (!exists) {
-        downloadImage.image({
-          url: playerObject.club.logo,
-          dest: `public/data/images/clubs/${formattedClubName}.png`
-        })
-      }
-    })
+		downloadImage.image({
+			url: playerObject.club.logo,
+			dest: `public/data/images/clubs/${formattedClubName}.png`
+		})
     
     // Download nation flag
     downloadImage.image({
@@ -87,8 +85,15 @@ const saveImages = () => {
 const savePlayersData = () => {
   for (const playerObject of dataList) {
     // Change image links to the ones we downloaded
-    const clubName = removeAccents(playerObject.club.name.replace(/\s/g, "").normalize('NFC'))
-    playerObject.photo = `/data/images/photos/${playerObject.id}.png`
+		const clubName = removeAccents(playerObject.club.name.replace(/\s/g, "").normalize('NFC'))
+		fs.access(`/data/images/photos/${playerObject.id}.png`, (error) => {
+			if (!error) {
+				playerObject.photo = `/data/images/photos/${playerObject.id}.png`
+			} else {
+				// Link placeholder image
+				playerObject.photo = '/data/images/photos/none.png'
+			}
+		})
     playerObject.club.logo = `/data/images/photos/${clubName}.png`
     playerObject.flag = `/data/images/photos/${playerObject.flag.replace(/^.*[\\\/]/, "")}`
 
@@ -100,6 +105,6 @@ const savePlayersData = () => {
   }
 }
 
-getData()
+getData(`${urlToScrape}${i}/`)
 
 // TODO: find why sometimes just 1 page is loaded
