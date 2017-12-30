@@ -2,9 +2,11 @@ const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
 const removeAccents = require('remove-accents')
-const downloadImage = require('image-downloader')
+const download = require('image-downloader')
+//const RateLimiter = require('limiter')
 
 let dataList = []
+let failedDownloads = []
 let i = 1 // count url pages
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
@@ -34,7 +36,7 @@ const getData = (url) => {
 		})
 		.then(() => {
 			i++
-			if (i==105) {
+			if (i==10) {
 				console.log('stopped before loading page ' + i)
 				// Scraping is done, save data to JSON
 				saveImages()
@@ -46,39 +48,88 @@ const getData = (url) => {
 			console.log('Crawling failed')
 		})
 }
-  
+
+const retryDownloads = () => {
+	for (const fail of failedDownloads) {
+		download
+		.image({
+			url: fail.url,
+			dest: fail.dest
+		}).then(() => {
+			// Delete element from fails list
+			let fixedIndex = failedDownloads.indexOf(fail)
+			failedDownloads.splice(fixedIndex, 1)
+			console.log('Fixed failed download of ' + fail.url)
+			// Save JSON files
+			if (fixedIndex == failedDownloads.length - 1) {
+				savePlayersData()
+			}
+		}).catch(error => {
+			console.log("Failed again downloading " + fail.url)
+			retryDownloads()
+		})
+	}
+}
+
 const saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
   fs.mkdir('public/data/images/flags')
-  let count = 0
+	let count = 0
   
   for (const playerObject of dataList) {
     // Download player photo
-    downloadImage.image({
+		download
+		.image({
       url: playerObject.photo,
       dest: "public/data/images/photos/"
-    })
+    }).catch((error) => {
+			console.log('Failed loading ' + playerObject.photo)
+			failedDownloads.push({
+				url: playerObject.photo,
+				dest: "public/data/images/photos/"
+			})
+		})
     
     // Download club logo if not done already
     const formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g, "").normalize('NFC'))
-		downloadImage.image({
+		download
+		.image({
 			url: playerObject.club.logo,
 			dest: `public/data/images/clubs/${formattedClubName}.png`
+		}).catch((error) => {
+			console.log('Failed loading ' + playerObject.club.logo)
+			failedDownloads.push({
+				url: playerObject.club.logo,
+				dest: `public/data/images/clubs/${formattedClubName}.png`
+			})
 		})
     
     // Download nation flag
-    downloadImage.image({
-      url: playerObject.flag,
-      dest: `public/data/images/flags/`
-    }).then(() => {
-      count++
-      //console.log(count + ' vs ' + dataList.length)
-      if (count == dataList.length) {
-        // Last loop ended, write json files
-        savePlayersData()
-      }
-    })
+    download
+      .image({
+				url: playerObject.flag,
+				dest: `public/data/images/flags/`
+			}).then(() => {
+        count++
+        if (count == dataList.length) {
+					if (failedDownloads.length == 0) {
+						// Last loop ended, write json files
+						savePlayersData()
+					} else {
+						console.log('download fails:')
+						console.log(failedDownloads)
+						retryDownloads()
+					}
+        }
+      })
+      .catch(error => {
+        console.log("Failed loading " + playerObject.flag)
+        failedDownloads.push({
+        	url: playerObject.flag,
+        	dest: `public/data/images/flags/`
+        })
+      })
   }
 }
 

@@ -8,6 +8,7 @@
     "file-system": "^2.2.2",
     "image-downloader": "^3.3.0",
     "jsonframe-cheerio": "^3.0.1",
+    "limiter": "^1.1.2",
     "normalize.css": "^7.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
