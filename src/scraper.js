@@ -1,3 +1,5 @@
+// Run with: node --max-old-space-size=4096 src/scraper.js
+
 const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
@@ -8,11 +10,13 @@ const download = require('image-downloader')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
+let totalPages = 50
+let count = 0
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
 const getData = (url) => {
-	console.log('getting data ' + i)
+	console.log(`scraping pages : ${Math.trunc(i*100/totalPages)}%`)
 	requestPromise(url)
 		.then((html) => {
 			// Scrape data
@@ -36,7 +40,8 @@ const getData = (url) => {
 		})
 		.then(() => {
 			i++
-			if (i==10) {
+			// Stop at last page
+			if (i== totalPages) {
 				console.log('stopped before loading page ' + i)
 				// Scraping is done, save data to JSON
 				saveImages()
@@ -51,6 +56,7 @@ const getData = (url) => {
 
 const retryDownloads = () => {
 	for (const fail of failedDownloads) {
+		console.log(failedDownloads.length)
 		download
 		.image({
 			url: fail.url,
@@ -71,65 +77,108 @@ const retryDownloads = () => {
 	}
 }
 
+const downloadClubLogos = (playerObject) => {
+	// Download club logo if not done already
+	const formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g,"").normalize("NFC"))
+	download
+		.image({
+			url:
+				playerObject
+					.club
+					.logo,
+			dest: `public/data/images/clubs/${formattedClubName}.png`
+		})
+		.catch(
+			error => {
+				console.log(
+					"Failed loading " +
+						playerObject
+							.club
+							.logo
+				)
+				failedDownloads.push(
+					{
+						url:
+							playerObject
+								.club
+								.logo,
+						dest: `public/data/images/clubs/${formattedClubName}.png`
+					}
+				)
+				downloadFlags(playerObject)
+			}
+		)
+		.then(
+			() => {
+				downloadFlags(playerObject)
+			}
+		)
+}
+
+// Download nation flags
+const downloadFlags = (playerObject) => {
+	download
+		.image({
+			url: playerObject.flag,
+			dest: `public/data/images/flags/`
+		})
+		.then(() => {
+			checkDownloadSuccess(playerObject)
+		})
+		.catch(error => {
+			console.log("Failed loading " + playerObject.flag)
+			failedDownloads.push({
+				url: playerObject.flag,
+				dest: `public/data/images/flags/`
+			})
+			checkDownloadSuccess(playerObject)
+		})
+}
+
+// Check donwload fails
+const checkDownloadSuccess = () => {
+	console.log(`${Math.trunc(count*100/dataList.length)/100}%, ${count} out of ${dataList.length}`)
+  //console.log("getting " + playerObject.name)
+  //console.log(`downloading images: ${Math.trunc(count*100/dataList.length)}%`)
+  count++
+  if (count == dataList.length) {
+    console.log(`Finished dl with ${failedDownloads.length} fails`)
+    if (failedDownloads.length == 0) {
+      // Last loop ended, write json files
+      savePlayersData()
+    } else {
+      console.log("download fails:")
+      console.log(failedDownloads)
+      retryDownloads()
+    }
+  }
+}
+
 const saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
   fs.mkdir('public/data/images/flags')
-	let count = 0
-  
+	console.log('datalist length:')
+  console.log(dataList.length)
   for (const playerObject of dataList) {
-    // Download player photo
+		console.log('not done')
+		// Download player photo
 		download
-		.image({
-      url: playerObject.photo,
-      dest: "public/data/images/photos/"
-    }).catch((error) => {
-			console.log('Failed loading ' + playerObject.photo)
-			failedDownloads.push({
+			.image({
 				url: playerObject.photo,
 				dest: "public/data/images/photos/"
 			})
-		})
-    
-    // Download club logo if not done already
-    const formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g, "").normalize('NFC'))
-		download
-		.image({
-			url: playerObject.club.logo,
-			dest: `public/data/images/clubs/${formattedClubName}.png`
-		}).catch((error) => {
-			console.log('Failed loading ' + playerObject.club.logo)
-			failedDownloads.push({
-				url: playerObject.club.logo,
-				dest: `public/data/images/clubs/${formattedClubName}.png`
+			.catch((error) => {
+				console.log('Failed loading ' + playerObject.photo)
+				failedDownloads.push({
+					url: playerObject.photo,
+					dest: "public/data/images/photos/"
+				})
+				downloadClubLogos(playerObject)
 			})
-		})
-    
-    // Download nation flag
-    download
-      .image({
-				url: playerObject.flag,
-				dest: `public/data/images/flags/`
-			}).then(() => {
-        count++
-        if (count == dataList.length) {
-					if (failedDownloads.length == 0) {
-						// Last loop ended, write json files
-						savePlayersData()
-					} else {
-						console.log('download fails:')
-						console.log(failedDownloads)
-						retryDownloads()
-					}
-        }
-      })
-      .catch(error => {
-        console.log("Failed loading " + playerObject.flag)
-        failedDownloads.push({
-        	url: playerObject.flag,
-        	dest: `public/data/images/flags/`
-        })
-      })
+			.then(() => {
+				downloadClubLogos(playerObject)
+			})
   }
 }
 
