@@ -1,5 +1,7 @@
 node_modules/
 
+log.txt
+
 .eslintcache
 
 npm-debug.log*
