@@ -58,29 +58,29 @@ const getData = (url) => {
 }
 
 const retryDownloads = () => {
-	for (const fail of failedDownloads) {
-		log(failedDownloads.length)
-		console.log(failedDownloads.length)
-		download
-		.image({
-			url: fail.url,
-			dest: fail.dest
-		}).then(() => {
-			// Delete element from fails list
-			let fixedIndex = failedDownloads.indexOf(fail)
-			failedDownloads.splice(fixedIndex, 1)
-			log('Fixed failed download of ' + fail.url)
-			console.log('Fixed failed download of ' + fail.url)
-			// Save JSON files
-			if (fixedIndex == failedDownloads.length - 1) {
-				savePlayersData()
-			}
-		}).catch(error => {
-			log("Failed again downloading " + fail.url)
-			console.log("Failed again downloading " + fail.url)
+	const fail = failedDownloads[0]
+	log(`failed downloads left: ${failedDownloads.length}`)
+	console.log(`failed downloads left: ${failedDownloads.length}`)
+	download
+	.image({
+		url: fail.url,
+		dest: fail.dest
+	}).then(() => {
+		// Delete element from fails list
+		failedDownloads.splice(0, 1)
+		log('Fixed failed download of ' + fail.url)
+		console.log('Fixed failed download of ' + fail.url)
+		// Save JSON files
+		if (failedDownloads.length > 0) {
 			retryDownloads()
-		})
-	}
+		} else {
+			savePlayersData()
+		}
+	}).catch(error => {
+		log("Failed again downloading " + fail.url)
+		console.log("Failed again downloading " + fail.url)
+		retryDownloads()
+	})
 }
 
 const downloadClubLogos = (playerObject) => {
@@ -213,5 +213,3 @@ const savePlayersData = () => {
 }
 
 getData(`${urlToScrape}${i}/`)
-
-// TODO: find why sometimes just 1 page is loaded
