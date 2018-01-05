@@ -187,7 +187,7 @@ const checkDownloadSuccess = () => {
     } else {
 			// Delete duplicates
 			failedDownloads = removeDuplicates(failedDownloads, 'url')
-			if (downloadsAreDone) {
+			if (!downloadsAreDone) {
 				retryDownloads()
 			}
     }
