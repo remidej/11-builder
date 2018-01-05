@@ -10,7 +10,7 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 100 // 605 for all data
+let totalPages = 50 // 605 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -75,8 +75,8 @@ const retryDownloads = () => {
 			download
 				.image({
 					url: fail.url,
-					dest: fail.dest,
-					timeout: 5000
+					dest: fail.dest
+					//timeout: 5000
 				})
 				.then(() => {
 					// Delete element from fails list
@@ -91,9 +91,11 @@ const retryDownloads = () => {
 						// Finished downloads
 						log('downloads are done')
 						console.log('downloads are done')
-						downloadsAreDone = true
-						// Save JSON files
-						savePlayersData()
+						if (count == totalPages*300) {
+							downloadsAreDone = true
+							// Save JSON files
+							savePlayersData()
+						}
 					}
 				})
 				.catch(error => {
@@ -108,7 +110,10 @@ const retryDownloads = () => {
 			log(`image ${fail.url} is unavailable`)
 			console.log(`image ${fail.url} is unavailable`)
 			failedDownloads.splice(0, 1)
-			if (!downloadsAreDone) {
+			if (failedDownloads.length == 0) {
+				downloadsAreDone = true
+				savePlayersData()
+			} else {
 				retryDownloads()
 			}
 		}
@@ -123,8 +128,8 @@ const downloadClubLogos = (playerObject) => {
 	download
 		.image({
 			url: playerObject.club.logo,
-			dest: `public/data/images/clubs/${formattedClubName}.png`,
-			timeout: 5000
+			dest: `public/data/images/clubs/${formattedClubName}.png`
+			//timeout: 5000
 		})
 		.catch(
 			error => {
@@ -149,8 +154,7 @@ const downloadFlags = (playerObject) => {
 	download
 		.image({
 			url: playerObject.flag,
-			dest: `public/data/images/flags/`,
-			timeout: 5000
+			dest: `public/data/images/flags/`
 		})
 		.then(() => {
 			checkDownloadSuccess(playerObject)
@@ -166,13 +170,6 @@ const downloadFlags = (playerObject) => {
 		})
 }
 
-// Remove duplicates by object key
-const removeDuplicates = (myArr, prop) => {
-	return myArr.filter((obj, pos, arr) => {
-		return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos
-	})
-}
-
 // Check donwload fails
 const checkDownloadSuccess = () => {
   //console.log("getting " + playerObject.name)
@@ -185,8 +182,6 @@ const checkDownloadSuccess = () => {
       // Last loop ended, write json files
       savePlayersData()
     } else {
-			// Delete duplicates
-			failedDownloads = removeDuplicates(failedDownloads, 'url')
 			if (!downloadsAreDone) {
 				retryDownloads()
 			}
@@ -228,28 +223,34 @@ const saveImages = () => {
 }
 
 const savePlayersData = () => {
-  for (const playerObject of dataList) {
+	log('saving data')
+  for (let j=0; j<dataList.length; j++) {
     // Change image links to the ones we downloaded
-		const clubName = removeAccents(playerObject.club.name.replace(/\s/g, "").normalize('NFC'))
-		fs.access(`/data/images/photos/${playerObject.id}.png`, (error) => {
+		const clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+		fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
 			if (!error) {
-				playerObject.photo = `/data/images/photos/${playerObject.id}.png`
+				dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
 			} else {
 				// Link placeholder image
-				playerObject.photo = '/data/images/photos/none.png'
+				dataList[j].photo = '/data/images/photos/none.png'
 			}
 		})
-    playerObject.club.logo = `/data/images/photos/${clubName}.png`
-    playerObject.flag = `/data/images/photos/${playerObject.flag.replace(/^.*[\\\/]/, "")}`
+    dataList[j].club.logo = `/data/images/photos/${clubName}.png`
+    dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 
     // Create JSON file
-    const formattedName = removeAccents(playerObject.name.replace(/\s/g, "").normalize('NFC'))
+    const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
     if (formattedName !== 'undefined') {
-      fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(playerObject))
-    }
+      fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
+		}
+		if (j == dataList.length-1) {
+			log('over and out')
+			console.log('over and out')
+		}
 	}
 	log(`done with ${failedDownloads.length} fails`)
 	console.log(`done with ${failedDownloads.length} fails`)
 }
 
+// Start scraping
 getData(`${urlToScrape}${i}/`)
