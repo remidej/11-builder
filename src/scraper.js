@@ -10,7 +10,7 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 50 // 605 for all data
+let totalPages = 25 // 605 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -224,7 +224,10 @@ const saveImages = () => {
 
 const savePlayersData = () => {
 	log('saving data')
+	console.log('saving data')
   for (let j=0; j<dataList.length; j++) {
+		log(`${Math.trunc(j * 10000 / dataList.length) / 100}%`)
+		console.log(`${Math.trunc(j * 10000 / dataList.length) / 100}%`)
     // Change image links to the ones we downloaded
 		const clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
 		fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
@@ -250,6 +253,7 @@ const savePlayersData = () => {
 	}
 	log(`done with ${failedDownloads.length} fails`)
 	console.log(`done with ${failedDownloads.length} fails`)
+	process.exit()
 }
 
 // Start scraping
