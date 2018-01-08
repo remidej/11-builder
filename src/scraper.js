@@ -3,12 +3,10 @@
 const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
-const gracefulFs = require('graceful-fs')
 const removeAccents = require('remove-accents')
 const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
 const log = require('log-to-file')
-gracefulFs.gracefulify(fs)
 
 let dataList = []
 let failedDownloads = []
