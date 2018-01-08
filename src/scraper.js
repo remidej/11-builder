@@ -4,6 +4,7 @@ const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
 const removeAccents = require('remove-accents')
+const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
 const log = require('log-to-file')
 
@@ -202,31 +203,38 @@ const saveImages = () => {
   log(dataList.length)
   console.log(dataList.length)
   for (const playerObject of dataList) {
-		// Download player photo
-		download
-			.image({
-				url: playerObject.photo,
-				dest: "public/data/images/photos/",
-				timeout: 10000
-			})
-			.catch((error) => {
-				log('Failed loading ' + playerObject.photo)
-				console.log('Failed loading ' + playerObject.photo)
-				failedDownloads.push({
+		// Throttle requests
+		const throttleDownloads = limit(() => {
+			log('throttled')
+			console.log('throttled')
+			// Download player photo
+			download
+				.image({
 					url: playerObject.photo,
-					dest: "public/data/images/photos/"
+					dest: "public/data/images/photos/",
+					timeout: 10000
 				})
-				downloadClubLogos(playerObject)
-			})
-			.then(() => {
-				downloadClubLogos(playerObject)
-			})
+				.catch((error) => {
+					log('Failed loading ' + playerObject.photo)
+					console.log('Failed loading ' + playerObject.photo)
+					failedDownloads.push({
+						url: playerObject.photo,
+						dest: "public/data/images/photos/"
+					})
+					downloadClubLogos(playerObject)
+				})
+				.then(() => {
+					downloadClubLogos(playerObject)
+				})
+		}).to(1).per(1000)
+		throttleDownloads()
   }
 }
 
 const savePlayersData = () => {
 	log('saving data')
 	console.log('saving data')
+	alreadySavedData = true
   for (let j=0; j<dataList.length; j++) {
 		log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
 		console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)

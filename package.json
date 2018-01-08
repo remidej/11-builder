@@ -16,7 +16,8 @@
     "react-scripts": "1.0.17",
     "remove-accents": "^0.4.2",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "simple-rate-limiter": "^0.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
