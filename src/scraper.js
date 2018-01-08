@@ -11,11 +11,12 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 50 // 605 for all data
+let totalPages = 17 // 605 for all data
 let count = 0
 let lastFail
 let failCount = 0
 let downloadsAreDone = false
+let alreadySavedData = false
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
@@ -62,7 +63,7 @@ const getData = (url) => {
 }
 
 const retryDownloads = () => {
-	if (failedDownloads.length > 0) {
+	if (failedDownloads.length > 0 && !alreadySavedData) {
 		const fail = failedDownloads[0]
 		if (fail == lastFail) {
 			failCount++
@@ -73,53 +74,62 @@ const retryDownloads = () => {
 		if (failCount < 100) {
 			log(`failed downloads left: ${failedDownloads.length}`)
 			console.log(`failed downloads left: ${failedDownloads.length}`)
-			download
-				.image({
-					url: fail.url,
-					dest: fail.dest,
-					timeout: 10000
-				})
-				.then(() => {
-					// Delete element from fails list
-					failedDownloads.splice(0, 1)
-					log('Fixed failed download of ' + fail.url)
-					console.log('Fixed failed download of ' + fail.url)
-					if (failedDownloads.length > 0) {
+			const throttleRetryDownloads = limit(() => {
+				download
+					.image({
+						url: fail.url,
+						dest: fail.dest,
+						timeout: 10000
+					})
+					.then(() => {
+						// Delete element from fails list
+						failedDownloads.splice(0, 1)
+						log('Fixed failed download of ' + fail.url)
+						console.log('Fixed failed download of ' + fail.url)
+						if (failedDownloads.length > 0) {
+							if (!downloadsAreDone) {
+								retryDownloads()
+							}
+						} else {
+							// Finished downloads
+							log('downloads are done')
+							console.log('downloads are done')
+							if (count == dataList.length) {
+								downloadsAreDone = true
+								// Save JSON files
+								if (!alreadySavedData) {
+									savePlayersData()
+								}
+							}
+						}
+					})
+					.catch(error => {
+						log("Failed again downloading " + fail.url)
+						console.log("Failed again downloading " + fail.url)
+						lastFail = fail
 						if (!downloadsAreDone) {
 							retryDownloads()
 						}
-					} else {
-						// Finished downloads
-						log('downloads are done')
-						console.log('downloads are done')
-						if (count == dataList.length) {
-							downloadsAreDone = true
-							// Save JSON files
-							savePlayersData()
-						}
-					}
-				})
-				.catch(error => {
-					log("Failed again downloading " + fail.url)
-					console.log("Failed again downloading " + fail.url)
-					lastFail = fail
-					if (!downloadsAreDone) {
-						retryDownloads()
-					}
-				})
+					})
+			}).to(1).per(1000)
+			throttleRetryDownloads()
 		} else {
 			log(`image ${fail.url} is unavailable`)
 			console.log(`image ${fail.url} is unavailable`)
 			failedDownloads.splice(0, 1)
 			if (failedDownloads.length == 0) {
 				downloadsAreDone = true
-				savePlayersData()
+				if (!alreadySavedData) {
+					savePlayersData()
+				}
 			} else {
 				retryDownloads()
 			}
 		}
 	} else {
-		savePlayersData()
+		if (!alreadySavedData) {
+			savePlayersData()
+		}
 	}
 }
 
@@ -181,8 +191,10 @@ const checkDownloadSuccess = () => {
     if (failedDownloads.length == 0) {
 			log('Downloads are done')
 			console.log('Downloads are done')
-      // Last loop ended, write json files
-      savePlayersData()
+			// Last loop ended, write json files
+			if (!alreadySavedData) {
+				savePlayersData()
+			}
     } else {
 			if (!downloadsAreDone) {
 				retryDownloads()
@@ -205,8 +217,6 @@ const saveImages = () => {
   for (const playerObject of dataList) {
 		// Throttle requests
 		const throttleDownloads = limit(() => {
-			log('throttled')
-			console.log('throttled')
 			// Download player photo
 			download
 				.image({
@@ -236,34 +246,37 @@ const savePlayersData = () => {
 	console.log('saving data')
 	alreadySavedData = true
   for (let j=0; j<dataList.length; j++) {
-		log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
-		console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
-    // Change image links to the ones we downloaded
-		const clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
-		fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
-			if (!error) {
-				dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
-			} else {
-				// Link placeholder image
-				dataList[j].photo = '/data/images/photos/none.png'
-			}
-		})
-    dataList[j].club.logo = `/data/images/photos/${clubName}.png`
-    dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
+		const throttlePlayersData = limit(() => {
+			log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
+			console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
+			// Change image links to the ones we downloaded
+			const clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+			fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
+				if (!error) {
+					dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
+				} else {
+					// Link placeholder image
+					dataList[j].photo = '/data/images/photos/none.png'
+				}
+			})
+			dataList[j].club.logo = `/data/images/photos/${clubName}.png`
+			dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 
-    // Create JSON file
-    const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
-    if (formattedName !== 'undefined') {
-      fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
-		}
-		if (j == dataList.length-1) {
-			log('over and out')
-			console.log('over and out')
-		}
+			// Create JSON file
+			const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
+			if (formattedName !== 'undefined') {
+				fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
+			}
+			if (j == dataList.length - 1) {
+				log('over and out')
+				console.log('over and out')
+				log(`done with ${failedDownloads.length} fails`)
+				console.log(`done with ${failedDownloads.length} fails`)
+				process.exit()
+			}
+		}).to(1).per(50)
+		throttlePlayersData()
 	}
-	log(`done with ${failedDownloads.length} fails`)
-	console.log(`done with ${failedDownloads.length} fails`)
-	process.exit()
 }
 
 // Start scraping
