@@ -1,17 +1,19 @@
-// Run with: node --max-old-space-size=4096 src/scraper.js
+// Run with: node --max-old-space-size=8192 src/scraper.js
 
 const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
+const gracefulFs = require('graceful-fs')
 const removeAccents = require('remove-accents')
 const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
 const log = require('log-to-file')
+gracefulFs.gracefulify(fs)
 
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 50 // 605 for all data
+let totalPages = 6 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
