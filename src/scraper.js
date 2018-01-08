@@ -11,7 +11,7 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 17 // 605 for all data
+let totalPages = 50 // 605 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -250,7 +250,20 @@ const savePlayersData = () => {
 			log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
 			console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
 			// Change image links to the ones we downloaded
-			const clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+			let clubName = ''
+			if (typeof dataList[j].club.name !== 'undefined') {
+				clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+			} else {
+				log(dataList[j].club.name)
+				console.log(dataList[j].club.name)
+				log(dataList[j].flag)
+				console.log(dataList[j].flag)
+				log(dataList[j].photo)
+				console.log(dataList[j].photo)
+				log(dataList[j].name)
+				console.log(dataList[j].name)
+				clubName = 'unavailable'
+			}
 			fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
 				if (!error) {
 					dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
