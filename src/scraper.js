@@ -10,7 +10,7 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 2 // 605 for all data
+let totalPages = 50 // 605 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -75,8 +75,8 @@ const retryDownloads = () => {
 			download
 				.image({
 					url: fail.url,
-					dest: fail.dest
-					//timeout: 5000
+					dest: fail.dest,
+					timeout: 10000
 				})
 				.then(() => {
 					// Delete element from fails list
@@ -91,7 +91,7 @@ const retryDownloads = () => {
 						// Finished downloads
 						log('downloads are done')
 						console.log('downloads are done')
-						if (count == totalPages*300) {
+						if (count == dataList.length) {
 							downloadsAreDone = true
 							// Save JSON files
 							savePlayersData()
@@ -128,8 +128,8 @@ const downloadClubLogos = (playerObject) => {
 	download
 		.image({
 			url: playerObject.club.logo,
-			dest: `public/data/images/clubs/${formattedClubName}.png`
-			//timeout: 5000
+			dest: `public/data/images/clubs/${formattedClubName}.png`,
+			timeout: 10000
 		})
 		.catch(
 			error => {
@@ -154,7 +154,8 @@ const downloadFlags = (playerObject) => {
 	download
 		.image({
 			url: playerObject.flag,
-			dest: `public/data/images/flags/`
+			dest: `public/data/images/flags/`,
+			timeout: 10000
 		})
 		.then(() => {
 			checkDownloadSuccess(playerObject)
@@ -205,7 +206,8 @@ const saveImages = () => {
 		download
 			.image({
 				url: playerObject.photo,
-				dest: "public/data/images/photos/"
+				dest: "public/data/images/photos/",
+				timeout: 10000
 			})
 			.catch((error) => {
 				log('Failed loading ' + playerObject.photo)
