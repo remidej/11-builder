@@ -4,7 +4,7 @@ const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
 const removeAccents = require('remove-accents')
-const limit = require("simple-rate-limiter")
+//const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
 const log = require('log-to-file')
 
@@ -74,45 +74,43 @@ const retryDownloads = () => {
 		if (failCount < 100) {
 			log(`failed downloads left: ${failedDownloads.length}`)
 			console.log(`failed downloads left: ${failedDownloads.length}`)
-			const throttleRetryDownloads = limit(() => {
-				download
-					.image({
-						url: fail.url,
-						dest: fail.dest,
-						timeout: 10000
-					})
-					.then(() => {
-						// Delete element from fails list
-						failedDownloads.splice(0, 1)
-						log('Fixed failed download of ' + fail.url)
-						console.log('Fixed failed download of ' + fail.url)
-						if (failedDownloads.length > 0) {
-							if (!downloadsAreDone) {
-								retryDownloads()
-							}
-						} else {
-							// Finished downloads
-							log('downloads are done')
-							console.log('downloads are done')
-							if (count == dataList.length) {
-								downloadsAreDone = true
-								// Save JSON files
-								if (!alreadySavedData) {
-									savePlayersData()
-								}
-							}
-						}
-					})
-					.catch(error => {
-						log("Failed again downloading " + fail.url)
-						console.log("Failed again downloading " + fail.url)
-						lastFail = fail
+			download
+				.image({
+					url: fail.url,
+					dest: fail.dest,
+					timeout: 10000
+				})
+				.then(() => {
+					// Delete element from fails list
+					failedDownloads.splice(0, 1)
+					log('Fixed failed download of ' + fail.url)
+					console.log('Fixed failed download of ' + fail.url)
+					if (failedDownloads.length > 0) {
 						if (!downloadsAreDone) {
 							retryDownloads()
 						}
-					})
-			}).to(1).per(1000)
-			throttleRetryDownloads()
+					} else {
+						// Finished downloads
+						log('downloads are done')
+						console.log('downloads are done')
+						if (count == dataList.length) {
+							downloadsAreDone = true
+							// Save JSON files
+							if (!alreadySavedData) {
+								savePlayersData()
+							}
+						}
+					}
+				})
+				.catch(error => {
+					log("Failed again downloading " + fail.url)
+					console.log("Failed again downloading " + fail.url)
+					lastFail = fail
+					if (!downloadsAreDone) {
+						retryDownloads()
+					}
+				})
+			
 		} else {
 			log(`image ${fail.url} is unavailable`)
 			console.log(`image ${fail.url} is unavailable`)
@@ -215,29 +213,25 @@ const saveImages = () => {
   log(dataList.length)
   console.log(dataList.length)
   for (const playerObject of dataList) {
-		// Throttle requests
-		const throttleDownloads = limit(() => {
-			// Download player photo
-			download
-				.image({
+		// Download player photo
+		download
+			.image({
+				url: playerObject.photo,
+				dest: "public/data/images/photos/",
+				timeout: 10000
+			})
+			.catch((error) => {
+				log('Failed loading ' + playerObject.photo)
+				console.log('Failed loading ' + playerObject.photo)
+				failedDownloads.push({
 					url: playerObject.photo,
-					dest: "public/data/images/photos/",
-					timeout: 10000
+					dest: "public/data/images/photos/"
 				})
-				.catch((error) => {
-					log('Failed loading ' + playerObject.photo)
-					console.log('Failed loading ' + playerObject.photo)
-					failedDownloads.push({
-						url: playerObject.photo,
-						dest: "public/data/images/photos/"
-					})
-					downloadClubLogos(playerObject)
-				})
-				.then(() => {
-					downloadClubLogos(playerObject)
-				})
-		}).to(1).per(1000)
-		throttleDownloads()
+				downloadClubLogos(playerObject)
+			})
+			.then(() => {
+				downloadClubLogos(playerObject)
+			})
   }
 }
 
@@ -246,49 +240,46 @@ const savePlayersData = () => {
 	console.log('saving data')
 	alreadySavedData = true
   for (let j=0; j<dataList.length; j++) {
-		const throttlePlayersData = limit(() => {
-			log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
-			console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
-			// Change image links to the ones we downloaded
-			let clubName = ''
-			if (typeof dataList[j].club.name !== 'undefined') {
-				clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+		log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
+		console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
+		// Change image links to the ones we downloaded
+		let clubName = ''
+		if (typeof dataList[j].club.name !== 'undefined') {
+			clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+		} else {
+			log(dataList[j].club.name)
+			console.log(dataList[j].club.name)
+			log(dataList[j].flag)
+			console.log(dataList[j].flag)
+			log(dataList[j].photo)
+			console.log(dataList[j].photo)
+			log(dataList[j].name)
+			console.log(dataList[j].name)
+			clubName = 'unavailable'
+		}
+		fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
+			if (!error) {
+				dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
 			} else {
-				log(dataList[j].club.name)
-				console.log(dataList[j].club.name)
-				log(dataList[j].flag)
-				console.log(dataList[j].flag)
-				log(dataList[j].photo)
-				console.log(dataList[j].photo)
-				log(dataList[j].name)
-				console.log(dataList[j].name)
-				clubName = 'unavailable'
+				// Link placeholder image
+				dataList[j].photo = '/data/images/photos/none.png'
 			}
-			fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
-				if (!error) {
-					dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
-				} else {
-					// Link placeholder image
-					dataList[j].photo = '/data/images/photos/none.png'
-				}
-			})
-			dataList[j].club.logo = `/data/images/photos/${clubName}.png`
-			dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
+		})
+		dataList[j].club.logo = `/data/images/photos/${clubName}.png`
+		dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 
-			// Create JSON file
-			const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
-			if (formattedName !== 'undefined') {
-				fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
-			}
-			if (j == dataList.length - 1) {
-				log('over and out')
-				console.log('over and out')
-				log(`done with ${failedDownloads.length} fails`)
-				console.log(`done with ${failedDownloads.length} fails`)
-				process.exit()
-			}
-		}).to(1).per(50)
-		throttlePlayersData()
+		// Create JSON file
+		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
+		if (formattedName !== 'undefined') {
+			fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
+		}
+		if (j == dataList.length - 1) {
+			log('over and out')
+			console.log('over and out')
+			log(`done with ${failedDownloads.length} fails`)
+			console.log(`done with ${failedDownloads.length} fails`)
+			process.exit()
+		}
 	}
 }
 
