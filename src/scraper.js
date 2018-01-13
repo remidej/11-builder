@@ -4,14 +4,14 @@ const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
 const removeAccents = require('remove-accents')
-//const limit = require("simple-rate-limiter")
+const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
 const log = require('log-to-file')
 
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 6 // 604 for all data
+let totalPages = 100 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -62,7 +62,7 @@ const getData = (url) => {
 		})
 }
 
-const retryDownloads = () => {
+let retryDownloads = () => {
 	if (failedDownloads.length > 0 && !alreadySavedData) {
 		const fail = failedDownloads[0]
 		if (fail == lastFail) {
@@ -71,7 +71,7 @@ const retryDownloads = () => {
 			failCount = 0
 		}
 		// Stop trying after 100 fails
-		if (failCount < 100) {
+		if (failCount < 10) {
 			log(`failed downloads left: ${failedDownloads.length}`)
 			console.log(`failed downloads left: ${failedDownloads.length}`)
 			download
@@ -130,6 +130,8 @@ const retryDownloads = () => {
 		}
 	}
 }
+
+retryDownloads = limit(retryDownloads).to(1).per(300)
 
 const downloadClubLogos = (playerObject) => {
 	// Download club logo if not done already
@@ -204,7 +206,7 @@ const checkDownloadSuccess = () => {
 	}
 }
 
-const saveImages = () => {
+let saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
   fs.mkdir('public/data/images/flags')
@@ -234,6 +236,8 @@ const saveImages = () => {
 			})
   }
 }
+
+saveImages = limit(saveImages).to(1).per(300)
 
 const savePlayersData = () => {
 	log('saving data')
