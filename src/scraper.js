@@ -11,10 +11,11 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 100 // 604 for all data
+let totalPages = 604 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
+let unavailableCount = 0
 let downloadsAreDone = false
 let alreadySavedData = false
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
@@ -47,7 +48,7 @@ const getData = (url) => {
 		.then(() => {
 			i++
 			// Stop at last page
-			if (i == totalPages + 1) {
+			if (i == totalPages) {
 				log('stopped before loading page ' + i)
 				console.log('stopped before loading page ' + i)
 				// Scraping is done, save data to JSON
@@ -70,8 +71,8 @@ let retryDownloads = () => {
 		} else {
 			failCount = 0
 		}
-		// Stop trying after 100 fails
-		if (failCount < 10) {
+		// Stop trying after 4 fails
+		if (failCount < 4) {
 			log(`failed downloads left: ${failedDownloads.length}`)
 			console.log(`failed downloads left: ${failedDownloads.length}`)
 			download
@@ -115,6 +116,7 @@ let retryDownloads = () => {
 			log(`image ${fail.url} is unavailable`)
 			console.log(`image ${fail.url} is unavailable`)
 			failedDownloads.splice(0, 1)
+			unavailableCount++
 			if (failedDownloads.length == 0) {
 				downloadsAreDone = true
 				if (!alreadySavedData) {
@@ -130,12 +132,14 @@ let retryDownloads = () => {
 		}
 	}
 }
-
 retryDownloads = limit(retryDownloads).to(1).per(300)
 
-const downloadClubLogos = (playerObject) => {
+let downloadClubLogos = (playerObject) => {
 	// Download club logo if not done already
-	const formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g,"").normalize("NFC"))
+	let formattedClubName = 'undefined'
+	if (playerObject.club.name != undefined) {
+		formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g,"").normalize("NFC"))
+	}
 	download
 		.image({
 			url: playerObject.club.logo,
@@ -159,9 +163,10 @@ const downloadClubLogos = (playerObject) => {
 			}
 		)
 }
+downloadClubLogos = limit(downloadClubLogos).to(1).per(300)
 
 // Download nation flags
-const downloadFlags = (playerObject) => {
+let downloadFlags = (playerObject) => {
 	download
 		.image({
 			url: playerObject.flag,
@@ -181,6 +186,7 @@ const downloadFlags = (playerObject) => {
 			checkDownloadSuccess(playerObject)
 		})
 }
+downloadFlags = limit(downloadFlags).to(1).per(300)
 
 // Check donwload fails
 const checkDownloadSuccess = () => {
@@ -206,6 +212,28 @@ const checkDownloadSuccess = () => {
 	}
 }
 
+let downloadPictures = (playerObject) => {
+	download
+		.image({
+			url: playerObject.photo,
+			dest: "public/data/images/photos/",
+			timeout: 10000
+		})
+		.catch((error) => {
+			log('Failed loading ' + playerObject.photo)
+			console.log('Failed loading ' + playerObject.photo)
+			failedDownloads.push({
+				url: playerObject.photo,
+				dest: "public/data/images/photos/"
+			})
+			downloadClubLogos(playerObject)
+		})
+		.then(() => {
+			downloadClubLogos(playerObject)
+		})
+}
+downloadPictures = limit(downloadPictures).to(1).per(300)
+
 let saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
@@ -216,28 +244,9 @@ let saveImages = () => {
   console.log(dataList.length)
   for (const playerObject of dataList) {
 		// Download player photo
-		download
-			.image({
-				url: playerObject.photo,
-				dest: "public/data/images/photos/",
-				timeout: 10000
-			})
-			.catch((error) => {
-				log('Failed loading ' + playerObject.photo)
-				console.log('Failed loading ' + playerObject.photo)
-				failedDownloads.push({
-					url: playerObject.photo,
-					dest: "public/data/images/photos/"
-				})
-				downloadClubLogos(playerObject)
-			})
-			.then(() => {
-				downloadClubLogos(playerObject)
-			})
+		downloadPictures(playerObject)
   }
 }
-
-saveImages = limit(saveImages).to(1).per(300)
 
 const savePlayersData = () => {
 	log('saving data')
@@ -280,8 +289,8 @@ const savePlayersData = () => {
 		if (j == dataList.length - 1) {
 			log('over and out')
 			console.log('over and out')
-			log(`done with ${failedDownloads.length} fails`)
-			console.log(`done with ${failedDownloads.length} fails`)
+			log(`done with ${unavailableCount} 404s`)
+			console.log(`done with ${unavailableCount} 404s`)
 			process.exit()
 		}
 	}
