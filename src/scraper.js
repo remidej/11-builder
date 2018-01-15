@@ -11,7 +11,7 @@ const log = require('log-to-file')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 604 // 604 for all data
+let totalPages = 3 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -280,11 +280,11 @@ const savePlayersData = () => {
 		})
 		dataList[j].club.logo = `/data/images/photos/${clubName}.png`
 		dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
-
 		// Create JSON file
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {
-			fs.writeFile(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
+			console.log(JSON.stringify(dataList[j]))
+			fs.writeFileSync(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
 		}
 		if (j == dataList.length - 1) {
 			log('over and out')
