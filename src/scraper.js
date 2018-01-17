@@ -6,7 +6,6 @@ const fs = require('file-system')
 const removeAccents = require('remove-accents')
 const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
-const log = require('log-to-file')
 
 let dataList = []
 let failedDownloads = []
@@ -22,7 +21,6 @@ const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
 const getData = (url) => {
-	log(`scraping pages : ${Math.trunc(i*100/totalPages)}%`)
 	console.log(`scraping pages : ${Math.trunc(i*100/totalPages)}%`)
 	requestPromise(url)
 		.then((html) => {
@@ -49,7 +47,6 @@ const getData = (url) => {
 			i++
 			// Stop at last page
 			if (i == totalPages) {
-				log('stopped before loading page ' + i)
 				console.log('stopped before loading page ' + i)
 				// Scraping is done, save data to JSON
 				saveImages()
@@ -58,7 +55,6 @@ const getData = (url) => {
 			}
 		})
 		.catch((error) => {
-			log('Crawling failed')
 			console.log('Crawling failed')
 		})
 }
@@ -73,7 +69,6 @@ let retryDownloads = () => {
 		}
 		// Stop trying after 4 fails
 		if (failCount < 4) {
-			log(`failed downloads left: ${failedDownloads.length}`)
 			console.log(`failed downloads left: ${failedDownloads.length}`)
 			download
 				.image({
@@ -84,15 +79,13 @@ let retryDownloads = () => {
 				.then(() => {
 					// Delete element from fails list
 					failedDownloads.splice(0, 1)
-					log('Fixed failed download of ' + fail.url)
-					console.log('Fixed failed download of ' + fail.url)
+					console.log('FIXED failed download of ' + fail.url)
 					if (failedDownloads.length > 0) {
 						if (!downloadsAreDone) {
 							retryDownloads()
 						}
 					} else {
 						// Finished downloads
-						log('downloads are done')
 						console.log('downloads are done')
 						if (count == dataList.length) {
 							downloadsAreDone = true
@@ -104,7 +97,6 @@ let retryDownloads = () => {
 					}
 				})
 				.catch(error => {
-					log("Failed again downloading " + fail.url)
 					console.log("Failed again downloading " + fail.url)
 					lastFail = fail
 					if (!downloadsAreDone) {
@@ -113,7 +105,6 @@ let retryDownloads = () => {
 				})
 			
 		} else {
-			log(`image ${fail.url} is unavailable`)
 			console.log(`image ${fail.url} is unavailable`)
 			failedDownloads.splice(0, 1)
 			unavailableCount++
@@ -148,7 +139,6 @@ let downloadClubLogos = (playerObject) => {
 		})
 		.catch(
 			error => {
-				log("Failed loading " + playerObject.club.logo)
 				console.log("Failed loading " + playerObject.club.logo)
 				failedDownloads.push({
 						url: playerObject.club.logo,
@@ -177,7 +167,6 @@ let downloadFlags = (playerObject) => {
 			checkDownloadSuccess(playerObject)
 		})
 		.catch(error => {
-			log("Failed loading " + playerObject.flag)
 			console.log("Failed loading " + playerObject.flag)
 			failedDownloads.push({
 				url: playerObject.flag,
@@ -190,12 +179,9 @@ downloadFlags = limit(downloadFlags).to(1).per(300)
 
 // Check donwload fails
 const checkDownloadSuccess = () => {
-  //console.log("getting " + playerObject.name)
-  //console.log(`downloading images: ${Math.trunc(count*100/dataList.length)}%`)
   count++
   if (count >= dataList.length) {
     if (failedDownloads.length == 0) {
-			log('Downloads are done')
 			console.log('Downloads are done')
 			// Last loop ended, write json files
 			if (!alreadySavedData) {
@@ -207,7 +193,6 @@ const checkDownloadSuccess = () => {
 			}
     }
   } else {
-		log(`${Math.trunc(count*10000/dataList.length)/100}%, ${count} out of ${dataList.length}`)
 		console.log(`${Math.trunc(count*10000/dataList.length)/100}%, ${count} out of ${dataList.length}`)
 	}
 }
@@ -220,7 +205,6 @@ let downloadPictures = (playerObject) => {
 			timeout: 10000
 		})
 		.catch((error) => {
-			log('Failed loading ' + playerObject.photo)
 			console.log('Failed loading ' + playerObject.photo)
 			failedDownloads.push({
 				url: playerObject.photo,
@@ -238,10 +222,7 @@ let saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
   fs.mkdir('public/data/images/flags')
-	log('datalist length:')
-	console.log('datalist length:')
-  log(dataList.length)
-  console.log(dataList.length)
+	console.log(`datalist length: ${datalist.length}`)
   for (const playerObject of dataList) {
 		// Download player photo
 		downloadPictures(playerObject)
@@ -249,26 +230,14 @@ let saveImages = () => {
 }
 
 const savePlayersData = () => {
-	log('saving data')
 	console.log('saving data')
 	alreadySavedData = true
   for (let j=0; j<dataList.length; j++) {
-		log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
 		console.log(`Saving ${Math.trunc(j * 10000 / dataList.length) / 100}%`)
 		// Change image links to the ones we downloaded
 		let clubName = ''
 		if (typeof dataList[j].club.name !== 'undefined') {
 			clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
-		} else {
-			log(dataList[j].club.name)
-			console.log(dataList[j].club.name)
-			log(dataList[j].flag)
-			console.log(dataList[j].flag)
-			log(dataList[j].photo)
-			console.log(dataList[j].photo)
-			log(dataList[j].name)
-			console.log(dataList[j].name)
-			clubName = 'unavailable'
 		}
 		fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
 			if (!error) {
@@ -283,14 +252,10 @@ const savePlayersData = () => {
 		// Create JSON file
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {
-			console.log(JSON.stringify(dataList[j]))
 			fs.writeFileSync(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
 		}
 		if (j == dataList.length - 1) {
-			log('over and out')
-			console.log('over and out')
-			log(`done with ${unavailableCount} 404s`)
-			console.log(`done with ${unavailableCount} 404s`)
+			console.log(`Finished with ${unavailableCount} 404s`)
 			process.exit()
 		}
 	}
