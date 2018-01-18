@@ -13,6 +13,7 @@ const request = new XMLHttpRequest()
 request.overrideMimeType("application/json")
 let requestResult
 let requestResults = []
+const playersIndex = require('./data/index.json')
 
 // Add fallback support for ES6's startWith() method
 if (!String.prototype.startsWith) {
