@@ -257,7 +257,7 @@ const savePlayersData = () => {
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {
 			fs.writeFileSync(`src/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
-			jsonIndex[formattedName] = `src/data/players/${formattedName}.json`
+			jsonIndex[formattedName] = `./data/players/${formattedName}.json`
 		}
 		if (j == dataList.length - 1) {
 			console.log(`Finished with ${unavailableCount} 404s`)

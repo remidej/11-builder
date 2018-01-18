@@ -53,19 +53,28 @@ class SearchPlayer extends Component {
 
   getPlayersData = searchValue => {
     // Find matching players from JSON players index
-    const playerFiles = []
+    const playerFilesPaths = []
     for(const player in playersIndex) {
       const playerName = player.toLocaleLowerCase()
       // Store matches
-      if (playerName.includes(searchValue) && playerFiles.length < 5) {
-        playerFiles.push(playersIndex[player])
+      if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
+        playerFilesPaths.push(playersIndex[player])
       }
     }
-    console.log(playerFiles)
+    //console.log(playerFilesPaths)
+    this.setState({ noMatches: playerFilesPaths.length==0 })
+    // Get relevant data from JSON files
+    for (const playerFilePath of playerFilesPaths) {
+      const playerFile = require('./data/players/CristianoRonaldo.json')
+      console.log(playerFile.name)
+    }
   }
 
   updateSearch(event) {
-    this.setState({ value: event.target.value })
+    this.setState({
+      value: event.target.value,
+      isLoading: true
+    })
     this.getPlayersData(event.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
     // Display loading message
     this.setState({ isLoading: true})
