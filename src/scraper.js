@@ -10,17 +10,18 @@ const download = require('image-downloader')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 3 // 604 for all data
+let totalPages = 5 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
 let unavailableCount = 0
 let downloadsAreDone = false
 let alreadySavedData = false
+let jsonIndex = {}
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
-const getData = (url) => {
+let getData = (url) => {
 	console.log(`scraping pages : ${Math.trunc(i*100/totalPages)}%`)
 	requestPromise(url)
 		.then((html) => {
@@ -30,34 +31,37 @@ const getData = (url) => {
 			for (const row of rows) {
 				// Setup player JSON structure
 				const player = {
-					'id': $(row).attr('data-playerid'),
-					'name': $(row).find("td[data-title='Nom'] a").text(),
-					'rating': $(row).find('span.label.rating').first().text(),
-					'photo': urlRoot + $(row).find('img.player.small').attr('src'),
-					'club': {
-						'name': $(row).find("td[data-title='Équipe'] a").attr('title'),
-						'logo': urlRoot + $(row).find('img.team.small').attr('src')
+					id: $(row).attr('data-playerid'),
+					name: $(row).find("td[data-title='Nom'] a").text(),
+					rating: $(row).find('span.label.rating').first().text(),
+					photo: urlRoot + $(row).find('img.player.small').attr('src'),
+					club: {
+						name: $(row).find("td[data-title='Équipe'] a").attr('title'),
+						logo: urlRoot + $(row).find('img.team.small').attr('src')
 					},
-					'flag': urlRoot + $(row).find("td[data-title='Nationalité'] .nation.small").attr('src')
+					flag: urlRoot + $(row).find("td[data-title='Nationalité'] .nation.small").attr('src')
 				}
 				dataList.push(player)
 			}
 		})
 		.then(() => {
-			i++
 			// Stop at last page
 			if (i == totalPages) {
-				console.log('stopped before loading page ' + i)
+				console.log('stopped after loading ' + i)
 				// Scraping is done, save data to JSON
 				saveImages()
 			} else {
+				// Load next page
+				i++
 				getData(`${urlToScrape}${i}/`)
 			}
 		})
 		.catch((error) => {
 			console.log('Crawling failed')
+			console.log(error)
 		})
 }
+getData = limit(getData).to(1).per(600)
 
 let retryDownloads = () => {
 	if (failedDownloads.length > 0 && !alreadySavedData) {
@@ -67,14 +71,14 @@ let retryDownloads = () => {
 		} else {
 			failCount = 0
 		}
-		// Stop trying after 4 fails
-		if (failCount < 4) {
+		// Stop trying after 10 fails
+		if (failCount < 10) {
 			console.log(`failed downloads left: ${failedDownloads.length}`)
 			download
 				.image({
 					url: fail.url,
 					dest: fail.dest,
-					timeout: 10000
+					timeout: 15000
 				})
 				.then(() => {
 					// Delete element from fails list
@@ -123,7 +127,7 @@ let retryDownloads = () => {
 		}
 	}
 }
-retryDownloads = limit(retryDownloads).to(1).per(300)
+retryDownloads = limit(retryDownloads).to(1).per(600)
 
 let downloadClubLogos = (playerObject) => {
 	// Download club logo if not done already
@@ -135,7 +139,7 @@ let downloadClubLogos = (playerObject) => {
 		.image({
 			url: playerObject.club.logo,
 			dest: `public/data/images/clubs/${formattedClubName}.png`,
-			timeout: 10000
+			timeout: 15000
 		})
 		.catch(
 			error => {
@@ -153,7 +157,7 @@ let downloadClubLogos = (playerObject) => {
 			}
 		)
 }
-downloadClubLogos = limit(downloadClubLogos).to(1).per(300)
+downloadClubLogos = limit(downloadClubLogos).to(1).per(600)
 
 // Download nation flags
 let downloadFlags = (playerObject) => {
@@ -161,7 +165,7 @@ let downloadFlags = (playerObject) => {
 		.image({
 			url: playerObject.flag,
 			dest: `public/data/images/flags/`,
-			timeout: 10000
+			timeout: 15000
 		})
 		.then(() => {
 			checkDownloadSuccess(playerObject)
@@ -175,7 +179,7 @@ let downloadFlags = (playerObject) => {
 			checkDownloadSuccess(playerObject)
 		})
 }
-downloadFlags = limit(downloadFlags).to(1).per(300)
+downloadFlags = limit(downloadFlags).to(1).per(600)
 
 // Check donwload fails
 const checkDownloadSuccess = () => {
@@ -202,7 +206,7 @@ let downloadPictures = (playerObject) => {
 		.image({
 			url: playerObject.photo,
 			dest: "public/data/images/photos/",
-			timeout: 10000
+			timeout: 15000
 		})
 		.catch((error) => {
 			console.log('Failed loading ' + playerObject.photo)
@@ -216,13 +220,13 @@ let downloadPictures = (playerObject) => {
 			downloadClubLogos(playerObject)
 		})
 }
-downloadPictures = limit(downloadPictures).to(1).per(300)
+downloadPictures = limit(downloadPictures).to(1).per(600)
 
 let saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
   fs.mkdir('public/data/images/flags')
-	console.log(`datalist length: ${datalist.length}`)
+	console.log(`datalist length: ${dataList.length}`)
   for (const playerObject of dataList) {
 		// Download player photo
 		downloadPictures(playerObject)
@@ -253,9 +257,11 @@ const savePlayersData = () => {
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {
 			fs.writeFileSync(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
+			jsonIndex[formattedName] = `public/data/players/${formattedName}.json`
 		}
 		if (j == dataList.length - 1) {
 			console.log(`Finished with ${unavailableCount} 404s`)
+			fs.writeFileSync('public/data/index.json', JSON.stringify(jsonIndex))
 			process.exit()
 		}
 	}
