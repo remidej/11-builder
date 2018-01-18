@@ -1,15 +1,9 @@
 // Team of the week: https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22page%22:1,%22quality%22:%22totw_gold%22,%22position%22:%22GK%22%7D
-// 604 pages of fifa players: https://www.fifaindex.com/fr/players/604/
 
 import React, { Component } from 'react'
 import './App.css'
 
-let requestResult
-let requestResults = []
 const playersIndex = require('./data/index.json')
-console.log(playersIndex)
-
-
 
 class App extends Component {
   render() {
@@ -26,9 +20,9 @@ class App extends Component {
               <option value="433">4 - 3 - 3</option>
               <option value="352">3 - 5 - 2</option>
             </select>
-            <select className="Pitch-style">
-              <option value="simple" selected>Simple</option>
-              <option value="352">Futuristic</option>
+            <select className="Pitch-style" defaultValue="simple">
+              <option value="simple">Simple</option>
+              <option value="futuristic">Futuristic</option>
             </select>
           </div>
         </div>
@@ -54,7 +48,7 @@ class SearchPlayer extends Component {
   getPlayersData = searchValue => {
     // Find matching players from JSON players index
     const playerFilesPaths = []
-    for(const player in playersIndex) {
+    for (const player in playersIndex) {
       const playerName = player.toLocaleLowerCase()
       // Store matches
       if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
@@ -62,11 +56,12 @@ class SearchPlayer extends Component {
       }
     }
     //console.log(playerFilesPaths)
-    this.setState({ noMatches: playerFilesPaths.length==0 })
+    this.setState({ noMatches: playerFilesPaths.length === 0 })
     // Get relevant data from JSON files
+    let searchResults = []
     for (const playerFilePath of playerFilesPaths) {
-      const playerFile = require('./data/players/CristianoRonaldo.json')
-      console.log(playerFile.name)
+      const playerFile = require(`${playerFilePath}`)
+      console.table(playerFile)
     }
   }
 

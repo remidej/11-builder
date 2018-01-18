@@ -46,7 +46,7 @@ let getData = (url) => {
 		})
 		.then(() => {
 			// Stop at last page
-			if (i == totalPages) {
+			if (i === totalPages) {
 				console.log('stopped after loading ' + i)
 				// Scraping is done, save data to JSON
 				saveImages()
@@ -66,7 +66,7 @@ getData = limit(getData).to(1).per(600)
 let retryDownloads = () => {
 	if (failedDownloads.length > 0 && !alreadySavedData) {
 		const fail = failedDownloads[0]
-		if (fail == lastFail) {
+		if (fail === lastFail) {
 			failCount++
 		} else {
 			failCount = 0
@@ -91,7 +91,7 @@ let retryDownloads = () => {
 					} else {
 						// Finished downloads
 						console.log('downloads are done')
-						if (count == dataList.length) {
+						if (count === dataList.length) {
 							downloadsAreDone = true
 							// Save JSON files
 							if (!alreadySavedData) {
@@ -112,7 +112,7 @@ let retryDownloads = () => {
 			console.log(`image ${fail.url} is unavailable`)
 			failedDownloads.splice(0, 1)
 			unavailableCount++
-			if (failedDownloads.length == 0) {
+			if (failedDownloads.length === 0) {
 				downloadsAreDone = true
 				if (!alreadySavedData) {
 					savePlayersData()
@@ -132,7 +132,7 @@ retryDownloads = limit(retryDownloads).to(1).per(600)
 let downloadClubLogos = (playerObject) => {
 	// Download club logo if not done already
 	let formattedClubName = 'undefined'
-	if (playerObject.club.name != undefined) {
+	if (playerObject.club.name !== undefined) {
 		formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g,"").normalize("NFC"))
 	}
 	download
@@ -185,7 +185,7 @@ downloadFlags = limit(downloadFlags).to(1).per(600)
 const checkDownloadSuccess = () => {
   count++
   if (count >= dataList.length) {
-    if (failedDownloads.length == 0) {
+    if (failedDownloads.length === 0) {
 			console.log('Downloads are done')
 			// Last loop ended, write json files
 			if (!alreadySavedData) {
@@ -252,6 +252,7 @@ const savePlayersData = () => {
 			}
 		})
 		dataList[j].club.logo = `/data/images/photos/${clubName}.png`
+		// eslint-disable-next-line
 		dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 		// Create JSON file
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
@@ -259,7 +260,7 @@ const savePlayersData = () => {
 			fs.writeFileSync(`src/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
 			jsonIndex[formattedName] = `./data/players/${formattedName}.json`
 		}
-		if (j == dataList.length - 1) {
+		if (j === dataList.length - 1) {
 			console.log(`Finished with ${unavailableCount} 404s`)
 			fs.writeFileSync('src/data/index.json', JSON.stringify(jsonIndex))
 			process.exit()
