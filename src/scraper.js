@@ -138,7 +138,7 @@ let downloadClubLogos = (playerObject) => {
 	download
 		.image({
 			url: playerObject.club.logo,
-			dest: `public/data/images/clubs/${formattedClubName}.png`,
+			dest: `src/data/images/clubs/${formattedClubName}.png`,
 			timeout: 15000
 		})
 		.catch(
@@ -146,7 +146,7 @@ let downloadClubLogos = (playerObject) => {
 				console.log("Failed loading " + playerObject.club.logo)
 				failedDownloads.push({
 						url: playerObject.club.logo,
-						dest: `public/data/images/clubs/${formattedClubName}.png`
+						dest: `src/data/images/clubs/${formattedClubName}.png`
 				})
 				downloadFlags(playerObject)
 			}
@@ -164,7 +164,7 @@ let downloadFlags = (playerObject) => {
 	download
 		.image({
 			url: playerObject.flag,
-			dest: `public/data/images/flags/`,
+			dest: `src/data/images/flags/`,
 			timeout: 15000
 		})
 		.then(() => {
@@ -174,7 +174,7 @@ let downloadFlags = (playerObject) => {
 			console.log("Failed loading " + playerObject.flag)
 			failedDownloads.push({
 				url: playerObject.flag,
-				dest: `public/data/images/flags/`
+				dest: `src/data/images/flags/`
 			})
 			checkDownloadSuccess(playerObject)
 		})
@@ -205,14 +205,14 @@ let downloadPictures = (playerObject) => {
 	download
 		.image({
 			url: playerObject.photo,
-			dest: "public/data/images/photos/",
+			dest: "src/data/images/photos/",
 			timeout: 15000
 		})
 		.catch((error) => {
 			console.log('Failed loading ' + playerObject.photo)
 			failedDownloads.push({
 				url: playerObject.photo,
-				dest: "public/data/images/photos/"
+				dest: "src/data/images/photos/"
 			})
 			downloadClubLogos(playerObject)
 		})
@@ -223,9 +223,9 @@ let downloadPictures = (playerObject) => {
 downloadPictures = limit(downloadPictures).to(1).per(600)
 
 let saveImages = () => {
-  fs.mkdir('public/data/images/photos')
-  fs.mkdir('public/data/images/clubs')
-  fs.mkdir('public/data/images/flags')
+  fs.mkdir('src/data/images/photos')
+  fs.mkdir('src/data/images/clubs')
+  fs.mkdir('src/data/images/flags')
 	console.log(`datalist length: ${dataList.length}`)
   for (const playerObject of dataList) {
 		// Download player photo
@@ -256,12 +256,12 @@ const savePlayersData = () => {
 		// Create JSON file
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {
-			fs.writeFileSync(`public/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
-			jsonIndex[formattedName] = `public/data/players/${formattedName}.json`
+			fs.writeFileSync(`src/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
+			jsonIndex[formattedName] = `src/data/players/${formattedName}.json`
 		}
 		if (j == dataList.length - 1) {
 			console.log(`Finished with ${unavailableCount} 404s`)
-			fs.writeFileSync('public/data/index.json', JSON.stringify(jsonIndex))
+			fs.writeFileSync('src/data/index.json', JSON.stringify(jsonIndex))
 			process.exit()
 		}
 	}

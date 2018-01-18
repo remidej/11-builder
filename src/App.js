@@ -4,24 +4,12 @@
 import React, { Component } from 'react'
 import './App.css'
 
-// Prepare API calls
-// https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22name%22:%22m%22%7D
-const proxy = 'https://cors-anywhere.herokuapp.com/'
-const urlStart = 'https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22name%22:%22'
-const urlEnd = '%22%7D'
-const request = new XMLHttpRequest()
-request.overrideMimeType("application/json")
 let requestResult
 let requestResults = []
 const playersIndex = require('./data/index.json')
+console.log(playersIndex)
 
-// Add fallback support for ES6's startWith() method
-if (!String.prototype.startsWith) {
-  String.prototype.startsWith = (searchString, position) => {
-    position = position || 0
-    return this.substr(position, searchString.length) === searchString
-  }
-}
+
 
 class App extends Component {
   render() {
@@ -64,76 +52,21 @@ class SearchPlayer extends Component {
   }
 
   getPlayersData = searchValue => {
-    request.open("GET", `${proxy}${urlStart}${searchValue}${urlEnd}`, true)
-    request.responseType = "json"
-
-    // Abort previous requests
-    request.abort()
-
-    request.addEventListener("readystatechange", e => {
-      if (request.readyState === 4) {
-        if (request.status === 200) {
-          // Display loading message
-          this.setState({ isLoading: false})
-          // JSON is loaded
-          requestResult = request.response
-          requestResults = [] // Reset array
-          for (let i = 0; i < requestResult.items.length; i++) {
-            let unique = true
-            for (let j = 0; j < requestResults.length; j++) {
-              // Filter out undefined, duplicate and icons from results
-              if (
-                typeof requestResults[j] == "undefined" ||
-                requestResults[j].id == requestResult.items[i].baseId
-              ) {
-                unique = false // is duplicate
-              }
-            }
-            if (unique) {
-              let matchesSearch = false
-              if (requestResult.items[i].lastName.toLowerCase().startsWith(searchValue)) {
-                matchesSearch = true
-              } else if (requestResult.items[i].commonName.toLowerCase().startsWith(searchValue)) {
-                matchesSearch = true
-              }
-              if (requestResult.items[i].league.id == 2118) {
-                // Remove icons
-                matchesSearch = false
-              }
-              if (matchesSearch) {
-                requestResults[i] = {
-                  name: requestResult.items[i].lastName,
-                  photo: requestResult.items[i].headshotImgUrl,
-                  flag: requestResult.items[i].nation.imageUrls.small,
-                  club: requestResult.items[i].club.imageUrls.normal.small,
-                  id: requestResult.items[i].baseId
-                }
-                // Set common name if available
-                if (requestResult.items[i].commonName.length > 0) {
-                  requestResults[i].name = requestResult.items[i].commonName
-                }
-              }
-            }
-          }
-        }
-        // Remove loading message
-        this.setState({ isLoading: false})
-        // Inform if no player was found
-        if (requestResults.length == 0 && searchValue.length > 0) {
-          this.setState({ noMatches: true })
-        } else {
-          this.setState({ noMatches: false })
-        }
-        // Add results to the UI
-        this.setState({ results: requestResults })
+    // Find matching players from JSON players index
+    const playerFiles = []
+    for(const player in playersIndex) {
+      const playerName = player.toLocaleLowerCase()
+      // Store matches
+      if (playerName.includes(searchValue) && playerFiles.length < 5) {
+        playerFiles.push(playersIndex[player])
       }
-    })
-    request.send()
+    }
+    console.log(playerFiles)
   }
 
   updateSearch(event) {
     this.setState({ value: event.target.value })
-    this.getPlayersData(event.target.value)
+    this.getPlayersData(event.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
     // Display loading message
     this.setState({ isLoading: true})
   }
