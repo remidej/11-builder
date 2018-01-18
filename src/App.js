@@ -61,8 +61,10 @@ class SearchPlayer extends Component {
     let searchResults = []
     for (const playerFilePath of playerFilesPaths) {
       const playerFile = require(`${playerFilePath}`)
-      console.table(playerFile)
+      searchResults.push(playerFile)
     }
+    console.table(searchResults)
+    this.setState({ results: searchResults })
   }
 
   updateSearch(event) {

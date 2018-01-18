@@ -243,10 +243,13 @@ const savePlayersData = () => {
 		if (typeof dataList[j].club.name !== 'undefined') {
 			clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
 		}
-		fs.access(`/data/images/photos/${dataList[j].id}.png`, (error) => {
+		dataList[j].photo = `/src/data/images/photos/${dataList[j].id}.png`
+		fs.access(`/src/data/images/photos/${dataList[j].id}.png`, (error) => {
 			if (!error) {
+				console.log('changed path')
 				dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
 			} else {
+				console.log('default path')
 				// Link placeholder image
 				dataList[j].photo = '/data/images/photos/none.png'
 			}
