@@ -255,9 +255,9 @@ const savePlayersData = () => {
 				dataList[j].photo = './data/images/photos/none.png'
 			}
 		})
-		dataList[j].club.logo = `./data/images/photos/${clubName}.png`
+		dataList[j].club.logo = `./data/images/clubs/${clubName}.png`
 		// eslint-disable-next-line
-		dataList[j].flag = `./data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
+		dataList[j].flag = `./data/images/flags/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 		// Create JSON file
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {

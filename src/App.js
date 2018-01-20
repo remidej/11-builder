@@ -94,7 +94,7 @@ class SearchPlayer extends Component {
               <img
                 className="Icon"
                 alt={`${player.name}'s club`}
-                src={player.club}
+                src={player.club.logo}
               />
               <img
                 className="Flag"
