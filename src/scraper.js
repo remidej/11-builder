@@ -1,4 +1,5 @@
 // Run with: node --max-old-space-size=8192 src/scraper.js
+// Or npm run scrape
 
 const cheerio = require("cheerio")
 const requestPromise = require('request-promise')

@@ -78,7 +78,8 @@ class SearchPlayer extends Component {
   }
 
   render() {
-    return <div>
+    return (
+      <div>
         <input className="Search-player" type="search" value={this.state.value} onChange={this.updateSearch} placeholder="Search for a player..." autoFocus />
         <div className="Results">
           {this.state.noMatches &&
@@ -109,6 +110,7 @@ class SearchPlayer extends Component {
           }
         </div>
       </div>
+    )
   }
 }
 
