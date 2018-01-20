@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import './App.css'
+import Pitch from './components/Pitch.jsx'
 
 const playersIndex = require('./data/index.json')
 
@@ -110,14 +111,6 @@ class SearchPlayer extends Component {
           }
         </div>
       </div>
-    )
-  }
-}
-
-class Pitch extends Component {
-  render() {
-    return (
-      <div className="Pitch basic"></div>
     )
   }
 }
