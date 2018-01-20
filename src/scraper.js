@@ -139,7 +139,7 @@ let downloadClubLogos = (playerObject) => {
 	download
 		.image({
 			url: playerObject.club.logo,
-			dest: `src/data/images/clubs/${formattedClubName}.png`,
+			dest: `public/data/images/clubs/${formattedClubName}.png`,
 			timeout: 15000
 		})
 		.catch(
@@ -147,7 +147,7 @@ let downloadClubLogos = (playerObject) => {
 				console.log("Failed loading " + playerObject.club.logo)
 				failedDownloads.push({
 						url: playerObject.club.logo,
-						dest: `src/data/images/clubs/${formattedClubName}.png`
+						dest: `public/data/images/clubs/${formattedClubName}.png`
 				})
 				downloadFlags(playerObject)
 			}
@@ -165,7 +165,7 @@ let downloadFlags = (playerObject) => {
 	download
 		.image({
 			url: playerObject.flag,
-			dest: `src/data/images/flags/`,
+			dest: `public/data/images/flags/`,
 			timeout: 15000
 		})
 		.then(() => {
@@ -175,7 +175,7 @@ let downloadFlags = (playerObject) => {
 			console.log("Failed loading " + playerObject.flag)
 			failedDownloads.push({
 				url: playerObject.flag,
-				dest: `src/data/images/flags/`
+				dest: `public/data/images/flags/`
 			})
 			checkDownloadSuccess(playerObject)
 		})
@@ -206,14 +206,14 @@ let downloadPictures = (playerObject) => {
 	download
 		.image({
 			url: playerObject.photo,
-			dest: "src/data/images/photos/",
+			dest: "public/data/images/photos/",
 			timeout: 15000
 		})
 		.catch((error) => {
 			console.log('Failed loading ' + playerObject.photo)
 			failedDownloads.push({
 				url: playerObject.photo,
-				dest: "src/data/images/photos/"
+				dest: "public/data/images/photos/"
 			})
 			downloadClubLogos(playerObject)
 		})
@@ -224,9 +224,9 @@ let downloadPictures = (playerObject) => {
 downloadPictures = limit(downloadPictures).to(1).per(600)
 
 let saveImages = () => {
-  fs.mkdir('src/data/images/photos')
-  fs.mkdir('src/data/images/clubs')
-  fs.mkdir('src/data/images/flags')
+  fs.mkdir('public/data/images/photos')
+  fs.mkdir('public/data/images/clubs')
+  fs.mkdir('public/data/images/flags')
 	console.log(`datalist length: ${dataList.length}`)
   for (const playerObject of dataList) {
 		// Download player photo
@@ -244,20 +244,20 @@ const savePlayersData = () => {
 		if (typeof dataList[j].club.name !== 'undefined') {
 			clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
 		}
-		dataList[j].photo = `/src/data/images/photos/${dataList[j].id}.png`
-		fs.access(`/src/data/images/photos/${dataList[j].id}.png`, (error) => {
+		dataList[j].photo = `./data/images/photos/${dataList[j].id}.png`
+		fs.access(`/public/data/images/photos/${dataList[j].id}.png`, (error) => {
 			if (!error) {
 				console.log('changed path')
-				dataList[j].photo = `/data/images/photos/${dataList[j].id}.png`
+				dataList[j].photo = `./data/images/photos/${dataList[j].id}.png`
 			} else {
 				console.log('default path')
 				// Link placeholder image
-				dataList[j].photo = '/data/images/photos/none.png'
+				dataList[j].photo = './data/images/photos/none.png'
 			}
 		})
-		dataList[j].club.logo = `/data/images/photos/${clubName}.png`
+		dataList[j].club.logo = `./data/images/photos/${clubName}.png`
 		// eslint-disable-next-line
-		dataList[j].flag = `/data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
+		dataList[j].flag = `./data/images/photos/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 		// Create JSON file
 		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
 		if (formattedName !== 'undefined') {
