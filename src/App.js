@@ -45,13 +45,9 @@ class SearchPlayer extends Component {
       results: [],
       selectedPlayers: []
     }
-    // Force method binding to React component
-    this.updateSearch = this.updateSearch.bind(this)
-    this.getPlayersData = this.getPlayersData.bind(this)
-    this.selectPlayer = this.selectPlayer.bind(this)
   }
 
-  getPlayersData = searchValue => {
+  getPlayersData = (searchValue) => {
     // Find matching players from JSON players index
     const playerFilesPaths = []
     for (const player in playersIndex) {
@@ -72,7 +68,7 @@ class SearchPlayer extends Component {
     this.setState({ results: searchResults })
   }
 
-  updateSearch(event) {
+  updateSearch = (event) => {
     // Display loading message
     this.setState({
       value: event.target.value,
@@ -82,7 +78,7 @@ class SearchPlayer extends Component {
     this.getPlayersData(event.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
   }
 
-  selectPlayer(playerObject) {
+  selectPlayer = (playerObject) => {
     let newSelection = this.state.selectedPlayers
     newSelection.push(playerObject)
     this.setState({ selectedPlayers: newSelection })
