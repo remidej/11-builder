@@ -42,11 +42,13 @@ class SearchPlayer extends Component {
       value: "",
       isLoading: false,
       noMatches: false,
-      results: []
+      results: [],
+      selectedPlayers: []
     }
     // Force method binding to React component
     this.updateSearch = this.updateSearch.bind(this)
     this.getPlayersData = this.getPlayersData.bind(this)
+    this.selectPlayer = this.selectPlayer.bind(this)
   }
 
   getPlayersData = searchValue => {
@@ -60,7 +62,6 @@ class SearchPlayer extends Component {
         this.setState({ isLoading: false })
       }
     }
-    //console.log(playerFilesPaths)
     this.setState({ noMatches: playerFilesPaths.length === 0 })
     // Get relevant data from JSON files
     let searchResults = []
@@ -68,7 +69,6 @@ class SearchPlayer extends Component {
       const playerFile = require(`${playerFilePath}`)
       searchResults.push(playerFile)
     }
-    console.table(searchResults)
     this.setState({ results: searchResults })
   }
 
@@ -82,6 +82,14 @@ class SearchPlayer extends Component {
     this.getPlayersData(event.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
   }
 
+  selectPlayer(playerObject) {
+    let newSelection = this.state.selectedPlayers
+    newSelection.push(playerObject)
+    this.setState({ selectedPlayers: newSelection })
+    console.table(this.state.selectedPlayers.length)
+    console.log(this.state.selectedPlayers[0].name)
+  }
+
   render() {
     return (
       <div>
@@ -93,7 +101,8 @@ class SearchPlayer extends Component {
             </div>
           }
           {this.state.results.map(player => (
-            <div key={player.id} className="Result-player grabbable" onclick="addPlayerToState({player})">
+            // Create result list from search results
+            <div key={player.id} className="Result-player grabbable" onClick={ () => {this.selectPlayer(player)} }>
               <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
               <img
@@ -109,12 +118,13 @@ class SearchPlayer extends Component {
             </div>
           ))}
           {this.state.isLoading &&
+            // Display loading messages while waiting for results
             <div className="Result-player">
               <p className="Status">Loading players...</p>
             </div>
           }
         </div>
-        <PlayersCards playersList={this.state.results}/>
+        <PlayersCards playersList={this.state.selectedPlayers}/>
       </div>
     )
   }
