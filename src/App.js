@@ -54,6 +54,7 @@ class SearchPlayer extends Component {
       // Store matches
       if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
         playerFilesPaths.push(playersIndex[player])
+        this.setState({ isLoading: false })
       }
     }
     //console.log(playerFilesPaths)
@@ -69,13 +70,13 @@ class SearchPlayer extends Component {
   }
 
   updateSearch(event) {
+    // Display loading message
     this.setState({
       value: event.target.value,
       isLoading: true
     })
+    // Trigger search
     this.getPlayersData(event.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
-    // Display loading message
-    this.setState({ isLoading: true})
   }
 
   render() {
