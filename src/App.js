@@ -3,15 +3,17 @@
 import React, { Component } from 'react'
 import './App.css'
 import Pitch from './components/Pitch.jsx'
+import PlayersCards from './components/PlayersCards.jsx'
 
 const playersIndex = require('./data/index.json')
 
 class App extends Component {
   render() {
-    return <div className="App">
+    return(
+      <div className="App">
         <div className="Settings">
           <h2 className="Sub-title">Create your lineup!</h2>
-          <SearchPlayer />
+          <SearchPlayer addPlayerToState={this.addPlayerToState}/>
           <div href="#" title="Generate lineup" className="CTA">
             Download your lineup as a JPEG
           </div>
@@ -28,7 +30,8 @@ class App extends Component {
           </div>
         </div>
         <Pitch />
-      </div>;
+      </div>
+    )
   }
 }
 
@@ -90,7 +93,7 @@ class SearchPlayer extends Component {
             </div>
           }
           {this.state.results.map(player => (
-            <div key={player.id} className="Result-player grabbable">
+            <div key={player.id} className="Result-player grabbable" onclick="addPlayerToState({player})">
               <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
               <img
@@ -111,6 +114,7 @@ class SearchPlayer extends Component {
             </div>
           }
         </div>
+        <PlayersCards playersList={this.state.results}/>
       </div>
     )
   }
