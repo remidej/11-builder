@@ -147,6 +147,33 @@
   user-select: none;
 }
 
+.PlayerCard {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  border: 3px solid #000;
+  text-align: center;
+  z-index: 2;
+  background: red;
+}
+
+.PlayerCard .Portrait {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 80%;
+  height: auto;
+  transform: translateX(-50%);
+  border-bottom: 2px solid green;
+}
+
+.PlayerCard p {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  margin: 0;
+}
+
 .disabled {
   opacity: 0.5;
   cursor: default !important;

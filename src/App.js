@@ -82,7 +82,6 @@ class SearchPlayer extends Component {
     let newSelection = this.state.selectedPlayers
     newSelection.push(playerObject)
     this.setState({ selectedPlayers: newSelection })
-    console.table(this.state.selectedPlayers)
   }
 
   render() {
