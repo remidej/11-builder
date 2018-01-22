@@ -3,7 +3,6 @@
 import React, { Component } from 'react'
 import './App.css'
 import Pitch from './components/Pitch.jsx'
-import PlayersCards from './components/PlayersCards.jsx'
 
 const playersIndex = require('./data/index.json')
 
@@ -29,7 +28,6 @@ class App extends Component {
             </select>
           </div>
         </div>
-        <Pitch />
       </div>
     )
   }
@@ -121,14 +119,15 @@ class SearchPlayer extends Component {
               />
             </div>
           ))}
-          {this.state.isLoading &&
+          { this.state.isLoading &&
             // Display loading messages while waiting for results
             <div className="Result-player">
               <p className="Status">Loading players...</p>
             </div>
           }
         </div>
-        <PlayersCards playersList={this.state.selectedPlayers}/>
+        {console.log(this.state.selectedPlayers)}
+				<Pitch playersList={this.state.selectedPlayers} className="Pitch"/>
       </div>
     )
   }
