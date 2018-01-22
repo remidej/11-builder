@@ -1,9 +1,7 @@
 .App {
-  display: flex;
   margin: 0 auto;
-  flex-direction: row;
-  justify-content: space-between;
   width: 900px;
+  position: relative;
 }
 
 .Settings {
@@ -128,6 +126,10 @@
 
 .Pitch {
   width: 540px;
+  height: 638px;
+  position: absolute;
+  right: 0;
+  top: 0;
   background: #279223;
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
@@ -139,11 +141,7 @@
 }
 
 .grabbable {
-  cursor: move;
-  /* fallback if grab cursor is unsupported */
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
+  cursor: pointer;
   user-select: none;
 }
 
@@ -155,6 +153,7 @@
   text-align: center;
   z-index: 2;
   background: red;
+  cursor: grab;
 }
 
 .PlayerCard .Portrait {

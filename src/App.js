@@ -85,6 +85,15 @@ class SearchPlayer extends Component {
     this.setState({ selectedPlayers: newSelection })
   }
 
+  unselectPlayer = (playerObject) => {
+    let newSelection = this.state.selectedPlayers
+    const indexToRemove = newSelection.indexOf(5)
+    if (indexToRemove > -1) {
+      newSelection.splice(indexToRemove, 1)
+    }
+    this.setState({ selectedPlayers: newSelection })
+  }
+
   render() {
     return (
       <div>
