@@ -45,7 +45,7 @@ class SearchPlayer extends Component {
     }
   }
 
-  getPlayersData = (searchValue) => {
+  getPlayersData = searchValue => {
     // Find matching players from JSON players index
     const playerFilesPaths = []
     for (const player in playersIndex) {
@@ -67,17 +67,17 @@ class SearchPlayer extends Component {
     this.setState({ results: searchResults })
   }
 
-  updateSearch = (event) => {
+  updateSearch = e => {
     // Display loading message
     this.setState({
-      value: event.target.value,
+      value: e.target.value,
       isLoading: true
     })
     // Trigger search
-    this.getPlayersData(event.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
+    this.getPlayersData(e.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
   }
 
-  selectPlayer = (playerObject) => {
+  selectPlayer = playerObject => {
     let newSelection = this.state.selectedPlayers
     newSelection.push(playerObject)
     this.setState({ selectedPlayers: newSelection })
