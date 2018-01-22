@@ -62,7 +62,8 @@ class SearchPlayer extends Component {
     // Get relevant data from JSON files
     let searchResults = []
     for (const playerFilePath of playerFilesPaths) {
-      const playerFile = require(`${playerFilePath}`)
+      let playerFile = require(`${playerFilePath}`)
+      playerFile.shortName = playerFile.name.split(' ').slice(-1).join(' ')
       searchResults.push(playerFile)
     }
     this.setState({ results: searchResults })
