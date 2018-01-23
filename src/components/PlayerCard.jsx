@@ -27,7 +27,6 @@ export default class PlayerCard extends React.Component {
   }
 
   dragStart = (x, y) => {
-    console.log(this.state.differenceX)
     this.setState({
       isDragging: true,
       originX: x,

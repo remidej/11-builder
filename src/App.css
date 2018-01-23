@@ -151,12 +151,15 @@
   top: 0;
   left: 0;
   position: absolute;
-  border: 3px solid #000;
   text-align: center;
   z-index: 2;
-  background: red;
   cursor: move;
   will-change: transform;
+  border-radius: 5px;
+}
+
+.PlayerCard:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .PlayerCard .Portrait {
@@ -171,6 +174,8 @@
 
 .PlayerCard p {
   position: absolute;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   width: 100%;
   bottom: 0;
   margin: 0;

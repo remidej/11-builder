@@ -81,9 +81,20 @@ class SearchPlayer extends Component {
     let newSelection = this.state.selectedPlayers
     newSelection.push(playerObject)
     this.setState({ selectedPlayers: newSelection })
+    // Remove selected player from index so it can't be added twice
+    const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFC')
+    delete playersIndex[formattedName]
+    // Hide selected player from results
+    let newResults = this.state.results
+    for (let i=0; i<this.state.results.length; i++) {
+      if (this.state.results[i] === playerObject) {
+        newResults.splice(i, 1)
+      }
+    }
+    this.setState({ results: newResults })
   }
 
-  unselectPlayer = (playerObject) => {
+  unselectPlayer = playerObject => {
     let newSelection = this.state.selectedPlayers
     const indexToRemove = newSelection.indexOf(5)
     if (indexToRemove > -1) {
