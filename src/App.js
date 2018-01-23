@@ -104,7 +104,11 @@ class SearchPlayer extends Component {
           }
           {this.state.results.map(player => (
             // Create result list from search results
-            <div key={player.id} className="Result-player grabbable" onClick={ () => {this.selectPlayer(player)} }>
+            <div
+              key={player.id}
+              className="Result-player grabbable"
+              onClick={ () => {this.selectPlayer(player)} }
+            >
               <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
               <img

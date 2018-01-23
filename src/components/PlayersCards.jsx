@@ -1,6 +1,17 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
 
 export default class PlayersCards extends React.Component {
+  componentDidMount() {
+    ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
+      this.dragStart(e.clientX, e.clientY)
+    })
+  }
+
+  dragStart = (x, y) => {
+    console.log(`x: ${x}, y: ${y}`)
+  }
+
   render() {
     return (
       <div>
