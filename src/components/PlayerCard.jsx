@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
 
 export default class PlayerCard extends React.Component {
   constructor(props) {
@@ -20,7 +20,10 @@ export default class PlayerCard extends React.Component {
     })
     // Calculate drag distance
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
-      this.dragMove(e.clientX, e.clientY)
+      // Only drag if mouse is being pressed
+      if (this.state.isDragging) {
+        this.dragMove(e.clientX, e.clientY)
+      }
     })
     // End drag
     ReactDOM.findDOMNode(this).addEventListener('mouseup', this.dragEnd)
@@ -43,16 +46,32 @@ export default class PlayerCard extends React.Component {
   }
 
   dragMove = (x, y) => {
-    if (this.state.isDragging) {
-      this.setState({
-        differenceX: this.state.previousMoveX + x - this.state.originX,
-        differenceY: this.state.previousMoveY + y - this.state.originY
-      })
-      ReactDOM.findDOMNode(this).style.transform = `
-        translateX(${this.state.differenceX}px)
-        translateY(${this.state.differenceY}px)
-      `
+    // Prevent dragging outside of Pitch
+    // this.setState({
+    //   differenceX: this.state.previousMoveX + x - this.state.originX,
+    //   differenceY: this.state.previousMoveY + y - this.state.originY
+    // })
+    const currentPos = ReactDOM.findDOMNode(this).getBoundingClientRect()
+    if (
+      currentPos.left >= this.props.parentFrame.left &&
+      currentPos.right <= this.props.parentFrame.right
+    ) {
+      this.setState({ differenceX: this.state.previousMoveX + x - this.state.originX})
+    } else {
+      console.log('outside x')
     }
+    if (
+      currentPos.top >= this.props.parentFrame.top &&
+      currentPos.bottom <= this.props.parentFrame.bottom
+    ) {
+      this.setState({ differenceY: this.state.previousMoveY + y - this.state.originY })
+    } else {
+      console.log('outside y')
+    }
+    ReactDOM.findDOMNode(this).style.transform = `
+      translateX(${this.state.differenceX}px)
+      translateY(${this.state.differenceY}px)
+    `
   }
 
   dragEnd = () => {
