@@ -50,13 +50,19 @@ class SearchPlayer extends Component {
     const playerFilesPaths = []
     for (const player in playersIndex) {
       const playerName = player.toLocaleLowerCase()
-      // Store matches
+      // Store the 5 best matches
       if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
         playerFilesPaths.push(playersIndex[player])
         this.setState({ isLoading: false })
       }
     }
-    this.setState({ noMatches: playerFilesPaths.length === 0 })
+    // Display loading message if no results are found
+    if (playerFilesPaths.length === 0 && !this.state.isLoading) {
+      this.setState({
+        noMatches: true,
+        isLoading: false
+      })
+    }
     // Get relevant data from JSON files
     let searchResults = []
     for (const playerFilePath of playerFilesPaths) {
@@ -71,6 +77,7 @@ class SearchPlayer extends Component {
     // Display loading message
     this.setState({
       value: e.target.value,
+      noMatches: false,
       isLoading: true
     })
     // Trigger search
