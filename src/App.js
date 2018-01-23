@@ -130,7 +130,6 @@ class SearchPlayer extends Component {
             </div>
           }
         </div>
-        {console.log(this.state.selectedPlayers)}
 				<Pitch playersList={this.state.selectedPlayers} className="Pitch"/>
       </div>
     )

@@ -15,13 +15,19 @@ export default class PlayerCard extends React.Component {
 
   componentDidMount() {
     ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
-      this.dragStart(e.clientX, e.clientY)
+      const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
+      const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
+      this.dragStart(e.clientX - offsetX, e.clientY - offsetY)
     })
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
-      this.dragMove(e.clientX, e.clientY)
+      const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
+      const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
+      this.dragMove(e.clientX - offsetX, e.clientY - offsetY)
     })
     ReactDOM.findDOMNode(this).addEventListener('mouseup', e => {
-      this.dragEnd(e.clientX, e.clientY)
+      const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
+      const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
+      this.dragEnd(e.clientX - offsetX, e.clientY - offsetY)
     })
     this.setState({
       originX: ReactDOM.findDOMNode(this).getBoundingClientRect().x,
@@ -43,13 +49,11 @@ export default class PlayerCard extends React.Component {
         translateX(${this.state.differenceX}px)
         translateY(${this.state.differenceY}px)
       `
-      ReactDOM.findDOMNode(this).style.background = 'magenta'
     }
   }
 
   dragEnd = (x, y) => {
     this.setState({ isDragging: false })
-    ReactDOM.findDOMNode(this).style.background = 'red'
   }
 
   render() {

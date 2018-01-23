@@ -4,17 +4,16 @@
   "license": "CC BY-NC-ND 3.0",
   "private": true,
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "file-system": "^2.2.2",
-    "image-downloader": "^3.3.0",
-    "jsonframe-cheerio": "^3.0.1",
-    "limiter": "^1.1.2",
-    "normalize.css": "^7.0.0",
+    "normalize-css": "^2.3.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.0.17",
-    "remove-accents": "^0.4.2",
-    "request": "^2.83.0",
+    "remove-accents": "^0.4.2"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "file-system": "^2.2.2",
+    "image-downloader": "^3.3.0",
     "request-promise": "^4.2.2",
     "simple-rate-limiter": "^0.2.3"
   },

@@ -3,6 +3,7 @@ node_modules/
 log.txt
 src/data/
 public/data/
+build/
 
 .eslintcache
 
