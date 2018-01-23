@@ -14,28 +14,24 @@ export default class PlayerCard extends React.Component {
   }
 
   componentDidMount() {
-    ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
-      const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
-      const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
-      this.dragStart(e.clientX - offsetX, e.clientY - offsetY)
-    })
+    // Start drag
+    ReactDOM.findDOMNode(this).addEventListener('mousedown', this.dragStart)
+    // Calculate drag distance
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
       const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
       const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
       this.dragMove(e.clientX - offsetX, e.clientY - offsetY)
     })
-    ReactDOM.findDOMNode(this).addEventListener('mouseup', e => {
-      const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
-      const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
-      this.dragEnd(e.clientX - offsetX, e.clientY - offsetY)
-    })
+    // End drag
+    ReactDOM.findDOMNode(this).addEventListener('mouseup', this.dragEnd)
+    // Save drag distance
     this.setState({
       originX: ReactDOM.findDOMNode(this).getBoundingClientRect().x,
       originY: ReactDOM.findDOMNode(this).getBoundingClientRect().y,
     })
   }
 
-  dragStart = (x, y) => {
+  dragStart = () => {
     this.setState({ isDragging: true })
   }
 
@@ -52,7 +48,7 @@ export default class PlayerCard extends React.Component {
     }
   }
 
-  dragEnd = (x, y) => {
+  dragEnd = () => {
     this.setState({ isDragging: false })
   }
 
