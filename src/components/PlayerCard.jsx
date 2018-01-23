@@ -15,31 +15,39 @@ export default class PlayerCard extends React.Component {
 
   componentDidMount() {
     // Start drag
-    ReactDOM.findDOMNode(this).addEventListener('mousedown', this.dragStart)
+    ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
+      this.dragStart(e.clientX, e.clientY)
+    })
     // Calculate drag distance
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
-      const offsetX = ReactDOM.findDOMNode(this).getBoundingClientRect().width / 2
-      const offsetY = ReactDOM.findDOMNode(this).getBoundingClientRect().height / 2
-      this.dragMove(e.clientX - offsetX, e.clientY - offsetY)
+      this.dragMove(e.clientX, e.clientY)
     })
     // End drag
     ReactDOM.findDOMNode(this).addEventListener('mouseup', this.dragEnd)
-    // Save drag distance
-    this.setState({
-      originX: ReactDOM.findDOMNode(this).getBoundingClientRect().x,
-      originY: ReactDOM.findDOMNode(this).getBoundingClientRect().y,
-    })
   }
 
-  dragStart = () => {
-    this.setState({ isDragging: true })
+  dragStart = (x, y) => {
+    console.log(this.state.differenceX)
+    this.setState({
+      isDragging: true,
+      originX: x,
+      originY: y,
+      previousMoveX: this.state.previousMoveX,
+      previousMoveY: this.state.previousMoveY
+    })
+    if (this.state.previousMoveX === undefined ) {
+      this.setState({ previousMoveX: 0 })
+    }
+    if (this.state.previousMoveY === undefined ) {
+      this.setState({ previousMoveY: 0 })
+    }
   }
 
   dragMove = (x, y) => {
     if (this.state.isDragging) {
       this.setState({
-        differenceX: x - this.state.originX,
-        differenceY: y - this.state.originY
+        differenceX: this.state.previousMoveX + x - this.state.originX,
+        differenceY: this.state.previousMoveY + y - this.state.originY
       })
       ReactDOM.findDOMNode(this).style.transform = `
         translateX(${this.state.differenceX}px)
@@ -49,7 +57,11 @@ export default class PlayerCard extends React.Component {
   }
 
   dragEnd = () => {
-    this.setState({ isDragging: false })
+    this.setState({
+      isDragging: false,
+      previousMoveX: this.state.differenceX,
+      previousMoveY: this.state.differenceY
+    })
   }
 
   render() {
