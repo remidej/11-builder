@@ -154,6 +154,7 @@
   z-index: 2;
   background: red;
   cursor: move;
+  will-change: transform;
 }
 
 .PlayerCard .Portrait {
