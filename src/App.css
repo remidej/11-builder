@@ -148,6 +148,8 @@
 .PlayerCard {
   width: 100px;
   height: 100px;
+  top: 0;
+  left: 0;
   position: absolute;
   border: 3px solid #000;
   text-align: center;

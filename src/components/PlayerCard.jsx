@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 
-export default class PlayersCards extends React.Component {
+export default class PlayerCard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -36,38 +36,33 @@ export default class PlayersCards extends React.Component {
   dragMove = (x, y) => {
     if (this.state.isDragging) {
       this.setState({
-        differenceX:  x - this.state.originX,
-        differenceY:  y - this.state.originY
+        differenceX: x - this.state.originX,
+        differenceY: y - this.state.originY
       })
-      ReactDOM.findDOMNode(this).querySelector('div').style.transform = `
+      ReactDOM.findDOMNode(this).style.transform = `
         translateX(${this.state.differenceX}px)
         translateY(${this.state.differenceY}px)
       `
-      ReactDOM.findDOMNode(this).querySelector('div').style.background = 'magenta'
+      ReactDOM.findDOMNode(this).style.background = 'magenta'
     }
-
   }
 
   dragEnd = (x, y) => {
     this.setState({ isDragging: false })
-    ReactDOM.findDOMNode(this).querySelector('div').style.background = 'red'
+    ReactDOM.findDOMNode(this).style.background = 'red'
   }
 
   render() {
-    return (
-      <div>
-        { this.props.playersList.map(player => (
-          <div className="PlayerCard" key={player.id}>
-            <img
-              className="Portrait"
-              src={player.photo}
-              alt={player.name}
-              onDragStart={(event) => { event.preventDefault() }}
-            />
-            <p>{player.shortName}</p>
-          </div>
-        )) }
-      </div>
-    )
-  }
+   return(
+    <div className="PlayerCard" key={this.props.player.id}>
+      <img
+        className="Portrait"
+        src={this.props.player.photo}
+        alt={this.props.player.name}
+        onDragStart={e => { e.preventDefault() }}
+      />
+      <p>{this.props.player.shortName}</p>
+    </div>
+  )
+ }
 }

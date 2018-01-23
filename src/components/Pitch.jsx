@@ -1,14 +1,15 @@
 import React from 'react'
-import PlayersCards from './PlayersCards.jsx'
+import PlayerCard from './PlayerCard.jsx'
 
 export default class Pitch extends React.Component {
   render() {
     return (
       <div className="Pitch basic">
-        <PlayersCards
-          playersList={this.props.playersList}
-          onMouseDown={ e => this.startDrag(e.clientX, e.clientY) }
-        />
+        <div>
+          {this.props.playersList.map(player => (
+            <PlayerCard player={player} key={player.id}/>
+          ))}
+        </div>
       </div>
     )
   }
