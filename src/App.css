@@ -7,7 +7,7 @@
 .Settings {
   position: relative;
   width: 340px;
-  height: 638px;
+  height: 554px;
 }
 
 .Settings .Sub-title {
@@ -126,18 +126,28 @@
 
 .Pitch {
   width: 540px;
-  height: 638px;
+  height: 550px;
   position: absolute;
   left: calc(100% + 20px);
   top: 0;
-  background: #279223;
+  background: linear-gradient(to bottom, #2cac2a 0%, #1a6b1d 100%);
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
+  perspective: 800px;
 }
 
-.Pitch.basic {
+.Pitch::after {
+  content: "";
   background: url('/pitches/basic.svg');
   background-size: cover;
   background-position: center center;
+  position: absolute;
+  display: block;
+  transform-origin: bottom center;
+  transform: rotateX(30deg);
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
 }
 
 .grabbable {
