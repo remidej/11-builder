@@ -26,7 +26,11 @@ export default class PlayerCard extends React.Component {
       }
     })
     // End drag
-    ReactDOM.findDOMNode(this).addEventListener('mouseup', this.dragEnd)
+    ReactDOM.findDOMNode(this).addEventListener('mouseup', e => {
+      if (this.state.isDragging) {
+        this.dragEnd(e.clientX, e.clientY)
+      }
+    })
   }
 
   dragStart = (x, y) => {
@@ -46,12 +50,8 @@ export default class PlayerCard extends React.Component {
   }
 
   dragMove = (x, y) => {
-    // Prevent dragging outside of Pitch
-    // this.setState({
-    //   differenceX: this.state.previousMoveX + x - this.state.originX,
-    //   differenceY: this.state.previousMoveY + y - this.state.originY
-    // })
     const currentPos = ReactDOM.findDOMNode(this).getBoundingClientRect()
+    // Prevent dragging outside of Pitch
     if (
       currentPos.left >= this.props.parentFrame.left &&
       currentPos.right <= this.props.parentFrame.right
@@ -59,6 +59,16 @@ export default class PlayerCard extends React.Component {
       this.setState({ differenceX: this.state.previousMoveX + x - this.state.originX})
     } else {
       console.log('outside x')
+      // Put the card back inside the Pitch
+      if (currentPos.left <= this.props.parentFrame.left) {
+        console.log('left of pitch')
+        this.setState({ differenceX: this.state.differenceX + 3 })
+      } else if (currentPos.right >= this.props.parentFrame.right) {
+        console.log('right of pitch')
+        this.setState({ differenceX: this.state.differenceX - 3 })
+      }
+      // Prevent further dragging
+      this.dragEnd()
     }
     if (
       currentPos.top >= this.props.parentFrame.top &&
@@ -67,7 +77,18 @@ export default class PlayerCard extends React.Component {
       this.setState({ differenceY: this.state.previousMoveY + y - this.state.originY })
     } else {
       console.log('outside y')
+      // Put the card back inside the Pitch
+      if (currentPos.top <= this.props.parentFrame.top) {
+        console.log('top of pitch')
+        this.setState({ differenceY: this.state.differenceY + 3 })
+      } else if (currentPos.bottom >= this.props.parentFrame.bottom) {
+        console.log('bottom of pitch')
+        this.setState({ differenceY: this.state.differenceY - 3 })
+      }
+      // Prevent further dragging
+      this.dragEnd()
     }
+
     ReactDOM.findDOMNode(this).style.transform = `
       translateX(${this.state.differenceX}px)
       translateY(${this.state.differenceY}px)
@@ -83,16 +104,16 @@ export default class PlayerCard extends React.Component {
   }
 
   render() {
-   return(
-    <div className="PlayerCard" key={this.props.player.id}>
-      <img
-        className="Portrait"
-        src={this.props.player.photo}
-        alt={this.props.player.name}
-        onDragStart={e => { e.preventDefault() }}
-      />
-      <p>{this.props.player.shortName}</p>
-    </div>
-  )
- }
+    return(
+      <div className="PlayerCard" key={this.props.player.id}>
+        <img
+          className="Portrait"
+          src={this.props.player.photo}
+          alt={this.props.player.name}
+          onDragStart={e => { e.preventDefault() }}
+        />
+        <p>{this.props.player.shortName}</p>
+      </div>
+    )
+  }
 }
