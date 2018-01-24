@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="458px" height="552px" viewBox="0 0 458 552" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
     <title>pitch</title>
     <desc>Created with Sketch.</desc>
     <defs>
@@ -13,27 +13,25 @@
             <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.06 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
         </filter>
     </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Desktop-Copy-4" transform="translate(-464.000000, -139.000000)">
-            <g id="pitch" transform="translate(471.000000, 143.000000)">
-                <g id="Rectangle">
-                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                    <use fill="#279223" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    <rect stroke="#FFFFFF" stroke-width="2" x="1" y="1" width="442" height="536"></rect>
-                </g>
-                <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="268" width="444" height="2"></rect>
-                <g id="Group" transform="translate(76.000000, 0.000000)" stroke="#FFFFFF" stroke-width="2">
-                    <rect id="Rectangle-10" x="1" y="1" width="289" height="143"></rect>
-                    <path d="M101.77902,144 C111.547713,157.909156 127.712216,167 146,167 C164.287784,167 180.452287,157.909156 190.22098,144 L101.77902,144 Z" id="Combined-Shape"></path>
-                    <rect id="Rectangle-2" x="99" y="1" width="94" height="36"></rect>
-                </g>
-                <g id="Group-Copy" transform="translate(221.500000, 454.500000) scale(1, -1) translate(-221.500000, -454.500000) translate(76.000000, 371.000000)" stroke="#FFFFFF" stroke-width="2">
-                    <rect id="Rectangle-10" x="1" y="1" width="289" height="143"></rect>
-                    <path d="M101.77902,144 C111.547713,157.909156 127.712216,167 146,167 C164.287784,167 180.452287,157.909156 190.22098,144 L101.77902,144 Z" id="Combined-Shape"></path>
-                    <rect id="Rectangle-2" x="99" y="1" width="94" height="36"></rect>
-                </g>
-                <circle id="Oval-2" stroke="#FFFFFF" stroke-width="2" cx="222" cy="270" r="44"></circle>
+    <g id="Desktop-Copy-5" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-464.000000, -139.000000)">
+        <g id="pitch" transform="translate(471.000000, 143.000000)">
+            <g id="Rectangle">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#279224" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <rect stroke-opacity="0.3" stroke="#FFFFFF" stroke-width="2" x="1" y="1" width="442" height="536"></rect>
             </g>
+            <rect id="Rectangle-3" fill="#FFFFFF" opacity="0.299999982" x="0" y="268" width="444" height="2"></rect>
+            <g id="Group" opacity="0.299999982" transform="translate(76.000000, 0.000000)" stroke="#FFFFFF" stroke-width="2">
+                <rect id="Rectangle-10" x="1" y="1" width="289" height="143"></rect>
+                <path d="M101.77902,144 L190.22098,144 C180.452287,157.909156 164.287784,167 146,167 C127.712216,167 111.547713,157.909156 101.77902,144 Z" id="Combined-Shape"></path>
+                <rect id="Rectangle-2" x="99" y="1" width="94" height="36"></rect>
+            </g>
+            <g id="Group-Copy" opacity="0.299999982" transform="translate(221.500000, 454.500000) scale(1, -1) translate(-221.500000, -454.500000) translate(76.000000, 371.000000)" stroke="#FFFFFF" stroke-width="2">
+                <rect id="Rectangle-10" x="1" y="1" width="289" height="143"></rect>
+                <path d="M101.77902,144 L190.22098,144 C180.452287,157.909156 164.287784,167 146,167 C127.712216,167 111.547713,157.909156 101.77902,144 Z" id="Combined-Shape"></path>
+                <rect id="Rectangle-2" x="99" y="1" width="94" height="36"></rect>
+            </g>
+            <circle id="Oval-2" stroke="#FFFFFF" stroke-width="2" opacity="0.299999982" cx="222" cy="270" r="44"></circle>
         </g>
     </g>
 </svg>
