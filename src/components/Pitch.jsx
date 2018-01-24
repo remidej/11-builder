@@ -15,8 +15,9 @@ export default class Pitch extends React.Component {
   }
   render() {
     return (
-      <div className="Pitch basic">
+      <div className="Pitch">
         <div>
+          <h2 className="LineupName">My lineup</h2>
           {this.props.playersList.map(player => (
             <PlayerCard
               player={player}
