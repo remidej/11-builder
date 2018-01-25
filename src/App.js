@@ -11,7 +11,6 @@ class App extends Component {
     return(
       <div className="App">
         <div className="Settings">
-          <h2 className="Sub-title">Create your lineup!</h2>
           <SearchPlayer addPlayerToState={this.addPlayerToState}/>
           <div href="#" title="Generate lineup" className="CTA">
             Download your lineup as a JPEG
