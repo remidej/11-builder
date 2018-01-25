@@ -47,6 +47,7 @@ export default class PlayerCard extends React.Component {
     if (this.state.previousMoveY === undefined ) {
       this.setState({ previousMoveY: 0 })
     }
+    ReactDOM.findDOMNode(this).style.zIndex = "400"
   }
 
   dragMove = (x, y) => {
@@ -101,6 +102,7 @@ export default class PlayerCard extends React.Component {
       previousMoveX: this.state.differenceX,
       previousMoveY: this.state.differenceY
     })
+    ReactDOM.findDOMNode(this).style.zIndex = "300"
   }
 
   render() {
