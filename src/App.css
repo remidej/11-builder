@@ -183,10 +183,10 @@
   color: #000;
   top: 5%;
   display: block;
-  margin: 0 5%;
+  margin: 0 20%;
   border-radius: 5px;
   line-height: 50px;
-  width: 90%;
+  width: 60%;
   font-size: 24px;
   text-align: center;
   opacity: 0;
@@ -206,9 +206,9 @@
   height: 100px;
   top: 0;
   left: 0;
+  z-index: 300;
   position: absolute;
   text-align: center;
-  z-index: 2;
   cursor: move;
   will-change: transform;
   border-radius: 5px;
