@@ -182,9 +182,11 @@
   background: #fff;
   color: #000;
   top: 5%;
-  margin: 0;
+  display: block;
+  margin: 0 5%;
+  border-radius: 5px;
   line-height: 50px;
-  width: 100%;
+  width: 90%;
   font-size: 24px;
   text-align: center;
   opacity: 0;
