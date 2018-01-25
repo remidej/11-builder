@@ -40,7 +40,8 @@ class SearchPlayer extends Component {
       isLoading: false,
       noMatches: false,
       results: [],
-      selectedPlayers: []
+      selectedPlayers: [],
+      fileBackups: {}
     }
   }
 
@@ -91,6 +92,10 @@ class SearchPlayer extends Component {
     this.setState({ selectedPlayers: newSelection })
     // Remove selected player from index so it can't be added twice
     const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFC')
+    let newBackups = this.state.fileBackups
+    newBackups.formattedName = playersIndex[formattedName]
+    console.log(newBackups)
+    this.setState({ fileBackups: newBackups })
     delete playersIndex[formattedName]
     // Hide selected player from results
     let newResults = this.state.results
@@ -105,12 +110,15 @@ class SearchPlayer extends Component {
   unselectPlayer = playerObject => {
     console.log(playerObject)
     let newSelection = this.state.selectedPlayers
-    for (let i = 0; i < this.state.selectedPlayers.length; i++) {
+    for (let i=0; i<this.state.selectedPlayers.length; i++) {
       if (this.state.selectedPlayers[i] === playerObject) {
         newSelection.splice(i, 1)
       }
     }
     this.setState({ selectedPlayers: newSelection })
+    // Put player back in index
+    const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFC')
+    playersIndex[formattedName] = this.state.fileBackups.formattedName
   }
 
   render() {
