@@ -129,7 +129,7 @@
 
 .Pitch {
   width: 540px;
-  height: 550px;
+  height: 540px;
   position: absolute;
   left: calc(100% + 20px);
   top: 0;
@@ -155,13 +155,43 @@
 }
 
 .Pitch .LineupName {
+  z-index: 100;
+  width: 100%;
+  top: 5%;
+  text-align: center;
+  position: absolute;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 50px;
+  font-size: 24px;
+  user-select: none;
+}
+
+.Pitch .LineupName:hover {
+  opacity: 0;
+}
+
+.Pitch .LineupName:hover + .EditLineupName {
+  opacity: 1;
+}
+
+.Pitch .EditLineupName {
   text-transform: uppercase;
   position: absolute;
+  z-index: 200;
+  background: #fff;
+  color: #000;
   top: 5%;
   margin: 0;
+  line-height: 50px;
   width: 100%;
   font-size: 24px;
   text-align: center;
+  opacity: 0;
+}
+
+.Pitch .EditLineupName:hover {
+  opacity: 1;
 }
 
 .grabbable {
