@@ -5,6 +5,6 @@
 
 ## Tools used
 * Front-end: Facebook's [React.js](https://reactjs.org/)
-* Back-end: [EA Sport's Ultimate Team database](https://www.easports.com/fifa/ultimate-team/fut/database)
+* Back-end: Data scraped from [fifaindex.com](https://www.fifaindex.com/fr/players/), which was itself scraped from [EA Sport's Ultimate Team database](https://www.easports.com/fifa/ultimate-team/fut/database)
 
 This is an app by [Rémi de Juvigny](http://remi.space)
