@@ -48,6 +48,8 @@ export default class PlayerCard extends React.Component {
       this.setState({ previousMoveY: 0 })
     }
     ReactDOM.findDOMNode(this).style.zIndex = "400"
+    // Show bin
+    document.querySelector('.Pitch .Trash').classList.add('visible')
   }
 
   dragMove = (x, y) => {
@@ -103,6 +105,8 @@ export default class PlayerCard extends React.Component {
       previousMoveY: this.state.differenceY
     })
     ReactDOM.findDOMNode(this).style.zIndex = "300"
+    // Hide bin
+    document.querySelector('.Pitch .Trash').classList.remove('visible')
   }
 
   render() {

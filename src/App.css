@@ -154,6 +154,29 @@
   height: 90%;
 }
 
+.Trash {
+  position: absolute;
+  top: 3%;
+  width: 70%;
+  margin: 0 15%;
+  background: #681b27;
+  border-radius: 3px;
+  z-index: 300;
+  line-height: 50px;
+  text-align: center;
+  font-size: 16px;
+  display: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.Trash.visible {
+  display: block;
+}
+
+.Trash.active {
+  background: #000;
+}
+
 .Pitch .LineupName {
   font-family: 'saira condensed', Arial, Helvetica, sans-serif;
   font-size: 36px;
