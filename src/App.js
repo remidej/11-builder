@@ -70,6 +70,8 @@ class SearchPlayer extends Component {
       playerFile.shortName = playerFile.name.split(' ').slice(-1).join(' ')
       searchResults.push(playerFile)
     }
+    // Sort results by players ranking
+    searchResults.sort((a, b) => { return b.rating - a.rating })
     this.setState({ results: searchResults })
   }
 
