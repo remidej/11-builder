@@ -103,10 +103,12 @@ class SearchPlayer extends Component {
   }
 
   unselectPlayer = playerObject => {
+    console.log(playerObject)
     let newSelection = this.state.selectedPlayers
-    const indexToRemove = newSelection.indexOf(5)
-    if (indexToRemove > -1) {
-      newSelection.splice(indexToRemove, 1)
+    for (let i = 0; i < this.state.selectedPlayers.length; i++) {
+      if (this.state.selectedPlayers[i] === playerObject) {
+        newSelection.splice(i, 1)
+      }
     }
     this.setState({ selectedPlayers: newSelection })
   }
@@ -149,7 +151,11 @@ class SearchPlayer extends Component {
             </div>
           }
         </div>
-				<Pitch playersList={this.state.selectedPlayers} className="Pitch"/>
+				<Pitch
+          playersList={this.state.selectedPlayers}
+          className="Pitch"
+          unselectPlayer={this.unselectPlayer}
+        />
       </div>
     )
   }

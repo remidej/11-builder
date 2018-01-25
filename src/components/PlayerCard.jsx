@@ -9,7 +9,8 @@ export default class PlayerCard extends React.Component {
       differenceX: 0,
       differenceY: 0,
       originX: 0,
-      originY: 0
+      originY: 0,
+      toBeDeleted: false
     }
   }
 
@@ -57,45 +58,27 @@ export default class PlayerCard extends React.Component {
     // Prevent dragging outside of Pitch
     if (
       currentPos.left >= this.props.parentFrame.left &&
-      currentPos.right <= this.props.parentFrame.right
-    ) {
-      this.setState({ differenceX: this.state.previousMoveX + x - this.state.originX})
-    } else {
-      console.log('outside x')
-      // Put the card back inside the Pitch
-      if (currentPos.left <= this.props.parentFrame.left) {
-        console.log('left of pitch')
-        this.setState({ differenceX: this.state.differenceX + 3 })
-      } else if (currentPos.right >= this.props.parentFrame.right) {
-        console.log('right of pitch')
-        this.setState({ differenceX: this.state.differenceX - 3 })
-      }
-      // Prevent further dragging
-      this.dragEnd()
-    }
-    if (
+      currentPos.right <= this.props.parentFrame.right &&
       currentPos.top >= this.props.parentFrame.top &&
       currentPos.bottom <= this.props.parentFrame.bottom
     ) {
-      this.setState({ differenceY: this.state.previousMoveY + y - this.state.originY })
+      // Update data
+      this.setState({
+        differenceX: this.state.previousMoveX + x - this.state.originX,
+        differenceY: this.state.previousMoveY + y - this.state.originY
+      })
+      // Move player card visually
+      ReactDOM.findDOMNode(this).style.transform = `
+        translateX(${this.state.differenceX}px)
+        translateY(${this.state.differenceY}px)
+      `
     } else {
-      console.log('outside y')
-      // Put the card back inside the Pitch
-      if (currentPos.top <= this.props.parentFrame.top) {
-        console.log('top of pitch')
-        this.setState({ differenceY: this.state.differenceY + 3 })
-      } else if (currentPos.bottom >= this.props.parentFrame.bottom) {
-        console.log('bottom of pitch')
-        this.setState({ differenceY: this.state.differenceY - 3 })
-      }
       // Prevent further dragging
       this.dragEnd()
+      // Delete player
+      console.log(this.props.player)
+      this.props.unselectPlayer(this.props.player)
     }
-
-    ReactDOM.findDOMNode(this).style.transform = `
-      translateX(${this.state.differenceX}px)
-      translateY(${this.state.differenceY}px)
-    `
   }
 
   dragEnd = () => {
