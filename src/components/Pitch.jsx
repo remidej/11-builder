@@ -34,7 +34,7 @@ export default class Pitch extends React.Component {
           <textarea
             className="EditLineupName"
             rows="1"
-            maxLength="22"
+            maxLength="21"
             value={ this.state.lineupName }
             onChange={ this.editLineupName }
           />

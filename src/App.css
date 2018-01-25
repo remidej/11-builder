@@ -155,15 +155,17 @@
 }
 
 .Pitch .LineupName {
+  font-family: 'saira condensed', Arial, Helvetica, sans-serif;
+  font-size: 36px;
   z-index: 100;
   width: 100%;
-  top: 5%;
+  font-weight: 800;
+  top: 3%;
   text-align: center;
   position: absolute;
   text-transform: uppercase;
   margin: 0;
   line-height: 50px;
-  font-size: 24px;
   user-select: none;
 }
 
@@ -171,23 +173,21 @@
   opacity: 0;
 }
 
-.Pitch .LineupName:hover + .EditLineupName {
-  opacity: 1;
-}
-
 .Pitch .EditLineupName {
+  font-family: 'saira condensed', Arial, Helvetica, sans-serif;
+  font-size: 36px;
+  font-weight: 800;
   text-transform: uppercase;
   position: absolute;
   z-index: 200;
   background: #fff;
   color: #000;
-  top: 5%;
+  top: 3%;
   display: block;
-  margin: 0 20%;
+  margin: 0 15%;
   border-radius: 5px;
   line-height: 50px;
-  width: 60%;
-  font-size: 24px;
+  width: 70%;
   text-align: center;
   opacity: 0;
 }
@@ -212,6 +212,8 @@
   cursor: move;
   will-change: transform;
   border-radius: 5px;
+  font-family: 'saira condensed', Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
 
 .PlayerCard:hover {
@@ -235,6 +237,7 @@
   width: 100%;
   bottom: 0;
   margin: 0;
+  font-size: 16px;
   user-select: none;
 }
 

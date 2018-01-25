@@ -12,6 +12,7 @@ h1 {
   margin: 20px 0;
   font-size: 50px;
   text-align: center;
-  font-family: "suez one", "open sans", Arial, Helvetica, sans-serif;
-  letter-spacing: 4px;
+  font-family: "saira condensed", "open sans", Arial, Helvetica, sans-serif;
+  font-weight: 800;
+  text-transform: capitalize;
 }
