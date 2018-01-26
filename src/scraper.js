@@ -4,7 +4,6 @@
 const cheerio = require("cheerio")
 const requestPromise = require('request-promise')
 const fs = require('file-system')
-const removeAccents = require('remove-accents')
 const limit = require("simple-rate-limiter")
 const download = require('image-downloader')
 
@@ -134,7 +133,7 @@ let downloadClubLogos = (playerObject) => {
 	// Download club logo if not done already
 	let formattedClubName = 'undefined'
 	if (playerObject.club.name !== undefined) {
-		formattedClubName = removeAccents(playerObject.club.name.replace(/\s/g,"").normalize("NFC"))
+		formattedClubName = playerObject.club.name.replace(/\s/g, "").replace(/[\u0300-\u036f]/g, "")
 	}
 	download
 		.image({
