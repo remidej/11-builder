@@ -41,7 +41,8 @@ class SearchPlayer extends Component {
       noMatches: false,
       results: [],
       selectedPlayers: [],
-      fileBackups: {}
+      fileBackups: {},
+      maxPlayersAmount: false
     }
   }
 
@@ -92,26 +93,26 @@ class SearchPlayer extends Component {
   }
 
   selectPlayer = playerObject => {
-    if (this.state.selectedPlayers.length < 11) {
-      let newSelection = this.state.selectedPlayers
-      newSelection.push(playerObject)
-      this.setState({ selectedPlayers: newSelection })
-      // Remove selected player from index so it can't be added twice
-      const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-      let newBackups = this.state.fileBackups
-      newBackups[formattedName] = playersIndex[formattedName]
-      this.setState({ fileBackups: newBackups })
-      delete playersIndex[formattedName]
-      // Hide selected player from results
-      let newResults = this.state.results
-      for (let i=0; i<this.state.results.length; i++) {
-        if (this.state.results[i] === playerObject) {
-          newResults.splice(i, 1)
-        }
+    let newSelection = this.state.selectedPlayers
+    newSelection.push(playerObject)
+    this.setState({ selectedPlayers: newSelection })
+    // Remove selected player from index so it can't be added twice
+    const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+    let newBackups = this.state.fileBackups
+    newBackups[formattedName] = playersIndex[formattedName]
+    this.setState({ fileBackups: newBackups })
+    delete playersIndex[formattedName]
+    // Hide selected player from results
+    let newResults = this.state.results
+    for (let i=0; i<this.state.results.length; i++) {
+      if (this.state.results[i] === playerObject) {
+        newResults.splice(i, 1)
       }
-      this.setState({ results: newResults })
-    } else {
-      console.log('already 11')
+    }
+    this.setState({ results: newResults })
+    // Prevent adding more than 11 players
+    if (this.state.selectedPlayers.length > 10) {
+      this.setState({ maxPlayersAmount: true })
     }
   }
 
@@ -127,19 +128,28 @@ class SearchPlayer extends Component {
     // Put player back in index
     const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
     playersIndex[formattedName] = this.state.fileBackups[formattedName]
+    // Make room for new players
+    this.setState({ maxPlayersAmount: false })
   }
 
   render() {
     return (
       <div>
-        <input className="Search-player" type="search" value={this.state.value} onChange={this.updateSearch} placeholder="Search for a player..." autoFocus />
+        <input
+          className="Search-player"
+          type="search"
+          value={this.state.value}
+          onChange={this.updateSearch}
+          placeholder="Search for a player..."
+          autoFocus
+        />
         <div className="Results">
-          {this.state.noMatches &&
+          { this.state.noMatches &&
             <div className="Result-player">
               <p className="Status">No matching player</p>
             </div>
           }
-          {this.state.results.map(player => (
+          { !this.state.maxPlayersAmount && this.state.results.map(player => (
             // Create result list from search results
             <div
               key={player.id}
@@ -159,11 +169,16 @@ class SearchPlayer extends Component {
                 src={player.flag}
               />
             </div>
-          ))}
+          )) }
           { this.state.isLoading &&
             // Display loading messages while waiting for results
             <div className="Result-player">
               <p className="Status">Loading players...</p>
+            </div>
+          }
+          { this.state.maxPlayersAmount &&
+            <div className="Result-player">
+              <p className="Status">Can't add more players</p>
             </div>
           }
         </div>
