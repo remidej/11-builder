@@ -82,28 +82,37 @@ class SearchPlayer extends Component {
       noMatches: false,
       isLoading: true
     })
-    // Trigger search
-    this.getPlayersData(e.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
+    // Prevent adding more than 11 players
+    if (this.state.selectedPlayers.length < 11) {
+      // Trigger search
+      this.getPlayersData(e.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
+    } else {
+      console.log('already 11')
+    }
   }
 
   selectPlayer = playerObject => {
-    let newSelection = this.state.selectedPlayers
-    newSelection.push(playerObject)
-    this.setState({ selectedPlayers: newSelection })
-    // Remove selected player from index so it can't be added twice
-    const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-    let newBackups = this.state.fileBackups
-    newBackups[formattedName] = playersIndex[formattedName]
-    this.setState({ fileBackups: newBackups })
-    delete playersIndex[formattedName]
-    // Hide selected player from results
-    let newResults = this.state.results
-    for (let i=0; i<this.state.results.length; i++) {
-      if (this.state.results[i] === playerObject) {
-        newResults.splice(i, 1)
+    if (this.state.selectedPlayers.length < 11) {
+      let newSelection = this.state.selectedPlayers
+      newSelection.push(playerObject)
+      this.setState({ selectedPlayers: newSelection })
+      // Remove selected player from index so it can't be added twice
+      const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+      let newBackups = this.state.fileBackups
+      newBackups[formattedName] = playersIndex[formattedName]
+      this.setState({ fileBackups: newBackups })
+      delete playersIndex[formattedName]
+      // Hide selected player from results
+      let newResults = this.state.results
+      for (let i=0; i<this.state.results.length; i++) {
+        if (this.state.results[i] === playerObject) {
+          newResults.splice(i, 1)
+        }
       }
+      this.setState({ results: newResults })
+    } else {
+      console.log('already 11')
     }
-    this.setState({ results: newResults })
   }
 
   unselectPlayer = playerObject => {
