@@ -241,7 +241,7 @@ const savePlayersData = () => {
 		// Change image links to the ones we downloaded
 		let clubName = ''
 		if (typeof dataList[j].club.name !== 'undefined') {
-			clubName = removeAccents(dataList[j].club.name.replace(/\s/g, "").normalize('NFC'))
+			clubName = dataList[j].club.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
 		}
 		dataList[j].photo = `./data/images/photos/${dataList[j].id}.png`
 		fs.access(`/public/data/images/photos/${dataList[j].id}.png`, (error) => {
@@ -258,7 +258,7 @@ const savePlayersData = () => {
 		// eslint-disable-next-line
 		dataList[j].flag = `./data/images/flags/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 		// Create JSON file
-		const formattedName = removeAccents(dataList[j].name.replace(/\s/g, "").normalize('NFC'))
+		const formattedName = dataList[j].name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
 		if (formattedName !== 'undefined') {
 			fs.writeFileSync(`src/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
 			jsonIndex[formattedName] = `./data/players/${formattedName}.json`
