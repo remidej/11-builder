@@ -31,7 +31,7 @@ export default class Pitch extends React.Component {
     return (
       <div className="Pitch">
         <div>
-          <div className="Trash">Drop here to remove player</div>
+          <div className="Trash">Drag out of pitch to remove player</div>
           <textarea
             className="EditLineupName"
             rows="1"
