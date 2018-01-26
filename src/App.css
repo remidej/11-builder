@@ -96,7 +96,7 @@
 
 .Settings .Customize {
   position: absolute;
-  bottom: 75px;
+  bottom: 5px;
 }
 
 .Settings .Customize select {
@@ -114,10 +114,9 @@
 }
 
 .Settings .CTA {
-  position: absolute;
-  bottom: 5px;
   display: block;
   width: 100%;
+  margin-top: 15px;
   line-height: 56px;
   text-align: center;
   background: #fafafa;
@@ -213,6 +212,7 @@
   width: 70%;
   text-align: center;
   opacity: 0;
+  resize: none;
 }
 
 .Pitch .EditLineupName:hover {
@@ -267,4 +267,47 @@
 .disabled {
   opacity: 0.5;
   cursor: default !important;
+}
+
+@media screen and (max-width: 910px) {
+  h1 {
+    font-size: 35px;
+    margin: 13px auto;
+  }
+
+  .App {
+    width: 100vw;
+    height: unset;
+    margin-top: -25px;
+  }
+
+  .Settings > div {
+    position: absolute;
+    left: 0;
+    margin-left: 2vw;
+    width: 96vw;
+  }
+
+  .Settings .Results {
+    position: absolute;
+    width: 100%;
+    z-index: 500;
+  }
+
+  .Settings .Customize {
+    bottom: unset;
+    top: calc(100vw + 80px);
+  }
+
+  .Settings .Customize select{
+    margin: 0;
+    width: calc(50% - 8px);
+  }
+
+  .Pitch {
+    width: 100vw;
+    height: 100vw;
+    left: -2vw;
+    top: 65px;
+  }
 }

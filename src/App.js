@@ -12,9 +12,6 @@ class App extends Component {
       <div className="App">
         <div className="Settings">
           <SearchPlayer addPlayerToState={this.addPlayerToState}/>
-          <div href="#" title="Generate lineup" className="CTA">
-            Download your lineup as a JPEG
-          </div>
           <div className="Customize">
             <select className="Tactic" defaultValue="433">
               <option value="442">4 - 4 - 2</option>
@@ -25,6 +22,9 @@ class App extends Component {
               <option value="simple">Simple</option>
               <option value="futuristic">Futuristic</option>
             </select>
+            <div href="#" title="Generate lineup" className="CTA">
+              Download your lineup as a JPEG
+            </div>
           </div>
         </div>
       </div>
