@@ -10,7 +10,8 @@ export default class PlayerCard extends React.Component {
       differenceY: 0,
       originX: 0,
       originY: 0,
-      toBeDeleted: false
+      toBeDeleted: false,
+      lastTouch: {x: 0, y: 0}
     }
   }
 
@@ -19,17 +20,41 @@ export default class PlayerCard extends React.Component {
     ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
       this.dragStart(e.clientX, e.clientY)
     })
+    ReactDOM.findDOMNode(this).addEventListener('touchstart', e => {
+      this.dragStart(e.touches[0].clientX, e.touches[0].clientY)
+      // Save position to prepare touchend
+      this.setState({
+        lastTouch: { x: e.touches[0].clientX, y: e.touches[0].clientY }
+      })
+    })
     // Calculate drag distance
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
+      console.log('touch')
       // Only drag if mouse is being pressed
       if (this.state.isDragging) {
         this.dragMove(e.clientX, e.clientY)
+      }
+    })
+    ReactDOM.findDOMNode(this).addEventListener('touchmove', e => {
+      console.log('touchmove')
+      // Only drag if mouse is being pressed
+      if (this.state.isDragging) {
+        this.dragMove(e.touches[0].clientX, e.touches[0].clientY)
+        // Save position to prepare touchend
+        this.setState({
+          lastTouch: { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        })
       }
     })
     // End drag
     ReactDOM.findDOMNode(this).addEventListener('mouseup', e => {
       if (this.state.isDragging) {
         this.dragEnd(e.clientX, e.clientY)
+      }
+    })
+    ReactDOM.findDOMNode(this).addEventListener('touchend', e => {
+      if (this.state.isDragging) {
+        this.dragEnd(this.state.lastTouch.x, this.state.lastTouch.y)
       }
     })
   }
