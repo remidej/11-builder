@@ -146,11 +146,11 @@
   position: absolute;
   display: block;
   transform-origin: bottom center;
-  transform: rotateX(30deg) scale(1.2);
-  top: 5%;
+  transform: rotateX(45deg) scale(1.4);
+  bottom: 0;
   left: 5%;
   width: 90%;
-  height: 90%;
+  height: 109%;
 }
 
 .Trash {
