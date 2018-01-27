@@ -225,8 +225,8 @@
 }
 
 .PlayerCard {
-  width: 100px;
-  height: 100px;
+  width: 17%;
+  height: 17.5%;
   top: 10px;
   left: 10px;
   z-index: 300;
@@ -316,5 +316,9 @@
 
   .Pitch .EditLineupName {
     top: 0;
+  }
+
+  .PlayerCard {
+    height: 19%;
   }
 }
