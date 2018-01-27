@@ -147,7 +147,7 @@
   display: block;
   transform-origin: bottom center;
   transform: rotateX(45deg) scale(1.4);
-  bottom: 0;
+  bottom: -1%;
   left: 5%;
   width: 90%;
   height: 109%;
@@ -278,7 +278,6 @@
   .App {
     width: 100vw;
     height: unset;
-    margin-top: -25px;
   }
 
   .Settings > div {
@@ -309,5 +308,13 @@
     height: 100vw;
     left: -2vw;
     top: 65px;
+  }
+
+  .Pitch .LineupName {
+    top: 0;
+  }
+
+  .Pitch .EditLineupName {
+    top: 0;
   }
 }
