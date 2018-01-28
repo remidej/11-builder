@@ -114,6 +114,10 @@ class SearchPlayer extends Component {
     if (this.state.selectedPlayers.length > 10) {
       this.setState({ maxPlayersAmount: true })
     }
+    // Hide other results on mobile
+    if (window.innerWidth < 910) {
+      document.querySelector('.Results').style.display = 'none'
+    }
   }
 
   unselectPlayer = playerObject => {
@@ -138,8 +142,9 @@ class SearchPlayer extends Component {
         <input
           className="Search-player"
           type="search"
-          value={this.state.value}
-          onChange={this.updateSearch}
+          value={ this.state.value }
+          onFocus = { () => { document.querySelector('.Results').style.display = 'block'} }
+          onChange={ this.updateSearch }
           placeholder="Search for a player..."
           autoFocus
         />
