@@ -28,6 +28,7 @@ export default class Pitch extends React.Component {
   }
 
   render() {
+    // Create skeleton
     return (
       <div className="Pitch">
         <div>
@@ -40,16 +41,43 @@ export default class Pitch extends React.Component {
             onChange={ this.editLineupName }
           />
           <h2 className="LineupName">{ this.state.lineupName }</h2>
-          {this.props.playersList.map(player => (
+          { Object.keys(this.props.tactic).map(positionKey => {
+            return (
+              <PositionIndicator
+                key={ positionKey }
+                leftValue={ `${this.props.tactic[positionKey].x}%` }
+                topValue={ `${this.props.tactic[positionKey].y}%` }
+              />
+            )
+          }) }
+          { this.props.playersList.map(player => {
             <PlayerCard
               player={ player }
               key={ player.id }
               parentFrame={ this.state.frame }
               unselectPlayer={ this.props.unselectPlayer }
             />
-          ))}
+          }) }
         </div>
       </div>
+    )
+  }
+}
+
+class PositionIndicator extends React.Component {
+
+  componentDidMount() {
+    ReactDOM.findDOMNode(this).style.left = this.props.leftValue
+    ReactDOM.findDOMNode(this).style.top = this.props.topValue
+    console.log(ReactDOM.findDOMNode(this))
+  }
+  
+  render() {
+    return(
+      <div
+        className="PositionIndicator"
+        data-position={ this.props.positionKey }
+      ></div>
     )
   }
 }

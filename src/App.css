@@ -219,6 +219,15 @@
   opacity: 1;
 }
 
+.Pitch .PositionIndicator {
+  position: absolute;
+  width: 6%;
+  height: 6%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%);
+}
+
 .grabbable {
   cursor: pointer;
   user-select: none;

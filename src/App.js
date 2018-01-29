@@ -5,6 +5,7 @@ import './App.css'
 import Pitch from './components/Pitch.jsx'
 
 const playersIndex = require('./data/index.json')
+let tactic = require('./tactics/442.json')
 
 class App extends Component {
   render() {
@@ -191,6 +192,7 @@ class SearchPlayer extends Component {
           playersList={this.state.selectedPlayers}
           className="Pitch"
           unselectPlayer={this.unselectPlayer}
+          tactic={ tactic }
         />
       </div>
     )
