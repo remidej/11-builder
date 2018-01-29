@@ -39,6 +39,8 @@ export default class PlayerCard extends React.Component {
       console.log('touchmove')
       // Only drag if mouse is being pressed
       if (this.state.isDragging) {
+        // Prevent scroll
+        e.preventDefault()
         this.dragMove(e.touches[0].clientX, e.touches[0].clientY)
         // Save position to prepare touchend
         this.setState({
@@ -100,9 +102,12 @@ export default class PlayerCard extends React.Component {
     } else {
       // Prevent further dragging
       this.dragEnd()
-      // Delete player
-      console.log(this.props.player)
-      this.props.unselectPlayer(this.props.player)
+      ReactDOM.findDOMNode(this).style.background = 'rgba(255, 0, 0, 0.5)'
+      window.setTimeout(() => {
+        // Delete player
+        console.log(this.props.player)
+        this.props.unselectPlayer(this.props.player)
+      }, 500)
     }
   }
 
