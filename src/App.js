@@ -189,9 +189,9 @@ class SearchPlayer extends Component {
           }
         </div>
 				<Pitch
-          playersList={this.state.selectedPlayers}
+          playersList={ this.state.selectedPlayers }
           className="Pitch"
-          unselectPlayer={this.unselectPlayer}
+          unselectPlayer={ this.unselectPlayer }
           tactic={ tactic }
         />
       </div>

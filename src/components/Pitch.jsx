@@ -51,12 +51,14 @@ export default class Pitch extends React.Component {
             )
           }) }
           { this.props.playersList.map(player => {
-            <PlayerCard
-              player={ player }
-              key={ player.id }
-              parentFrame={ this.state.frame }
-              unselectPlayer={ this.props.unselectPlayer }
-            />
+            return(
+              <PlayerCard
+                player={ player }
+                key={ player.id }
+                parentFrame={ this.state.frame }
+                unselectPlayer={ this.props.unselectPlayer }
+              />
+            )
           }) }
         </div>
       </div>
