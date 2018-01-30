@@ -11,28 +11,30 @@ export default class PlayerCard extends React.Component {
       originX: 0,
       originY: 0,
       toBeDeleted: false,
-      lastTouch: {x: 0, y: 0},
-      occupiedPositions: []
+      lastTouch: {x: 0, y: 0}
     }
   }
 
   componentDidMount() {
-    for (const preferredPosition of this.props.player.positions) {
+    //console.log(this.props.occupiedPositions)
+    // Auto position the player
+    mainLoop: for (let preferredPosition of this.props.player.positions) {
       for (const position in this.props.tactic) {
         // Check if the position is part of the selected tactic
         if (preferredPosition === position) {
           // Check if position is available
           let isAvailable = true
-          for (const occupiedPosition of this.state.occupiedPositions) {
+          for (const occupiedPosition of this.props.occupiedPositions) {
             if (occupiedPosition === position) {
               isAvailable = false
             }
           }
           if (isAvailable) {
-            console.log(this.props.tactic[position])
             // Position player where he belongs
             ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
             ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
+            this.props.occupyPosition(position)
+            break mainLoop
           }
         }
       }

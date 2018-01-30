@@ -6,7 +6,8 @@ export default class Pitch extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: ''
+      value: '',
+      occupiedPositions: []
     }
   }
 
@@ -21,9 +22,18 @@ export default class Pitch extends React.Component {
     this.setState({ frame, lineupName: 'My team' })
   }
 
-  editLineupName = (e) => {
+  editLineupName = e => {
     this.setState({
       lineupName: e.target.value
+    })
+  }
+
+  occupyPosition = position => {
+    console.log(position)
+    let currentPositions = this.state.occupiedPositions
+    currentPositions[currentPositions.length] = position
+    this.setState({
+      occupiedPositions: currentPositions
     })
   }
 
@@ -58,6 +68,8 @@ export default class Pitch extends React.Component {
                 tactic={ this.props.tactic }
                 parentFrame={ this.state.frame }
                 unselectPlayer={ this.props.unselectPlayer }
+                occupiedPositions={ this.state.occupiedPositions }
+                occupyPosition={ this.occupyPosition }
               />
             )
           }) }
