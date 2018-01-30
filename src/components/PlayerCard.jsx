@@ -105,14 +105,34 @@ export default class PlayerCard extends React.Component {
 
   findClosestPosition = () => {
     let positionIndex = -1
-    console.log(this.props.tactic)
-    for (let i=0; i<Object.keys(this.props.tactic).length; i++) {
-      console.log(this.props.tactic[Object.keys(this.props.tactic)[i]])
-      if (this.props.player.positions[0] == Object.keys(this.props.tactic)[i]) {
+    const keys = Object.keys(this.props.tactic)
+    for (let i=0; i<keys.length; i++) {
+      if (this.props.player.positions[0] === keys[i]) {
         positionIndex = i
       }
     }
-    console.log(positionIndex)
+    // Search in both directions at the same time
+    let closestPosition = -1
+    let i = positionIndex - 1
+    let j = positionIndex + 1
+    while (closestPosition < 0) {
+      // Check if next positions are available
+      for (const position of this.props.occupiedPositions) {
+        if (position !== keys[i]) {
+          closestPosition = i
+        } else if (position !== keys[i]) {
+          closestPosition = j
+        } else {
+          // Check further positions
+          if (i>0) {
+            i--
+          }
+          if (j<10) 
+          j++
+        }
+      }
+    }
+    this.positionPlayer(keys[closestPosition])
   }
 
   dragStart = (x, y) => {
