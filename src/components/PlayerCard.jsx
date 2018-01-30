@@ -43,9 +43,11 @@ export default class PlayerCard extends React.Component {
             break mainLoop
           } else if (preferredPosition === this.props.player.positions[this.props.player.positions.length - 1]) {
             this.findClosestPosition()
+            break mainLoop
           }
         }
       }
+      this.findClosestPosition()
     }
     // Start drag
     ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
@@ -113,26 +115,37 @@ export default class PlayerCard extends React.Component {
     }
     // Search in both directions at the same time
     let closestPosition = -1
-    let i = positionIndex - 1
-    let j = positionIndex + 1
+    let i = positionIndex
+    let j = positionIndex
+    if (positionIndex > 0) {
+      i--
+    }
+    if (positionIndex < 10) {
+      j++
+    }
     while (closestPosition < 0) {
       // Check if next positions are available
       for (const position of this.props.occupiedPositions) {
         if (position !== keys[i]) {
           closestPosition = i
-        } else if (position !== keys[i]) {
+        } else if (position !== keys[j]) {
           closestPosition = j
         } else {
           // Check further positions
           if (i>0) {
             i--
           }
-          if (j<10) 
-          j++
+          if (j<10) {
+            j++
+          }
         }
       }
+      // Prevent infinite loop
+      break
     }
-    this.positionPlayer(keys[closestPosition])
+    if (closestPosition >= 0) {
+      this.positionPlayer(keys[closestPosition])
+    }
   }
 
   dragStart = (x, y) => {

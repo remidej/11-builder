@@ -219,7 +219,7 @@
   height: 6%;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
-  transform: translate(-50%);
+  transform: translate(-50%) rotateX(45deg);
 }
 
 .grabbable {
