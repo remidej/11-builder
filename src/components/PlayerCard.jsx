@@ -11,13 +11,15 @@ export default class PlayerCard extends React.Component {
       originX: 0,
       originY: 0,
       toBeDeleted: false,
-      lastTouch: {x: 0, y: 0}
+      lastTouch: {x: 0, y: 0},
+      activePosition: ""
     }
   }
 
   componentDidMount() {
     // Auto position the player
     mainLoop: for (let preferredPosition of this.props.player.positions) {
+      // Support for 2 central defenders
       if (preferredPosition === 'DC') {
         if (this.props.occupiedPositions.find(e => e == 'DC1') === undefined) {
           preferredPosition = 'DC1'
@@ -43,6 +45,7 @@ export default class PlayerCard extends React.Component {
             ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
             ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
             this.props.occupyPosition(position)
+            this.setState({ activePosition:  position})
             // Hide position indicator 
             document.querySelector(`[data-position='${position}']`).style.opacity = 0
             break mainLoop
@@ -138,6 +141,7 @@ export default class PlayerCard extends React.Component {
       window.setTimeout(() => {
         // Delete player
         this.props.unselectPlayer(this.props.player)
+        this.props.unoccupyPosition(this.state.activePosition)
       }, 500)
     }
   }

@@ -29,11 +29,23 @@ export default class Pitch extends React.Component {
   }
 
   occupyPosition = position => {
-    let currentPositions = this.state.occupiedPositions
-    currentPositions[currentPositions.length] = position
+    let newPositions = this.state.occupiedPositions
+    newPositions[newPositions.length] = position
     this.setState({
-      occupiedPositions: currentPositions
+      occupiedPositions: newPositions
     })
+  }
+
+  unoccupyPosition = position => {
+    let newPositions = this.state.occupiedPositions
+    // Delete selected position from array
+    for (let i=0; i<this.state.occupiedPositions.length; i++) {
+      if (this.state.occupiedPositions[i] === position) {
+        newPositions.splice(i, 1)
+      }
+    }
+    console.log(`unoccupy ${this.state.occupiedPositions.length - newPositions.length}`)
+    this.setState({ occupiedPositions: newPositions })
   }
 
   render() {
@@ -70,6 +82,7 @@ export default class Pitch extends React.Component {
                 unselectPlayer={ this.props.unselectPlayer }
                 occupiedPositions={ this.state.occupiedPositions }
                 occupyPosition={ this.occupyPosition }
+                unoccupyPosition={ this.unoccupyPosition }
               />
             )
           }) }
