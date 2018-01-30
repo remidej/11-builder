@@ -169,11 +169,6 @@ class SearchPlayer extends Component {
                 alt={`${player.name}'s club`}
                 src={player.club.logo}
               />
-              <img
-                className="Flag"
-                alt={`${player.name}'s nation`}
-                src={player.flag}
-              />
             </div>
           )) }
           { this.state.isLoading &&
