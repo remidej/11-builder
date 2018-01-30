@@ -104,7 +104,15 @@ export default class PlayerCard extends React.Component {
   }
 
   findClosestPosition = () => {
-
+    let positionIndex = -1
+    console.log(this.props.tactic)
+    for (let i=0; i<Object.keys(this.props.tactic).length; i++) {
+      console.log(this.props.tactic[Object.keys(this.props.tactic)[i]])
+      if (this.props.player.positions[0] == Object.keys(this.props.tactic)[i]) {
+        positionIndex = i
+      }
+    }
+    console.log(positionIndex)
   }
 
   dragStart = (x, y) => {
