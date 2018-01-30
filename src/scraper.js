@@ -39,7 +39,7 @@ let getData = (url) => {
 						name: $(row).find("td[data-title='Équipe'] a").attr('title'),
 						logo: urlRoot + $(row).find('img.team.small').attr('src')
 					},
-					flag: urlRoot + $(row).find("td[data-title='Nationalité'] .nation.small").attr('src')
+					position: $(row).find("span.label.position").first().text()
 				}
 				dataList.push(player)
 			}
@@ -148,38 +148,16 @@ let downloadClubLogos = (playerObject) => {
 						url: playerObject.club.logo,
 						dest: `public/data/images/clubs/${formattedClubName}.png`
 				})
-				downloadFlags(playerObject)
+				checkDownloadSuccess(playerObject)
 			}
 		)
 		.then(
 			() => {
-				downloadFlags(playerObject)
+				checkDownloadSuccess(playerObject)
 			}
 		)
 }
 downloadClubLogos = limit(downloadClubLogos).to(1).per(600)
-
-// Download nation flags
-let downloadFlags = (playerObject) => {
-	download
-		.image({
-			url: playerObject.flag,
-			dest: `public/data/images/flags/`,
-			timeout: 15000
-		})
-		.then(() => {
-			checkDownloadSuccess(playerObject)
-		})
-		.catch(error => {
-			console.log("Failed loading " + playerObject.flag)
-			failedDownloads.push({
-				url: playerObject.flag,
-				dest: `public/data/images/flags/`
-			})
-			checkDownloadSuccess(playerObject)
-		})
-}
-downloadFlags = limit(downloadFlags).to(1).per(600)
 
 // Check donwload fails
 const checkDownloadSuccess = () => {
@@ -225,7 +203,6 @@ downloadPictures = limit(downloadPictures).to(1).per(600)
 let saveImages = () => {
   fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
-  fs.mkdir('public/data/images/flags')
 	console.log(`datalist length: ${dataList.length}`)
   for (const playerObject of dataList) {
 		// Download player photo
@@ -255,8 +232,6 @@ const savePlayersData = () => {
 			}
 		})
 		dataList[j].club.logo = `./data/images/clubs/${clubName}.png`
-		// eslint-disable-next-line
-		dataList[j].flag = `./data/images/flags/${dataList[j].flag.replace(/^.*[\\\/]/, "")}`
 		// Create JSON file
 		const formattedName = dataList[j].name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
 		if (formattedName !== 'undefined') {
