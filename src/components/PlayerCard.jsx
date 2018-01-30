@@ -42,7 +42,7 @@ export default class PlayerCard extends React.Component {
             this.positionPlayer(position)
             break mainLoop
           } else if (preferredPosition === this.props.player.positions[this.props.player.positions.length - 1]) {
-            console.log('no more room')
+            this.findClosestPosition()
           }
         }
       }
@@ -57,6 +57,8 @@ export default class PlayerCard extends React.Component {
       this.setState({
         lastTouch: { x: e.touches[0].clientX, y: e.touches[0].clientY }
       })
+      // Add hover style
+      ReactDOM.findDOMNode(this).style.background = 'rgba(0, 0, 0, 0.2)'
     })
     // Calculate drag distance
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
@@ -85,6 +87,8 @@ export default class PlayerCard extends React.Component {
     })
     ReactDOM.findDOMNode(this).addEventListener('touchend', e => {
       if (this.state.isDragging) {
+        // Remove the hover style
+        ReactDOM.findDOMNode(this).style.background = 'transparent'
         this.dragEnd(this.state.lastTouch.x, this.state.lastTouch.y)
       }
     })
@@ -97,6 +101,10 @@ export default class PlayerCard extends React.Component {
     this.setState({ activePosition: position })
     // Hide position indicator 
     document.querySelector(`[data-position='${position}']`).style.opacity = 0
+  }
+
+  findClosestPosition = () => {
+
   }
 
   dragStart = (x, y) => {
