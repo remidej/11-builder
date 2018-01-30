@@ -18,6 +18,16 @@ export default class PlayerCard extends React.Component {
   componentDidMount() {
     // Auto position the player
     mainLoop: for (let preferredPosition of this.props.player.positions) {
+      if (preferredPosition === 'DC') {
+        if (this.props.occupiedPositions.find(e => e == 'DC1') === undefined) {
+          preferredPosition = 'DC1'
+          ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[preferredPosition].x - 8.5}%`
+          ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[preferredPosition].y - 8.75}%`
+          this.props.occupyPosition('DC1')
+        } else {
+          preferredPosition = 'DC2'
+        }
+      }
       for (const position in this.props.tactic) {
         // Check if the position is part of the selected tactic
         if (preferredPosition === position) {
