@@ -29,7 +29,6 @@ export default class Pitch extends React.Component {
   }
 
   occupyPosition = position => {
-    console.log(position)
     let currentPositions = this.state.occupiedPositions
     currentPositions[currentPositions.length] = position
     this.setState({
@@ -55,6 +54,7 @@ export default class Pitch extends React.Component {
             return (
               <PositionIndicator
                 key={ positionKey }
+                position={ positionKey }
                 leftValue={ `${this.props.tactic[positionKey].x}%` }
                 topValue={ `${this.props.tactic[positionKey].y}%` }
               />
@@ -80,6 +80,9 @@ export default class Pitch extends React.Component {
 }
 
 class PositionIndicator extends React.Component {
+  constructor(props) {
+    super(props)
+  }
 
   componentDidMount() {
     ReactDOM.findDOMNode(this).style.left = this.props.leftValue
@@ -90,7 +93,7 @@ class PositionIndicator extends React.Component {
     return(
       <div
         className="PositionIndicator"
-        data-position={ this.props.positionKey }
+        data-position={ this.props.position }
       ></div>
     )
   }

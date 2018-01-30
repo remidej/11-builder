@@ -88,8 +88,6 @@ class SearchPlayer extends Component {
     if (this.state.selectedPlayers.length < 11) {
       // Trigger search
       this.getPlayersData(e.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
-    } else {
-      console.log('already 11')
     }
   }
 
@@ -122,7 +120,6 @@ class SearchPlayer extends Component {
   }
 
   unselectPlayer = playerObject => {
-    console.log(playerObject)
     let newSelection = this.state.selectedPlayers
     for (let i=0; i<this.state.selectedPlayers.length; i++) {
       if (this.state.selectedPlayers[i] === playerObject) {
@@ -166,7 +163,7 @@ class SearchPlayer extends Component {
               <p className="Name">{player.name}</p>
               <img
                 className="Icon"
-                alt={`${player.name}'s club`}
+                alt={player.club.name}
                 src={player.club.logo}
               />
             </div>

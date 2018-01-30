@@ -16,7 +16,6 @@ export default class PlayerCard extends React.Component {
   }
 
   componentDidMount() {
-    //console.log(this.props.occupiedPositions)
     // Auto position the player
     mainLoop: for (let preferredPosition of this.props.player.positions) {
       for (const position in this.props.tactic) {
@@ -34,6 +33,8 @@ export default class PlayerCard extends React.Component {
             ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
             ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
             this.props.occupyPosition(position)
+            // Hide position indicator 
+            document.querySelector(`[data-position='${position}']`).style.opacity = 0
             break mainLoop
           }
         }
