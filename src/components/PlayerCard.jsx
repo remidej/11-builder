@@ -21,13 +21,10 @@ export default class PlayerCard extends React.Component {
     mainLoop: for (let preferredPosition of this.props.player.positions) {
       // Support for 2 central defenders
       if (preferredPosition === 'DC') {
-        if (this.props.occupiedPositions.find(e => e == 'DC1') === undefined) {
-          preferredPosition = 'DC1'
-          ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[preferredPosition].x - 8.5}%`
-          ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[preferredPosition].y - 8.75}%`
-          this.props.occupyPosition('DC1')
+        if (this.props.occupiedPositions.find(e => e === 'DC1') === undefined) {
+          preferredPosition = "DC1"
         } else {
-          preferredPosition = 'DC2'
+          preferredPosition = "DC2"
         }
       }
       for (const position in this.props.tactic) {
@@ -42,13 +39,10 @@ export default class PlayerCard extends React.Component {
           }
           if (isAvailable) {
             // Position player where he belongs
-            ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
-            ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
-            this.props.occupyPosition(position)
-            this.setState({ activePosition:  position})
-            // Hide position indicator 
-            document.querySelector(`[data-position='${position}']`).style.opacity = 0
+            this.positionPlayer(position)
             break mainLoop
+          } else if (preferredPosition === this.props.player.positions[this.props.player.positions.length - 1]) {
+            console.log('no more room')
           }
         }
       }
@@ -96,6 +90,15 @@ export default class PlayerCard extends React.Component {
     })
   }
 
+  positionPlayer = position => {
+    ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
+    ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
+    this.props.occupyPosition(position)
+    this.setState({ activePosition: position })
+    // Hide position indicator 
+    document.querySelector(`[data-position='${position}']`).style.opacity = 0
+  }
+
   dragStart = (x, y) => {
     this.setState({
       isDragging: true,
@@ -141,7 +144,9 @@ export default class PlayerCard extends React.Component {
       window.setTimeout(() => {
         // Delete player
         this.props.unselectPlayer(this.props.player)
+        // Reset position indicator
         this.props.unoccupyPosition(this.state.activePosition)
+        document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
       }, 500)
     }
   }
