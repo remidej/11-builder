@@ -10,7 +10,7 @@ const download = require('image-downloader')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 5 // 604 for all data
+let totalPages = 3 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
@@ -30,17 +30,20 @@ let getData = (url) => {
 			const rows = $(".table.table-striped.players tbody tr:not(.table-ad, .hidden)").toArray()
 			for (const row of rows) {
 				// Setup player JSON structure
-				const player = {
-					id: $(row).attr('data-playerid'),
-					name: $(row).find("td[data-title='Nom'] a").text(),
-					rating: $(row).find('span.label.rating').first().text(),
-					photo: urlRoot + $(row).find('img.player.small').attr('src'),
-					club: {
-						name: $(row).find("td[data-title='Équipe'] a").attr('title'),
-						logo: urlRoot + $(row).find('img.team.small').attr('src')
-					},
-					position: $(row).find("span.label.position").first().text()
+				const player = {}
+				player.id = $(row).attr('data-playerid')
+				player.name = $(row).find("td[data-title='Nom'] a").text()
+				player.rating = $(row).find('span.label.rating').first().text()
+				player.photo = urlRoot + $(row).find('img.player.small').attr('src')
+				player.club = {
+					name: $(row).find("td[data-title='Équipe'] a").attr('title'),
+					logo: urlRoot + $(row).find('img.team.small').attr('src')
 				}
+				const positions = []
+				for (const position of Array.from($(row).find('span.label.position'))) {
+					positions.push($(position).text())
+				}
+				player.positions = positions
 				dataList.push(player)
 			}
 		})
