@@ -55,6 +55,7 @@ export default class Pitch extends React.Component {
               <PlayerCard
                 player={ player }
                 key={ player.id }
+                tactic={ this.props.tactic }
                 parentFrame={ this.state.frame }
                 unselectPlayer={ this.props.unselectPlayer }
               />
@@ -71,7 +72,6 @@ class PositionIndicator extends React.Component {
   componentDidMount() {
     ReactDOM.findDOMNode(this).style.left = this.props.leftValue
     ReactDOM.findDOMNode(this).style.top = this.props.topValue
-    console.log(ReactDOM.findDOMNode(this))
   }
   
   render() {

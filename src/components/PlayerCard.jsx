@@ -11,11 +11,32 @@ export default class PlayerCard extends React.Component {
       originX: 0,
       originY: 0,
       toBeDeleted: false,
-      lastTouch: {x: 0, y: 0}
+      lastTouch: {x: 0, y: 0},
+      occupiedPositions: []
     }
   }
 
   componentDidMount() {
+    for (const preferredPosition of this.props.player.positions) {
+      for (const position in this.props.tactic) {
+        // Check if the position is part of the selected tactic
+        if (preferredPosition === position) {
+          // Check if position is available
+          let isAvailable = true
+          for (const occupiedPosition of this.state.occupiedPositions) {
+            if (occupiedPosition === position) {
+              isAvailable = false
+            }
+          }
+          if (isAvailable) {
+            console.log(this.props.tactic[position])
+            // Position player where he belongs
+            ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
+            ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
+          }
+        }
+      }
+    }
     // Start drag
     ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
       this.dragStart(e.clientX, e.clientY)
@@ -29,14 +50,12 @@ export default class PlayerCard extends React.Component {
     })
     // Calculate drag distance
     ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
-      console.log('touch')
       // Only drag if mouse is being pressed
       if (this.state.isDragging) {
         this.dragMove(e.clientX, e.clientY)
       }
     })
     ReactDOM.findDOMNode(this).addEventListener('touchmove', e => {
-      console.log('touchmove')
       // Only drag if mouse is being pressed
       if (this.state.isDragging) {
         // Prevent scroll
@@ -105,7 +124,6 @@ export default class PlayerCard extends React.Component {
       ReactDOM.findDOMNode(this).style.background = 'rgba(255, 0, 0, 0.5)'
       window.setTimeout(() => {
         // Delete player
-        console.log(this.props.player)
         this.props.unselectPlayer(this.props.player)
       }, 500)
     }
@@ -127,9 +145,9 @@ export default class PlayerCard extends React.Component {
       <div className="PlayerCard" key={this.props.player.id}>
         <img
           className="Portrait"
-          src={this.props.player.photo}
-          alt={this.props.player.name}
-          onDragStart={e => { e.preventDefault() }}
+          src={ this.props.player.photo }
+          alt={ this.props.player.name }
+          onDragStart={ e => { e.preventDefault() } }
         />
         <p>{this.props.player.shortName}</p>
       </div>

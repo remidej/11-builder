@@ -66,7 +66,7 @@
   vertical-align: top;
 }
 
-.Settings .Result-player .Icon, .Settings .Result-player .Flag {
+.Settings .Result-player .Icon {
   height: 40px;
   margin-top: 8px;
   display: inline-block;
@@ -230,8 +230,8 @@
 .PlayerCard {
   width: 17%;
   height: 17.5%;
-  top: 10px;
-  left: 10px;
+  /* top: 10px;
+  left: 10px; */
   z-index: 300;
   position: absolute;
   text-align: center;
