@@ -17,8 +17,11 @@ export default class PlayerCard extends React.Component {
   }
 
   componentDidMount() {
+    // Count loops
+    let i = -1
     // Auto position the player
     mainLoop: for (let preferredPosition of this.props.player.positions) {
+      i++
       // Support for 2 central defenders
       if (preferredPosition === 'DC') {
         if (this.props.occupiedPositions.find(e => e === 'DC1') === undefined) {
@@ -51,13 +54,12 @@ export default class PlayerCard extends React.Component {
             // Position player where he belongs
             this.positionPlayer(position)
             break mainLoop
-          } else if (preferredPosition === this.props.player.positions[this.props.player.positions.length - 1]) {
+          } else if (i === this.props.player.positions.length - 1) {
             this.findClosestPosition()
             break mainLoop
           }
         }
       }
-      this.findClosestPosition()
     }
     // Start drag
     ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
@@ -118,6 +120,7 @@ export default class PlayerCard extends React.Component {
   findClosestPosition = () => {
     let positionIndex = -1
     const keys = Object.keys(this.props.tactic)
+    // Find index of preferred position
     for (let i=0; i<keys.length; i++) {
       if (this.props.player.positions[0] === keys[i]) {
         positionIndex = i
@@ -125,43 +128,22 @@ export default class PlayerCard extends React.Component {
     }
     // Search in both directions at the same time
     let closestPosition = -1
-    let i = positionIndex
-    let j = positionIndex
-    if (positionIndex > 0) {
-      i--
-    }
-    if (positionIndex < 10) {
-      j++
-    }
-    while (closestPosition < 0) {
-      // Check if next positions are available
-      for (const position of this.props.occupiedPositions) {
-        if (position !== keys[i]) {
-          //console.log('found match: ' + keys[i] + " vs " + position)
-          closestPosition = i
-          console.log(keys[i])
-          console.log(position)
-          this.positionPlayer(keys[i])
-          break
-        } else if (position !== keys[j]) {
-          closestPosition = j
-          console.log(keys[j])
-          console.log(position)
-          this.positionPlayer(keys[j])
-          break
-        } else {
-          // Check further positions
-          if (i>0) {
-            i--
-          }
-          if (j<10) {
-            j++
+    // Find closest match
+    for (const position of keys) {
+      if (Math.abs(keys.indexOf(position) - positionIndex) < Math.abs(keys.indexOf(position) - closestPosition)) {
+        let isAvailable = true
+        for (const occupied of this.props.occupiedPositions) {
+          if (occupied === position) {
+            isAvailable = false
           }
         }
+        if (isAvailable) {
+          closestPosition = keys.indexOf(position)
+        }
       }
-      // Prevent infinite loop
-      break
     }
+    // Add player to pitch
+    this.positionPlayer(keys[closestPosition])
   }
 
   dragStart = (x, y) => {
