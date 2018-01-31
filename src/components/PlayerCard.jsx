@@ -27,6 +27,16 @@ export default class PlayerCard extends React.Component {
           preferredPosition = "DC2"
         }
       }
+      // Support for special positions
+      if (preferredPosition === "ATT") {
+        preferredPosition = "BU"
+      } else if (preferredPosition === "MDC" || preferredPosition === "MOC") {
+        preferredPosition = "MC"
+      } else if (preferredPosition === "DLG") {
+        preferredPosition = "DG"
+      } else if (preferredPosition === "DLD") {
+        preferredPosition = "DD"
+      }
       for (const position in this.props.tactic) {
         // Check if the position is part of the selected tactic
         if (preferredPosition === position) {
@@ -127,9 +137,18 @@ export default class PlayerCard extends React.Component {
       // Check if next positions are available
       for (const position of this.props.occupiedPositions) {
         if (position !== keys[i]) {
+          //console.log('found match: ' + keys[i] + " vs " + position)
           closestPosition = i
+          console.log(keys[i])
+          console.log(position)
+          this.positionPlayer(keys[i])
+          break
         } else if (position !== keys[j]) {
           closestPosition = j
+          console.log(keys[j])
+          console.log(position)
+          this.positionPlayer(keys[j])
+          break
         } else {
           // Check further positions
           if (i>0) {
@@ -142,9 +161,6 @@ export default class PlayerCard extends React.Component {
       }
       // Prevent infinite loop
       break
-    }
-    if (closestPosition >= 0) {
-      this.positionPlayer(keys[closestPosition])
     }
   }
 
