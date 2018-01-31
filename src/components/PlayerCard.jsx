@@ -109,6 +109,7 @@ export default class PlayerCard extends React.Component {
   }
 
   positionPlayer = position => {
+    console.log(position)
     ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
     ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
     this.props.occupyPosition(position)
@@ -130,7 +131,10 @@ export default class PlayerCard extends React.Component {
     let closestPosition = -1
     // Find closest match
     for (const position of keys) {
-      if (Math.abs(keys.indexOf(position) - positionIndex) < Math.abs(keys.indexOf(position) - closestPosition)) {
+      if (
+        closestPosition === -1 ||
+        Math.abs(keys.indexOf(position) - positionIndex) < Math.abs(keys.indexOf(position) - closestPosition)
+      ) {
         let isAvailable = true
         for (const occupied of this.props.occupiedPositions) {
           if (occupied === position) {
@@ -143,6 +147,7 @@ export default class PlayerCard extends React.Component {
       }
     }
     // Add player to pitch
+    console.log(closestPosition)
     this.positionPlayer(keys[closestPosition])
   }
 
