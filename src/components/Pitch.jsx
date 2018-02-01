@@ -44,7 +44,6 @@ export default class Pitch extends React.Component {
         newPositions.splice(i, 1)
       }
     }
-    console.log(`unoccupy ${this.state.occupiedPositions.length - newPositions.length}`)
     this.setState({ occupiedPositions: newPositions })
   }
 

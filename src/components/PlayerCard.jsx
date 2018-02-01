@@ -215,7 +215,6 @@ export default class PlayerCard extends React.Component {
         if (!isAvailable) {
           // Do the reverse travel with the other player
           const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
-          //console.log(cardToMove.classList[1])
           this.props.positionPlayer(activePosition, cardToMove.classList[1])
         }
         // Update position indicators

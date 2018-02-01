@@ -149,7 +149,7 @@ class SearchPlayer extends Component {
     // Make room for new players
     this.setState({ maxPlayersAmount: false })
   }
-
+  
   render() {
     return (
       <div>
