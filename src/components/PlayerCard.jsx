@@ -112,6 +112,7 @@ export default class PlayerCard extends React.Component {
     console.log(position)
     ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
     ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
+    ReactDOM.findDOMNode(this).style.transform = 'unset'
     this.props.occupyPosition(position)
     this.setState({ activePosition: position })
     // Hide position indicator 
@@ -201,6 +202,26 @@ export default class PlayerCard extends React.Component {
         document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
       }, 500)
     }
+    // Get card center relatively to Pitch
+    const cardCenterPos = {}
+    cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - document.querySelector('.Pitch').getBoundingClientRect().left) / document.querySelector('.Pitch').getBoundingClientRect().width
+    cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - document.querySelector('.Pitch').getBoundingClientRect().top) / document.querySelector('.Pitch').getBoundingClientRect().height
+    // Snap to position if dragged next to position indicator
+    for (const indicator of Object.keys(this.props.tactic)) {
+      if (
+        indicator !== this.state.activePosition &&
+        this.getDistance(
+          this.props.tactic[indicator].x,
+          this.props.tactic[indicator].y,
+          cardCenterPos.x,
+          cardCenterPos.y
+        ) < 7
+      ) {
+        this.props.unoccupyPosition(this.state.activePosition)
+        this.dragEnd()
+        this.positionPlayer(indicator)
+      }
+    }
   }
 
   dragEnd = () => {
@@ -213,6 +234,15 @@ export default class PlayerCard extends React.Component {
     // Hide bin
     document.querySelector('.Pitch .Trash').classList.remove('visible')
   }
+
+  // Calculate distance between 2 points
+  getDistance = (x0, y0, x1, y1) => {
+    // Using Pythagore
+    const differenceX = x0 - x1
+    const differenceY = y0 - y1
+    return Math.sqrt(Math.pow(differenceX, 2) + Math.pow(differenceY, 2))
+  }
+
 
   render() {
     return(
