@@ -4,6 +4,7 @@
   "license": "CC BY-NC-ND 3.0",
   "private": true,
   "dependencies": {
+    "html2canvas": "^1.0.0-alpha.9",
     "normalize-css": "^2.3.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

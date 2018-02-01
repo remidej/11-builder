@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Pitch from './components/Pitch.jsx'
 
+const html2canvas = require("html2canvas")
 const playersIndex = require('./data/index.json')
 let tactic = require('./tactics/442.json')
 
@@ -23,7 +24,18 @@ class App extends Component {
               <option value="simple">Simple</option>
               <option value="futuristic">Futuristic</option>
             </select>
-            <div href="#" title="Generate lineup" className="CTA">
+            <div
+              href="#"
+              title="Generate lineup"
+              className="CTA"
+              onClick={ () => {
+                // Create canvas from pitch
+                html2canvas(document.querySelector('.Pitch'))
+                .then(canvas => {
+                    // TODO: download canvas
+                  })
+              } }
+            >
               Download your lineup as a JPEG
             </div>
           </div>
