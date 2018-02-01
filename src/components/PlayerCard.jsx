@@ -218,8 +218,12 @@ export default class PlayerCard extends React.Component {
         ) < 7
       ) {
         this.props.unoccupyPosition(this.state.activePosition)
-        this.dragEnd()
+        this.setState({
+          differenceX: 0,
+          differenceY: 0,
+        })
         this.positionPlayer(indicator)
+        this.dragEnd()
       }
     }
   }
