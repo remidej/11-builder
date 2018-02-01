@@ -217,13 +217,16 @@ export default class PlayerCard extends React.Component {
           cardCenterPos.y
         ) < 7
       ) {
+        // Update position indicators
+        document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
+        // Prepare next drag
         this.props.unoccupyPosition(this.state.activePosition)
         this.setState({
           differenceX: 0,
           differenceY: 0,
         })
-        this.positionPlayer(indicator)
         this.dragEnd()
+        this.positionPlayer(indicator)
       }
     }
   }
