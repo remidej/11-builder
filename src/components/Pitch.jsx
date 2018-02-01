@@ -48,6 +48,17 @@ export default class Pitch extends React.Component {
     this.setState({ occupiedPositions: newPositions })
   }
 
+  positionPlayer = (position, selector) => {
+    const card = document.querySelector(`.${selector}`)
+    card.style.left = `${this.props.tactic[position].x - 8.5}%`
+    card.style.top = `${this.props.tactic[position].y - 8.75}%`
+    card.style.transform = 'unset'
+    this.occupyPosition(position)
+    card.dataset.activePosition = position
+    // Hide position indicator 
+    document.querySelector(`[data-position='${position}']`).style.opacity = 0
+  }
+
   render() {
     // Create skeleton
     return (
@@ -83,6 +94,7 @@ export default class Pitch extends React.Component {
                 occupiedPositions={ this.state.occupiedPositions }
                 occupyPosition={ this.occupyPosition }
                 unoccupyPosition={ this.unoccupyPosition }
+                positionPlayer= { this.positionPlayer }
               />
             )
           }) }

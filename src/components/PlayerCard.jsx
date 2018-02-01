@@ -11,8 +11,7 @@ export default class PlayerCard extends React.Component {
       originX: 0,
       originY: 0,
       toBeDeleted: false,
-      lastTouch: {x: 0, y: 0},
-      activePosition: ""
+      lastTouch: {x: 0, y: 0}
     }
   }
 
@@ -52,7 +51,7 @@ export default class PlayerCard extends React.Component {
           }
           if (isAvailable) {
             // Position player where he belongs
-            this.positionPlayer(position)
+            this.props.positionPlayer(position, `Player${ this.props.player.id }`)
             break mainLoop
           } else if (i === this.props.player.positions.length - 1) {
             this.findClosestPosition()
@@ -108,17 +107,6 @@ export default class PlayerCard extends React.Component {
     })
   }
 
-  positionPlayer = position => {
-    console.log(position)
-    ReactDOM.findDOMNode(this).style.left = `${this.props.tactic[position].x - 8.5}%`
-    ReactDOM.findDOMNode(this).style.top = `${this.props.tactic[position].y - 8.75}%`
-    ReactDOM.findDOMNode(this).style.transform = 'unset'
-    this.props.occupyPosition(position)
-    this.setState({ activePosition: position })
-    // Hide position indicator 
-    document.querySelector(`[data-position='${position}']`).style.opacity = 0
-  }
-
   findClosestPosition = () => {
     let positionIndex = -1
     const keys = Object.keys(this.props.tactic)
@@ -148,8 +136,7 @@ export default class PlayerCard extends React.Component {
       }
     }
     // Add player to pitch
-    console.log(closestPosition)
-    this.positionPlayer(keys[closestPosition])
+    this.props.positionPlayer(keys[closestPosition], `Player${this.props.player.id}`)
   }
 
   dragStart = (x, y) => {
@@ -198,8 +185,9 @@ export default class PlayerCard extends React.Component {
         // Delete player
         this.props.unselectPlayer(this.props.player)
         // Reset position indicator
-        this.props.unoccupyPosition(this.state.activePosition)
-        document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
+        const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
+        this.props.unoccupyPosition(activePosition)
+        document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
       }, 500)
     }
     // Get card center relatively to Pitch
@@ -209,7 +197,7 @@ export default class PlayerCard extends React.Component {
     // Snap to position if dragged next to position indicator
     for (const indicator of Object.keys(this.props.tactic)) {
       if (
-        indicator !== this.state.activePosition &&
+        indicator !== ReactDOM.findDOMNode(this).dataset.activePosition &&
         this.getDistance(
           this.props.tactic[indicator].x,
           this.props.tactic[indicator].y,
@@ -225,16 +213,17 @@ export default class PlayerCard extends React.Component {
         }
         // Only snap player if position is available
         if (isAvailable) {
+          const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
           // Update position indicators
-          document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
+          document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
           // Prepare next drag
-          this.props.unoccupyPosition(this.state.activePosition)
+          this.props.unoccupyPosition(activePosition)
           this.setState({
             differenceX: 0,
             differenceY: 0,
           })
           this.dragEnd()
-          this.positionPlayer(indicator)
+          this.props.positionPlayer(indicator, `Player${this.props.player.id}`)
         }
       }
     }
@@ -262,7 +251,7 @@ export default class PlayerCard extends React.Component {
 
   render() {
     return(
-      <div className="PlayerCard" key={this.props.player.id}>
+      <div className={ `PlayerCard Player${this.props.player.id}` } key={this.props.player.id}>
         <img
           className="Portrait"
           src={ this.props.player.photo }
