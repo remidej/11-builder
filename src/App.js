@@ -129,6 +129,10 @@ class SearchPlayer extends Component {
     if (window.innerWidth < 910) {
       document.querySelector('.Results').style.display = 'none'
     }
+    // Focus search bar
+    if (this.state.selectedPlayers.length < 11) {
+      document.querySelector('.Search-player').focus()
+    }
   }
 
   unselectPlayer = playerObject => {
