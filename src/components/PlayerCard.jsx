@@ -116,9 +116,8 @@ export default class PlayerCard extends React.Component {
         positionIndex = i
       }
     }
-    // Search in both directions at the same time
-    let closestPosition = -1
     // Find closest match
+    let closestPosition = -1
     for (const position of keys) {
       if (
         closestPosition === -1 ||
@@ -211,20 +210,24 @@ export default class PlayerCard extends React.Component {
             isAvailable = false
           }
         }
-        // Only snap player if position is available
-        if (isAvailable) {
-          const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
-          // Update position indicators
-          document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
-          // Prepare next drag
-          this.props.unoccupyPosition(activePosition)
-          this.setState({
-            differenceX: 0,
-            differenceY: 0,
-          })
-          this.dragEnd()
-          this.props.positionPlayer(indicator, `Player${this.props.player.id}`)
+        const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
+        // Swap players is position is occupied
+        if (!isAvailable) {
+          // Do the reverse travel with the other player
+          const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
+          //console.log(cardToMove.classList[1])
+          this.props.positionPlayer(activePosition, cardToMove.classList[1])
         }
+        // Update position indicators
+        document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
+        // Prepare next drag
+        this.props.unoccupyPosition(activePosition)
+        this.setState({
+          differenceX: 0,
+          differenceY: 0,
+        })
+        this.dragEnd()
+        this.props.positionPlayer(indicator, `Player${this.props.player.id}`)
       }
     }
   }
