@@ -215,18 +215,27 @@ export default class PlayerCard extends React.Component {
           this.props.tactic[indicator].y,
           cardCenterPos.x,
           cardCenterPos.y
-        ) < 7
+        ) < 8
       ) {
-        // Update position indicators
-        document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
-        // Prepare next drag
-        this.props.unoccupyPosition(this.state.activePosition)
-        this.setState({
-          differenceX: 0,
-          differenceY: 0,
-        })
-        this.dragEnd()
-        this.positionPlayer(indicator)
+        let isAvailable = true
+        for (const occupied of this.props.occupiedPositions) {
+          if (occupied === indicator) {
+            isAvailable = false
+          }
+        }
+        // Only snap player if position is available
+        if (isAvailable) {
+          // Update position indicators
+          document.querySelector(`[data-position='${this.state.activePosition}']`).style.opacity = 1
+          // Prepare next drag
+          this.props.unoccupyPosition(this.state.activePosition)
+          this.setState({
+            differenceX: 0,
+            differenceY: 0,
+          })
+          this.dragEnd()
+          this.positionPlayer(indicator)
+        }
       }
     }
   }
