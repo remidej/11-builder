@@ -93,7 +93,7 @@
   bottom: 5px;
 }
 
-.Settings .Customize .Pitch-style, .Settings .Customize .Tactic {
+.Settings .Menu {
   margin: 0;
   box-sizing: border-box;
   width: 162px;
@@ -106,10 +106,27 @@
   border: none;
   color: #000;
   cursor: pointer;
+  text-align: center;
+  transform-origin: bottom left;
+  transition: 1s transform ease-in-out;
+}
+
+.Settings .Menu .Selected {
+  margin: 0;
+}
+
+.Settings .Menu .Options {
+  display: none;
+  margin: 0;
 }
 
 .Settings .Customize .Tactic {
   margin-right: 15px;
+}
+
+.Settings .Customize .Tactic.expanded {
+  margin-right: 0;
+  transform: translateY(-71px) scaleX(2);
 }
 
 .Settings .CTA {

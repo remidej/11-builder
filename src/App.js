@@ -9,14 +9,30 @@ const playersIndex = require('./data/index.json')
 let tactic = require('./tactics/442.json')
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { activeTactic: "4-4-2" }
+  }
+
   render() {
     return(
       <div className="App">
         <div className="Settings">
-          <SearchPlayer addPlayerToState={this.addPlayerToState}/>
+          <SearchPlayer/>
           <div className="Customize">
-            <div className="Tactic">Tactic: 4-3-3</div>
-            <div className="Pitch-style">Color: green</div>
+            <div
+              className="Tactic Menu"
+              onClick={ () => { this.toggleTacticMenu() } }
+            >
+              <div className="Options">
+                <div data-tactic="433">4-3-3</div>
+                <div data-tactic="433">4-3-3</div>
+                <div data-tactic="433">4-3-3</div>
+                <div data-tactic="433">4-3-3</div>
+              </div>
+              <p className="Selected">{ `Tactic: ${this.state.activeTactic}` }</p>
+            </div>
+            <div className="Pitch-style Menu">Color: green</div>
             <div
               href="#"
               title="Generate lineup"
