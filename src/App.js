@@ -15,15 +15,8 @@ class App extends Component {
         <div className="Settings">
           <SearchPlayer addPlayerToState={this.addPlayerToState}/>
           <div className="Customize">
-            <select className="Tactic" defaultValue="433">
-              <option value="442">4 - 4 - 2</option>
-              <option value="433">4 - 3 - 3</option>
-              <option value="352">3 - 5 - 2</option>
-            </select>
-            <select className="Pitch-style" defaultValue="simple">
-              <option value="simple">Simple</option>
-              <option value="futuristic">Futuristic</option>
-            </select>
+            <div className="Tactic">Tactic: 4-3-3</div>
+            <div className="Pitch-style">Color: green</div>
             <div
               href="#"
               title="Generate lineup"

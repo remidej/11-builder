@@ -93,14 +93,19 @@
   bottom: 5px;
 }
 
-.Settings .Customize select {
+.Settings .Customize .Pitch-style, .Settings .Customize .Tactic {
+  margin: 0;
+  box-sizing: border-box;
   width: 162px;
+  line-height: 56px;
   height: 56px;
   display: inline-block;
   background: #fafafa;
   border-radius: 3px;
   padding: 0 20px;
   border: none;
+  color: #000;
+  cursor: pointer;
 }
 
 .Settings .Customize .Tactic {
