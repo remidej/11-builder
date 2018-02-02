@@ -34,9 +34,15 @@ export default class Customize extends React.Component {
   }
 
   setColor = color => {
+    const palette = {
+      green: "#2E7D32",
+      red: "#921616",
+      blue: "#303F9F",
+      black: "#212121"
+    }
     // Apply color change
     const pitch = document.querySelector('.Pitch')
-    pitch.style.background = color
+    pitch.style.background = palette[color]
     // Save color change
     this.setState({ pitchColor: color })
   }
