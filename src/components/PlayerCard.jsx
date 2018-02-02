@@ -181,10 +181,10 @@ export default class PlayerCard extends React.Component {
       this.dragEnd()
       ReactDOM.findDOMNode(this).style.background = 'rgba(255, 0, 0, 0.5)'
       window.setTimeout(() => {
+        const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
         // Delete player
         this.props.unselectPlayer(this.props.player)
         // Reset position indicator
-        const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
         this.props.unoccupyPosition(activePosition)
         document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
       }, 500)

@@ -11,7 +11,6 @@ export default class Customize extends React.Component {
   
   toggleTacticMenu = () => {
     const tacticButton = document.querySelector('.Tactic')
-
     if (tacticButton.classList.contains('expanded')) {
       // Collapse menu
       tacticButton.classList.remove('expanded')
@@ -23,7 +22,6 @@ export default class Customize extends React.Component {
   
   toggleColorMenu = () => {
     const colorButton = document.querySelector('.Pitch-style')
-
     if (colorButton.classList.contains('expanded')) {
       // Collapse menu
       colorButton.classList.remove('expanded')
