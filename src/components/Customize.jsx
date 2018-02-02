@@ -17,6 +17,7 @@ export default class Customize extends React.Component {
     } else {
       // Expand menu
       tacticButton.classList.add('expanded')
+      this.outsideClickHandler(tacticButton)
     }
   }
   
@@ -28,6 +29,7 @@ export default class Customize extends React.Component {
     } else {
       // Expand menu
       colorButton.classList.add('expanded')
+      this.outsideClickHandler(colorButton)
     }
   }
 
@@ -37,6 +39,24 @@ export default class Customize extends React.Component {
     pitch.style.background = color
     // Save color change
     this.setState({ pitchColor: color })
+  }
+
+  outsideClickHandler = button => {
+    document.addEventListener('click', e => {
+      const isClickInside = button.contains(e.target);
+      if (!isClickInside) {
+        // User clicked outside
+        if (button.classList.contains('Tactic') && button.classList.contains('expanded')) {
+          // Collapse tactic menu
+          e.preventDefault()
+          this.toggleTacticMenu()
+        } else if (button.classList.contains('Pitch-style') && button.classList.contains('expanded')) {
+          // Collapse tactic menu
+          e.preventDefault()
+          this.toggleColorMenu()
+        }
+      }
+    });
   }
 
   render() {
@@ -59,9 +79,9 @@ export default class Customize extends React.Component {
           onClick={() => {this.toggleColorMenu()} }
         >
           <div className="Options">
+            <div data-tactic="4-3-3" onClick={() => { this.setColor('green') }}>Green</div>
             <div data-tactic="4-3-3" onClick={() => { this.setColor('blue') }}>Blue</div>
             <div data-tactic="4-3-3" onClick={() => { this.setColor('red') }}>Red</div>
-            <div data-tactic="4-3-3" onClick={() => { this.setColor('orange') }}>Orange</div>
             <div data-tactic="4-3-3" onClick={() => { this.setColor('black') }}>Black</div>
           </div>
           <p className="Selected">{`Colour: ${this.state.pitchColor}`}</p>

@@ -191,8 +191,9 @@ export default class PlayerCard extends React.Component {
     }
     // Get card center relatively to Pitch
     const cardCenterPos = {}
-    cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - document.querySelector('.Pitch').getBoundingClientRect().left) / document.querySelector('.Pitch').getBoundingClientRect().width
-    cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - document.querySelector('.Pitch').getBoundingClientRect().top) / document.querySelector('.Pitch').getBoundingClientRect().height
+    const pitch = document.querySelector('.Pitch')
+    cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - pitch.getBoundingClientRect().left) / pitch.getBoundingClientRect().width
+    cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - pitch.getBoundingClientRect().top) / pitch.getBoundingClientRect().height
     // Snap to position if dragged next to position indicator
     for (const indicator of Object.keys(this.props.tactic)) {
       if (
