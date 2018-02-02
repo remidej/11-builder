@@ -183,10 +183,15 @@
   position: absolute;
   left: calc(100% + 20px);
   top: 0;
-  background: linear-gradient(to bottom, #2cac2a 0%, #1a6b1d 100%);
+  background: green;
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
   perspective: 800px;
   overflow: hidden;
+}
+
+.Pitch > div {
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
 }
 
 .Pitch::after {
