@@ -76,7 +76,7 @@ export default class Customize extends React.Component {
         </div>
         <div
           className="Pitch-style Menu"
-          onClick={() => {this.toggleColorMenu()} }
+          onClick={() => {this.toggleColorMenu()}}
         >
           <div className="Options">
             <div data-tactic="4-3-3" onClick={() => { this.setColor('green') }}>Green</div>
