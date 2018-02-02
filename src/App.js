@@ -6,26 +6,33 @@ import Pitch from './components/Pitch.jsx'
 import Customize from './components/Customize.jsx'
 
 const playersIndex = require('./data/index.json')
-let tactic = require('./tactics/3-4-3.json')
+let tactic = require('./tactics/4-3-3.json')
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { activeTactic: "4-3-3" }
+    this.state = {
+      activeTactic: tactic,
+      activeTacticName: "4-3-3"
+    }
   }
 
-  setActiveTactic = tactic => {
-    this.setState({ activeTactic: tactic })
+  setActiveTactic = tacticName => {
+    const newTactic = require(`./tactics/${tacticName}.json`)
+    this.setState({
+      activeTactic: newTactic,
+      activeTacticName: tacticName
+    })
   }
 
   render() {
     return(
       <div className="App">
         <div className="Settings">
-          <SearchPlayer/>
+          <SearchPlayer tactic={this.state.activeTactic}/>
           <Customize
-            activeTactic={ this.state.activeTactic }
-            setActiveTactic={ this.setActiveTactic }
+            activeTacticName={this.state.activeTacticName}
+            setActiveTactic={this.setActiveTactic}
           />
         </div>
       </div>
@@ -144,14 +151,14 @@ class SearchPlayer extends Component {
         <input
           className="Search-player"
           type="search"
-          value={ this.state.value }
-          onFocus = { () => { document.querySelector('.Results').style.display = 'block'} }
-          onChange={ this.updateSearch }
+          value={this.state.value}
+          onFocus = {() => { document.querySelector('.Results').style.display = 'block'}}
+          onChange={ this.updateSearch}
           placeholder="Search for a player..."
           autoFocus
         />
         <div className="Results">
-          { this.state.noMatches &&
+          {this.state.noMatches &&
             <div className="Result-player">
               <p className="Status">No matching player</p>
             </div>
@@ -161,7 +168,7 @@ class SearchPlayer extends Component {
             <div
               key={player.id}
               className="Result-player grabbable"
-              onClick={ () => {this.selectPlayer(player)} }
+              onClick={() => {this.selectPlayer(player)}}
             >
               <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
@@ -172,23 +179,23 @@ class SearchPlayer extends Component {
               />
             </div>
           )) }
-          { this.state.isLoading &&
+          {this.state.isLoading &&
             // Display loading messages while waiting for results
             <div className="Result-player">
               <p className="Status">Loading players...</p>
             </div>
           }
-          { this.state.maxPlayersAmount &&
+          {this.state.maxPlayersAmount &&
             <div className="Result-player">
               <p className="Status">Can't add more players</p>
             </div>
           }
         </div>
 				<Pitch
-          playersList={ this.state.selectedPlayers }
+          playersList={ this.state.selectedPlayers}
           className="Pitch"
-          unselectPlayer={ this.unselectPlayer }
-          tactic={ tactic }
+          unselectPlayer={this.unselectPlayer}
+          tactic={this.props.tactic}
         />
       </div>
     )

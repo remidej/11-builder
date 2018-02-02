@@ -78,7 +78,7 @@ export default class Customize extends React.Component {
             <div data-tactic="4-3-3" onClick={() => { this.props.setActiveTactic('3-5-2') }}>3-5-2</div>
             <div data-tactic="4-3-3" onClick={() => { this.props.setActiveTactic('3-4-3') }}>3-4-3</div>
           </div>
-          <p className="Selected">{`Tactic: ${this.props.activeTactic}`}</p>
+          <p className="Selected">{`Tactic: ${this.props.activeTacticName}`}</p>
         </div>
         <div
           className="Pitch-style Menu"
