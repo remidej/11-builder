@@ -109,13 +109,13 @@
   cursor: pointer;
   text-align: center;
   transform-origin: bottom left;
-  transition: 0.5s transform ease-in-out;
+  transition: 0.3s transform ease-in-out;
   will-change: transform;
 }
 
 .Settings .Menu .Selected {
   margin: 0;
-  transition: 0.5s transform ease-in-out;
+  transition: 0.3s transform ease-in-out;
 }
 
 .Settings .Menu.expanded .Selected {
@@ -135,12 +135,12 @@
   bottom: 51px;
   overflow: hidden;
   margin: 0;
-  transition: 0.5s transform ease-in-out;
+  transition: 0.3s transform ease-in-out;
   will-change: transform;
   transform: scaleY(0);
 }
 
-.Settings .Menu.expanded .Options, .Settings .Menu:hover .Options {
+.Settings .Menu.expanded .Options {
   transform: scaleY(1);
 }
 
