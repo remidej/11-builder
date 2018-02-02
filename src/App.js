@@ -3,8 +3,8 @@
 import React, { Component } from 'react'
 import './App.css'
 import Pitch from './components/Pitch.jsx'
+import Customize from './components/Customize.jsx'
 
-const html2canvas = require("html2canvas")
 const playersIndex = require('./data/index.json')
 let tactic = require('./tactics/442.json')
 
@@ -19,35 +19,7 @@ class App extends Component {
       <div className="App">
         <div className="Settings">
           <SearchPlayer/>
-          <div className="Customize">
-            <div
-              className="Tactic Menu"
-              onClick={ () => { this.toggleTacticMenu() } }
-            >
-              <div className="Options">
-                <div data-tactic="433">4-3-3</div>
-                <div data-tactic="433">4-3-3</div>
-                <div data-tactic="433">4-3-3</div>
-                <div data-tactic="433">4-3-3</div>
-              </div>
-              <p className="Selected">{ `Tactic: ${this.state.activeTactic}` }</p>
-            </div>
-            <div className="Pitch-style Menu">Color: green</div>
-            <div
-              href="#"
-              title="Generate lineup"
-              className="CTA"
-              onClick={ () => {
-                // Create canvas from pitch
-                html2canvas(document.querySelector('.Pitch'))
-                .then(canvas => {
-                    // TODO: download canvas
-                  })
-              } }
-            >
-              Download your lineup as a JPEG
-            </div>
-          </div>
+          <Customize activeTactic={ this.state.activeTactic }/>
         </div>
       </div>
     )
