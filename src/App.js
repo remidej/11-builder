@@ -6,7 +6,7 @@ import Pitch from './components/Pitch.jsx'
 import Customize from './components/Customize.jsx'
 
 const playersIndex = require('./data/index.json')
-let tactic = require('./tactics/3-5-2.json')
+let tactic = require('./tactics/3-4-3.json')
 
 class App extends Component {
   constructor(props) {
