@@ -14,12 +14,19 @@ class App extends Component {
     this.state = { activeTactic: "4-4-2" }
   }
 
+  setActiveTactic = tactic => {
+    this.setState({ activeTactic: tactic })
+  }
+
   render() {
     return(
       <div className="App">
         <div className="Settings">
           <SearchPlayer/>
-          <Customize activeTactic={ this.state.activeTactic }/>
+          <Customize
+            activeTactic={ this.state.activeTactic }
+            setActiveTactic={ this.setActiveTactic }
+          />
         </div>
       </div>
     )

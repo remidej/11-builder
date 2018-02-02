@@ -90,6 +90,7 @@
 
 .Settings .Customize {
   position: absolute;
+  width: 100%;
   bottom: 5px;
 }
 
@@ -108,25 +109,59 @@
   cursor: pointer;
   text-align: center;
   transform-origin: bottom left;
-  transition: 1s transform ease-in-out;
+  transition: 0.5s transform ease-in-out;
+  will-change: transform;
 }
 
 .Settings .Menu .Selected {
   margin: 0;
+  transition: 0.5s transform ease-in-out;
 }
 
-.Settings .Menu .Options {
-  display: none;
+.Settings .Menu.expanded .Selected {
   margin: 0;
 }
 
-.Settings .Customize .Tactic {
-  margin-right: 15px;
+.Settings .Menu .Options {
+  display: flex;
+  flex-direction: column-reverse;
+  transform-origin: bottom center;
+  width: 162px;
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  background: #fafafa;
+  padding-bottom: 5px;
+  bottom: 51px;
+  overflow: hidden;
+  margin: 0;
+  transition: 0.5s transform ease-in-out;
+  will-change: transform;
+  transform: scaleY(0);
 }
 
-.Settings .Customize .Tactic.expanded {
-  margin-right: 0;
-  transform: translateY(-71px) scaleX(2);
+.Settings .Menu.expanded .Options, .Settings .Menu:hover .Options {
+  transform: scaleY(1);
+}
+
+.Settings .Menu .Options div {
+  background: #fafafa;
+  height: 56px;
+  width: 162px;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.Settings .Menu .Options div:hover {
+  background: #ececec;
+}
+
+.Settings .Menu.Tactic {
+  position: relative;
+}
+
+.Settings .Menu.Pitch-style {
+  position: absolute;
+  right: 0;
 }
 
 .Settings .CTA {
