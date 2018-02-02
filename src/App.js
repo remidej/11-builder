@@ -6,12 +6,12 @@ import Pitch from './components/Pitch.jsx'
 import Customize from './components/Customize.jsx'
 
 const playersIndex = require('./data/index.json')
-let tactic = require('./tactics/442.json')
+let tactic = require('./tactics/3-5-2.json')
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { activeTactic: "4-4-2" }
+    this.state = { activeTactic: "4-3-3" }
   }
 
   setActiveTactic = tactic => {
