@@ -104,16 +104,15 @@ export default class Pitch extends React.Component {
 }
 
 class PositionIndicator extends React.Component {
-  componentDidMount() {
-    ReactDOM.findDOMNode(this).style.left = this.props.leftValue
-    ReactDOM.findDOMNode(this).style.top = this.props.topValue
-  }
-  
   render() {
     return(
       <div
         className="PositionIndicator"
         data-position={ this.props.position }
+        style={{
+          left: this.props.leftValue,
+          top: this.props.topValue
+        }}
       ></div>
     )
   }
