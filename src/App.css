@@ -196,17 +196,17 @@
 
 .Pitch::after {
   content: "";
-  background: url('/pitches/basic.svg');
+  background: url('/pitches/basic3d.svg');
   background-size: cover;
   background-position: center center;
   position: absolute;
   display: block;
   transform-origin: bottom center;
-  transform: rotateX(45deg) scale(1.4);
-  bottom: -1%;
+  transform: scale(1.12);
+  bottom: 0;
   left: 5%;
   width: 90%;
-  height: 109%;
+  height: 76%;
 }
 
 .Trash {
