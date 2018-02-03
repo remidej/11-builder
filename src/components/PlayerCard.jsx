@@ -211,12 +211,15 @@ export default class PlayerCard extends React.Component {
             isAvailable = false
           }
         }
+        if (this.props.playersList.length === 11) {
+          isAvailable = false
+        }
         const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
         // Swap players is position is occupied
         if (!isAvailable) {
           // Do the reverse travel with the other player
           const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
-          this.props.unoccupyPosition(activePosition)
+          this.props.unoccupyPosition(indicator)
           this.props.positionPlayer(activePosition, cardToMove.classList[1])
         }
         // Update position indicators

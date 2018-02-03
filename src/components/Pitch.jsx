@@ -60,7 +60,6 @@ export default class Pitch extends React.Component {
   }
 
   positionPlayer = (position, selector) => {
-    console.log('move')
     const card = document.querySelector(`.${selector}`)
     card.style.left = `${this.props.tactic[position].x - 8.5}%`
     card.style.top = `${this.props.tactic[position].y - 8.75}%`
@@ -81,32 +80,33 @@ export default class Pitch extends React.Component {
             className="EditLineupName"
             rows="1"
             maxLength="21"
-            value={ this.state.lineupName }
-            onChange={ this.editLineupName }
+            value={this.state.lineupName}
+            onChange={this.editLineupName}
           />
-          <h2 className="LineupName">{ this.state.lineupName }</h2>
+          <h2 className="LineupName">{this.state.lineupName}</h2>
           { Object.keys(this.props.tactic).map(positionKey => {
             return (
               <PositionIndicator
-                key={ positionKey }
-                position={ positionKey }
-                leftValue={ `${this.props.tactic[positionKey].x}%` }
-                topValue={ `${this.props.tactic[positionKey].y}%` }
+                key={positionKey}
+                position={positionKey}
+                leftValue={`${this.props.tactic[positionKey].x}%`}
+                topValue={`${this.props.tactic[positionKey].y}%`}
               />
             )
           }) }
           { this.props.playersList.map(player => {
             return(
               <PlayerCard
-                player={ player }
-                key={ player.id }
-                tactic={ this.props.tactic }
-                parentFrame={ this.state.frame }
-                unselectPlayer={ this.props.unselectPlayer }
-                occupiedPositions={ this.state.occupiedPositions }
-                occupyPosition={ this.occupyPosition }
-                unoccupyPosition={ this.unoccupyPosition }
-                positionPlayer= { this.positionPlayer }
+                player={player}
+                key={player.id}
+                tactic={this.props.tactic}
+                parentFrame={this.state.frame}
+                unselectPlayer={this.props.unselectPlayer}
+                occupiedPositions={this.state.occupiedPositions}
+                playersList={this.props.playersList}
+                occupyPosition={this.occupyPosition}
+                unoccupyPosition={this.unoccupyPosition}
+                positionPlayer= {this.positionPlayer}
               />
             )
           }) }
@@ -121,7 +121,7 @@ class PositionIndicator extends React.Component {
     return(
       <div
         className="PositionIndicator"
-        data-position={ this.props.position }
+        data-position={this.props.position}
         style={{
           left: this.props.leftValue,
           top: this.props.topValue
