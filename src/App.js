@@ -30,11 +30,11 @@ class App extends Component {
     // Generate canvas from pitch
     html2canvas(document.querySelector('.Pitch'))
       .then(canvas => {
-        // TODO: download canvas
-        const button = document.querySelector('.CTA')
-        button.classList.remove('disabled')
+        // Create image download on call to action
+        const button = document.querySelector(".CTA")
+        button.classList.remove("disabled")
         button.download = "lineup.png"
-        button.href = canvas.toDataURL('image/png')
+        button.href = canvas.toDataURL("image/png")
       })
   }
 
