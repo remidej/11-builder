@@ -5,6 +5,7 @@ import './App.css'
 import Pitch from './components/Pitch.jsx'
 import Customize from './components/Customize.jsx'
 
+const html2canvas = require("html2canvas")
 const playersIndex = require('./data/index.json')
 let tactic = require('./tactics/4-3-3.json')
 
@@ -25,14 +26,30 @@ class App extends Component {
     })
   }
 
+  createCanvas = () => {
+    // Generate canvas from pitch
+    html2canvas(document.querySelector('.Pitch'))
+      .then(canvas => {
+        // TODO: download canvas
+        const button = document.querySelector('.CTA')
+        button.classList.remove('disabled')
+        button.download = "lineup.png"
+        button.href = canvas.toDataURL('image/png')
+      })
+  }
+
   render() {
     return(
       <div className="App">
         <div className="Settings">
-          <SearchPlayer tactic={this.state.activeTactic}/>
+          <SearchPlayer
+            tactic={this.state.activeTactic}
+            createCanvas={this.createCanvas}
+          />
           <Customize
             activeTacticName={this.state.activeTacticName}
             setActiveTactic={this.setActiveTactic}
+            createCanvas={this.createCanvas}
           />
         </div>
       </div>
@@ -196,6 +213,7 @@ class SearchPlayer extends Component {
           className="Pitch"
           unselectPlayer={this.unselectPlayer}
           tactic={this.props.tactic}
+          createCanvas={this.props.createCanvas}
         />
       </div>
     )

@@ -203,7 +203,7 @@
   display: block;
   transform-origin: bottom center;
   transform: scale(1.12);
-  bottom: 0;
+  bottom: -1%;
   left: 5%;
   width: 90%;
   height: 76%;
@@ -328,7 +328,7 @@
 }
 
 .disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: default !important;
 }
 

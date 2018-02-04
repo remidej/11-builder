@@ -1,8 +1,6 @@
 import React from 'react'
 //import ReactDOM from 'react-dom'
 
-const html2canvas = require("html2canvas")
-
 export default class Customize extends React.Component {
   constructor(props) {
     super(props)
@@ -92,18 +90,10 @@ export default class Customize extends React.Component {
           </div>
           <p className="Selected">{`Colour: ${this.state.pitchColor}`}</p>
         </div>
-        <div
-          href="#"
+        <a
           title="Generate lineup"
-          className="CTA"
-          onClick={() => {
-            // Create canvas from pitch
-            html2canvas(document.querySelector('.Pitch'))
-              .then(canvas => {
-                // TODO: download canvas
-              })
-          }}
-        >Download your lineup as a JPEG</div>
+          className="CTA disabled"
+        >Download your lineup as a JPEG</a>
       </div>
     )
   }
