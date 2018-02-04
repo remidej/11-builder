@@ -100,8 +100,6 @@ export default class PlayerCard extends React.Component {
     })
     ReactDOM.findDOMNode(this).addEventListener('touchend', e => {
       if (this.state.isDragging) {
-        // Remove the hover style
-        ReactDOM.findDOMNode(this).style.background = 'transparent'
         this.dragEnd(this.state.lastTouch.x, this.state.lastTouch.y)
       }
     })
@@ -243,6 +241,8 @@ export default class PlayerCard extends React.Component {
       previousMoveY: this.state.differenceY
     })
     ReactDOM.findDOMNode(this).style.zIndex = "300"
+    // Remove the hover style
+    ReactDOM.findDOMNode(this).style.background = 'transparent'
     // Hide bin
     document.querySelector('.Pitch .Trash').classList.remove('visible')
   }
