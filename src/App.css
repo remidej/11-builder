@@ -348,9 +348,14 @@
     max-width: 100vw;
   }
 
-  /* input.Search-player {
+  input.Search-player {
     position: absolute;
-  } */
+    z-index: 100;
+  }
+
+  .Settings .Results {
+    top: 56px;
+  }
 
   .Settings > div {
     position: absolute;

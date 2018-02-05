@@ -61,12 +61,14 @@ export default class Pitch extends React.Component {
 
   positionPlayer = (position, selector) => {
     const card = document.querySelector(`.${selector}`)
+    // Position card
     card.style.left = `${this.props.tactic[position].x - 8.5}%`
     card.style.top = `${this.props.tactic[position].y - 8.75}%`
     card.style.transform = 'unset'
+    // Update data
     this.occupyPosition(position)
-    card.dataset.activePosition = position
     // Hide position indicator 
+    card.dataset.activePosition = position
     document.querySelector(`[data-position='${position}']`).style.opacity = 0
     // Create canvas if all players were added
     if (this.props.playersList.length === 11) {
@@ -110,7 +112,8 @@ export default class Pitch extends React.Component {
                 playersList={this.props.playersList}
                 occupyPosition={this.occupyPosition}
                 unoccupyPosition={this.unoccupyPosition}
-                positionPlayer= {this.positionPlayer}
+                positionPlayer={this.positionPlayer}
+                createCanvas={this.props.createCanvas}
               />
             )
           }) }

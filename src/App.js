@@ -28,7 +28,7 @@ class App extends Component {
 
   createCanvas = () => {
     // Generate canvas from pitch
-    html2canvas(document.querySelector('.Pitch'))
+    html2canvas(document.querySelector('.Pitch'), {scale: 2})
       .then(canvas => {
         // Create image download on call to action
         const button = document.querySelector(".CTA")

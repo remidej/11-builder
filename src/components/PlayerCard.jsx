@@ -185,6 +185,7 @@ export default class PlayerCard extends React.Component {
         // Reset position indicator
         this.props.unoccupyPosition(activePosition)
         document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
+        document.querySelector('.CTA').classList.add('disabled')
       }, 500)
     }
     // Get card center relatively to Pitch
@@ -245,6 +246,10 @@ export default class PlayerCard extends React.Component {
     ReactDOM.findDOMNode(this).style.background = 'transparent'
     // Hide bin
     document.querySelector('.Pitch .Trash').classList.remove('visible')
+    // Update canvas if all players were added
+    if (this.props.playersList.length === 11) {
+      this.props.createCanvas()
+    }
   }
 
   // Calculate distance between 2 points
