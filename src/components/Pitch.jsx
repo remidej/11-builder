@@ -22,10 +22,9 @@ export default class Pitch extends React.Component {
     this.setState({ frame, lineupName: 'My team' })
   }
 
-  componentDidUpdate(newProps) {
+  componentDidUpdate(prevProps) {
     // Only trigger if tactic is changed
-    if (this.props.tactic !== newProps.tactic) {
-      console.log(newProps.tactic)
+    if (this.props.tactic !== prevProps.tactic) {
       for (const position of this.state.occupiedPositions) {
         const cardToMove = document.querySelector(`[data-active-position='${position}']`)
         this.unoccupyPosition(position)
