@@ -66,8 +66,8 @@ export default class Pitch extends React.Component {
     card.style.transform = 'unset'
     // Update data
     this.occupyPosition(position)
-    // Hide position indicator 
     card.dataset.activePosition = position
+    // Hide position indicator 
     document.querySelector(`[data-position='${position}']`).style.opacity = 0
     // Create canvas if all players were added
     if (this.props.playersList.length === 11) {
