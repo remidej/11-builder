@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react"
+import ReactDOM from "react-dom"
 
 export default class PlayerCard extends React.Component {
   constructor(props) {
@@ -22,8 +22,8 @@ export default class PlayerCard extends React.Component {
     mainLoop: for (let preferredPosition of this.props.player.positions) {
       i++
       // Support for 2 central defenders
-      if (preferredPosition === 'DC') {
-        if (this.props.occupiedPositions.find(e => e === 'DC1') === undefined) {
+      if (preferredPosition === "DC") {
+        if (this.props.occupiedPositions.find(e => e === "DC1") === undefined) {
           preferredPosition = "DC1"
         } else {
           preferredPosition = "DC2"
@@ -61,26 +61,26 @@ export default class PlayerCard extends React.Component {
       }
     }
     // Start drag
-    ReactDOM.findDOMNode(this).addEventListener('mousedown', e => {
+    ReactDOM.findDOMNode(this).addEventListener("mousedown", e => {
       this.dragStart(e.clientX, e.clientY)
     })
-    ReactDOM.findDOMNode(this).addEventListener('touchstart', e => {
+    ReactDOM.findDOMNode(this).addEventListener("touchstart", e => {
       this.dragStart(e.touches[0].clientX, e.touches[0].clientY)
       // Save position to prepare touchend
       this.setState({
         lastTouch: { x: e.touches[0].clientX, y: e.touches[0].clientY }
       })
       // Add hover style
-      ReactDOM.findDOMNode(this).style.background = 'rgba(0, 0, 0, 0.2)'
+      ReactDOM.findDOMNode(this).classList.add("Selected")
     })
     // Calculate drag distance
-    ReactDOM.findDOMNode(this).addEventListener('mousemove', e => {
+    ReactDOM.findDOMNode(this).addEventListener("mousemove", e => {
       // Only drag if mouse is being pressed
       if (this.state.isDragging) {
         this.dragMove(e.clientX, e.clientY)
       }
     })
-    ReactDOM.findDOMNode(this).addEventListener('touchmove', e => {
+    ReactDOM.findDOMNode(this).addEventListener("touchmove", e => {
       // Only drag if mouse is being pressed
       if (this.state.isDragging) {
         // Prevent scroll
@@ -93,12 +93,12 @@ export default class PlayerCard extends React.Component {
       }
     })
     // End drag
-    ReactDOM.findDOMNode(this).addEventListener('mouseup', e => {
+    ReactDOM.findDOMNode(this).addEventListener("mouseup", e => {
       if (this.state.isDragging) {
         this.dragEnd(e.clientX, e.clientY)
       }
     })
-    ReactDOM.findDOMNode(this).addEventListener('touchend', e => {
+    ReactDOM.findDOMNode(this).addEventListener("touchend", e => {
       if (this.state.isDragging) {
         this.dragEnd(this.state.lastTouch.x, this.state.lastTouch.y)
       }
@@ -152,7 +152,7 @@ export default class PlayerCard extends React.Component {
     }
     ReactDOM.findDOMNode(this).style.zIndex = "400"
     // Show bin
-    document.querySelector('.Pitch .Trash').classList.add('visible')
+    document.querySelector(".Pitch .Trash").classList.add("visible")
   }
 
   dragMove = (x, y) => {
@@ -185,7 +185,7 @@ export default class PlayerCard extends React.Component {
         // Reset position indicator
         this.props.unoccupyPosition(activePosition)
         document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
-        document.querySelector('.CTA').classList.add('disabled')
+        document.querySelector(".CTA").classList.add("disabled")
       }, 300)
     }
     // Get card center relatively to Pitch
@@ -243,9 +243,9 @@ export default class PlayerCard extends React.Component {
     })
     ReactDOM.findDOMNode(this).style.zIndex = "300"
     // Remove the hover style
-    ReactDOM.findDOMNode(this).style.background = 'transparent'
+    ReactDOM.findDOMNode(this).classList.remove("Selected")
     // Hide bin
-    document.querySelector('.Pitch .Trash').classList.remove('visible')
+    document.querySelector(".Pitch .Trash").classList.remove("visible")
     // Update canvas if all players were added
     if (this.props.playersList.length === 11) {
       this.props.createCanvas()
