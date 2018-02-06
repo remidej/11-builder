@@ -291,6 +291,10 @@
 }
 
 .PlayerCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   width: 17%;
   height: 17.5%;
   z-index: 300;
@@ -309,21 +313,15 @@
 }
 
 .PlayerCard .Portrait {
-  position: absolute;
-  top: 0;
-  left: 50%;
   width: 80%;
   height: auto;
-  transform: translateX(-50%);
   border-bottom: 2px solid white;
 }
 
 .PlayerCard p {
-  position: absolute;
   text-transform: uppercase;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   width: 100%;
-  bottom: 0;
   margin: 0;
   font-size: 16px;
   user-select: none;
@@ -418,6 +416,11 @@
     transform: translate(-50%, 65px);
   }
 
+  .Pitch .Trash {
+    width: 90%;
+    margin: 0 5%;
+  }
+
   .Pitch .LineupName {
     top: 1.5%;
     font-size: 8vw;
@@ -442,6 +445,5 @@
 
   .PlayerCard p {
     font-size: 3.4vw;
-    bottom: 3px;
   }
 }
