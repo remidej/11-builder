@@ -1,5 +1,4 @@
 import React from 'react'
-import Pitch from './Pitch.jsx'
 
 export default class SearchPlayer extends React.Component {
   constructor(props) {
@@ -8,8 +7,6 @@ export default class SearchPlayer extends React.Component {
       value: "",
       isLoading: false,
       noMatches: false,
-      results: [],
-      selectedPlayers: [],
       maxPlayersAmount: false
     }
   }
@@ -41,7 +38,8 @@ export default class SearchPlayer extends React.Component {
     }
     // Sort results by players ranking
     searchResults.sort((a, b) => { return b.rating - a.rating })
-    this.setState({ results: searchResults })
+    //this.setState({ results: searchResults })
+    this.props.setResults(searchResults)
   }
 
   updateSearch = e => {
@@ -52,56 +50,10 @@ export default class SearchPlayer extends React.Component {
       isLoading: true
     })
     // Prevent adding more than 11 players
-    if (this.state.selectedPlayers.length < 11) {
+    if (this.props.selectedPlayers.length < 11) {
       // Trigger search
       this.getPlayersData(e.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
     }
-  }
-
-  selectPlayer = playerObject => {
-    let newSelection = this.state.selectedPlayers
-    newSelection.push(playerObject)
-    this.setState({ selectedPlayers: newSelection })
-    // Remove selected player from index so it can't be added twice
-    const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-    this.props.addToBackups(formattedName)
-    this.props.removeFromIndex(formattedName)
-    // Hide selected player from results
-    let newResults = this.state.results
-    for (let i = 0; i < this.state.results.length; i++) {
-      if (this.state.results[i] === playerObject) {
-        newResults.splice(i, 1)
-      }
-    }
-    this.setState({ results: newResults })
-    // Prevent adding more than 11 players
-    if (this.state.selectedPlayers.length > 10) {
-      this.setState({ maxPlayersAmount: true })
-    }
-    // Hide other results on mobile
-    if (window.innerWidth < 910) {
-      document.querySelector('.Results').style.display = 'none'
-    }
-    // Focus search bar
-    if (this.state.selectedPlayers.length < 11) {
-      document.querySelector('.Search-player').focus()
-    }
-  }
-
-  unselectPlayer = playerObject => {
-    let newSelection = this.state.selectedPlayers
-    for (let i = 0; i < this.state.selectedPlayers.length; i++) {
-      if (this.state.selectedPlayers[i] === playerObject) {
-        newSelection.splice(i, 1)
-      }
-    }
-    this.setState({ selectedPlayers: newSelection })
-    // Put player back in index
-    const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-    this.props.addToIndex(formattedName)
-    this.props.removeFromBackups(formattedName)
-    // Make room for new players
-    this.setState({ maxPlayersAmount: false })
   }
 
   render() {
@@ -122,12 +74,12 @@ export default class SearchPlayer extends React.Component {
               <p className="Status">No matching player</p>
             </div>
           }
-          {!this.state.maxPlayersAmount && this.state.results.map(player => (
+          {!this.state.maxPlayersAmount && this.props.results.map(player => (
             // Create result list from search results
             <div
               key={player.id}
               className="Result-player grabbable"
-              onClick={() => { this.selectPlayer(player) }}
+              onClick={() => {this.props.selectPlayer(player) }}
             >
               <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
@@ -150,13 +102,6 @@ export default class SearchPlayer extends React.Component {
             </div>
           }
         </div>
-        <Pitch
-          playersList={this.state.selectedPlayers}
-          className="Pitch"
-          unselectPlayer={this.unselectPlayer}
-          tactic={this.props.tactic}
-          createCanvas={this.props.createCanvas}
-        />
       </div>
     )
   }
