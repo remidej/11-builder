@@ -177,7 +177,7 @@ export default class PlayerCard extends React.Component {
     } else {
       // Prevent further dragging
       this.dragEnd()
-      ReactDOM.findDOMNode(this).style.background = 'rgba(255, 0, 0, 0.5)'
+      ReactDOM.findDOMNode(this).style.opacity = "0"
       window.setTimeout(() => {
         const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
         // Delete player
@@ -186,7 +186,7 @@ export default class PlayerCard extends React.Component {
         this.props.unoccupyPosition(activePosition)
         document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
         document.querySelector('.CTA').classList.add('disabled')
-      }, 500)
+      }, 300)
     }
     // Get card center relatively to Pitch
     const cardCenterPos = {}

@@ -6,8 +6,7 @@ export default class SearchPlayer extends React.Component {
     this.state = {
       value: "",
       isLoading: false,
-      noMatches: false,
-      maxPlayersAmount: false
+      noMatches: false
     }
   }
 
@@ -74,7 +73,7 @@ export default class SearchPlayer extends React.Component {
               <p className="Status">No matching player</p>
             </div>
           }
-          {!this.state.maxPlayersAmount && this.props.results.map(player => (
+          {this.props.selectedPlayers.length < 11 && this.props.results.map(player => (
             // Create result list from search results
             <div
               key={player.id}
@@ -96,7 +95,7 @@ export default class SearchPlayer extends React.Component {
               <p className="Status">Loading players...</p>
             </div>
           }
-          {this.state.maxPlayersAmount &&
+          {this.props.selectedPlayers.length >= 11 &&
             <div className="Result-player">
               <p className="Status">Can't add more players</p>
             </div>

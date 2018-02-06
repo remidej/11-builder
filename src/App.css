@@ -301,6 +301,7 @@
   border-radius: 5px;
   font-family: 'saira condensed', Arial, Helvetica, sans-serif;
   font-weight: 500;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .PlayerCard:hover {
@@ -356,15 +357,18 @@
     max-width: 100vw;
     z-index: 100;
     transform: translate(50%);
+    pointer-events: none;
   }
 
   input.Search-player {
     position: absolute;
     z-index: 100;
+    pointer-events: auto;
   }
 
   .Settings .Results {
     top: 56px;
+    pointer-events: auto;
   }
 
   .Settings > div {
@@ -386,7 +390,7 @@
     top: calc(100vw + 64px);
     margin: 0;
     width: 100%;
-
+    pointer-events: auto;
   }
 
   .Settings .Customize .Menu{
