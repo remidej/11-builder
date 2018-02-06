@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-content: center;
+  align-content: top;
 }
 
 .Settings {
@@ -341,18 +341,21 @@
   }
 
   .App {
+    top: 71px;
+    transform: translate(-50%, 0);
     width: 100vw;
     flex-wrap: wrap;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
+    align-content: center;
     height: calc(100vh - 61px);
   }
 
   .App .Settings {
     width: 100%;
     max-width: 100vw;
-    transform: translateX(50%);
     z-index: 100;
+    transform: translate(50%);
   }
 
   input.Search-player {
@@ -408,9 +411,7 @@
   .Pitch {
     width: 100vw;
     height: 100vw;
-    left: -100%;
-    transform: translate(-50%, -20px);
-    top: 65px;
+    transform: translate(-50%, 65px);
   }
 
   .Pitch .LineupName {
