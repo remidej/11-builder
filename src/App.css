@@ -5,6 +5,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
 }
 
 .Settings {
@@ -180,9 +184,6 @@
 .Pitch {
   width: 540px;
   height: 540px;
-  position: absolute;
-  left: calc(100% + 20px);
-  top: 0;
   background: #2E7D32;
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
   perspective: 800px;
