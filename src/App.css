@@ -334,6 +334,7 @@
 }
 
 @media screen and (max-width: 910px) {
+
   h1 {
     font-size: 35px;
     margin: 13px auto;
@@ -341,12 +342,17 @@
 
   .App {
     width: 100vw;
-    height: unset;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100vh - 61px);
   }
 
   .App .Settings {
     width: 100%;
     max-width: 100vw;
+    transform: translateX(50%);
+    z-index: 100;
   }
 
   input.Search-player {
@@ -402,7 +408,8 @@
   .Pitch {
     width: 100vw;
     height: 100vw;
-    left: -10px;
+    left: -100%;
+    transform: translate(-50%, -20px);
     top: 65px;
   }
 
