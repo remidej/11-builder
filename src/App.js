@@ -5,9 +5,10 @@ import './App.css'
 import SearchPlayer from './components/SearchPlayer.jsx'
 import Customize from './components/Customize.jsx'
 import Pitch from './components/Pitch.jsx'
-const html2canvas = require("html2canvas")
+//const html2canvas = require("html2canvas")
+const rasterizeHTML = require("rasterizehtml")
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -30,14 +31,64 @@ class App extends React.Component {
 
   createCanvas = () => {
     // Generate canvas from pitch
-    html2canvas(document.querySelector('.Pitch'), {scale: 2})
-      .then(canvas => {
-        // Create image download on call to action
-        const button = document.querySelector(".CTA")
-        button.classList.remove("disabled")
-        button.download = "lineup.png"
-        button.href = canvas.toDataURL("image/png")
-      })
+    // html2canvas(document.querySelector('.Pitch'), {scale: 2})
+    //   .then(canvas => {
+    //     // Create image download on call to action
+    //     const button = document.querySelector(".CTA")
+    //     button.classList.remove("disabled")
+    //     button.download = "lineup.png"
+    //     button.href = canvas.toDataURL("image/png")
+    //     document.body.appendChild(canvas)
+    //   })
+    // Create canvas
+    const canvas = document.createElement("canvas")
+    canvas.width = "540"
+    canvas.height = "540"
+    document.body.appendChild(canvas)
+    const pitch = document.querySelector(".Pitch")
+    let newPitch = document.createElement("div")
+    var copyComputedStyle = function (from, to) {
+      var computed_style_object = false;
+      //trying to figure out which style object we need to use depense on the browser support
+      //so we try until we have one
+      computed_style_object = from.currentStyle || document.defaultView.getComputedStyle(from, null);
+
+      //if the browser dose not support both methods we will return null
+      if (!computed_style_object) return null;
+
+      var stylePropertyValid = function (name, value) {
+        //checking that the value is not a undefined
+        return typeof value !== 'undefined' &&
+          //checking that the value is not a object
+          typeof value !== 'object' &&
+          //checking that the value is not a function
+          typeof value !== 'function' &&
+          //checking that we dosent have empty string
+          value.length > 0 &&
+          //checking that the property is not int index ( happens on some browser
+          value != parseInt(value)
+
+      };
+
+      //we iterating the computed style object and compy the style props and the values 
+      for (const property in computed_style_object) {
+        //checking if the property and value we get are valid sinse browser have different implementations
+        if (stylePropertyValid(property, computed_style_object[property])) {
+          //applying the style property to the target element
+          to.style[property] = computed_style_object[property];
+
+        }
+      }
+
+    }
+    copyComputedStyle(pitch, newPitch)
+    console.log(newPitch)
+    rasterizeHTML.drawDocument(newPitch, canvas)
+    // Prepare download
+    const button = document.querySelector(".CTA")
+    button.classList.remove("disabled")
+    button.download = "lineup.png"
+    button.href = canvas.toDataURL("image/png")
   }
 
   removeFromIndex = playerName => {
@@ -152,5 +203,3 @@ class App extends React.Component {
     )
   }
 }
-
-export default App
