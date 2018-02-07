@@ -39,6 +39,10 @@ export default class Pitch extends React.Component {
     this.setState({
       lineupName: e.target.value
     })
+    // Update canvas
+    if (this.props.playersList.length === 11) {
+      this.props.createCanvas()
+    }
   }
 
   occupyPosition = position => {
