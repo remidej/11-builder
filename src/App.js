@@ -90,10 +90,6 @@ class App extends React.Component {
       this.setState({ maxPlayersAmount: true })
     }
     // Hide other results on mobile
-    if (window.innerWidth < 910) {
-      document.querySelector('.Results').style.display = 'none'
-    }
-    // Focus search bar
     if (this.state.selectedPlayers.length < 11) {
       document.querySelector('.Search-player').focus()
     }
@@ -147,10 +143,9 @@ class App extends React.Component {
         <Pitch
           playersList={this.state.selectedPlayers}
           className="Pitch"
-          unselectPlayer={this.unselectPlayer} // ok
-          tactic={this.state.activeTactic} // ok
-          createCanvas={this.createCanvas} // ok
-          // New
+          unselectPlayer={this.unselectPlayer}
+          tactic={this.state.activeTactic}
+          createCanvas={this.createCanvas}
           selectPlayer={this.state.selectPlayer}
         />
       </div>

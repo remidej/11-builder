@@ -455,7 +455,7 @@
   }
 
   .PlayerCard p {
-    font-size: 2.7vw;
-    transform: translateY(-1.5vw);
+    font-size: 2.7vmin;
+    transform: translateY(-1.5vmin);
   }
 }

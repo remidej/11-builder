@@ -73,12 +73,17 @@ export default class SearchPlayer extends React.Component {
               <p className="Status">No matching player</p>
             </div>
           }
-          {this.props.selectedPlayers.length < 11 && this.props.results.map(player => (
+          {this.props.selectedPlayers.length < 11 &&
+          this.state.value !== "" &&
+          this.props.results.map(player => (
             // Create result list from search results
             <div
               key={player.id}
               className="Result-player grabbable"
-              onClick={() => {this.props.selectPlayer(player) }}
+              onClick={() => {
+                this.props.selectPlayer(player)
+                this.setState({ value: "" })
+              }}
             >
               <img alt={player.name} src={player.photo} className="Photo" />
               <p className="Name">{player.name}</p>
