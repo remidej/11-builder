@@ -1,0 +1,19 @@
+{
+    "name": "11 Builder",
+    "short_name": "11 Builder",
+    "icons": [
+        {
+            "src": "/favicons/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicons/android-chrome-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#681b27",
+    "background_color": "#681b27",
+    "display": "standalone"
+}
