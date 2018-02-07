@@ -4,6 +4,7 @@
   "license": "CC BY-NC-ND 3.0",
   "private": true,
   "dependencies": {
+    "computed-style-to-inline-style": "^2.0.0",
     "html2canvas": "^1.0.0-alpha.9",
     "normalize-css": "^2.3.1",
     "rasterizehtml": "^1.2.4",

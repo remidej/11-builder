@@ -7,6 +7,7 @@ import Customize from './components/Customize.jsx'
 import Pitch from './components/Pitch.jsx'
 //const html2canvas = require("html2canvas")
 const rasterizeHTML = require("rasterizehtml")
+const computedToInline = require("computed-style-to-inline-style")
 
 export default class App extends React.Component {
   constructor(props) {
@@ -34,8 +35,9 @@ export default class App extends React.Component {
     canvas.width = "540"
     canvas.height = "540"
     document.body.appendChild(canvas)
-    const pitch = document.querySelector(".Pitch")
-    rasterizeHTML.drawDocument(pitch, canvas)
+    let domPitch = document.querySelector(".Pitch")
+    computedToInline(domPitch, {recursive: true})
+    rasterizeHTML.drawDocument(domPitch, canvas)
     // Prepare download
     const button = document.querySelector(".CTA")
     button.classList.remove("disabled")
