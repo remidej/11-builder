@@ -22,10 +22,12 @@ export default class Pitch extends React.Component {
     this.setState({ frame, lineupName: 'My team' })
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     // Only trigger if tactic is changed
     if (this.props.tactic !== prevProps.tactic) {
-      for (const position of this.state.occupiedPositions) {
+      // Save occupied positions before rearranging positions
+      const lockedOccupiedPositions = Array.from(this.state.occupiedPositions)
+      for (const position of lockedOccupiedPositions) {
         const cardToMove = document.querySelector(`[data-active-position='${position}']`)
         this.unoccupyPosition(position)
         this.positionPlayer(position, cardToMove.classList[1])
@@ -59,6 +61,7 @@ export default class Pitch extends React.Component {
   }
 
   positionPlayer = (position, selector) => {
+    //console.log(position)
     const card = document.querySelector(`.${selector}`)
     // Position card
     card.style.left = `${this.props.tactic[position].x - 8.5}%`
