@@ -193,6 +193,7 @@
 }
 
 .Pitch {
+  position: relative;
   width: 540px;
   height: 540px;
   background: #2E7D32;
@@ -206,16 +207,15 @@
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 5%, rgba(255, 255, 255, 0) 100%);
 }
 
-.Pitch::after {
-  content: "";
-  background: url('/pitches/basic3d.svg');
+.Pitch .Outlines {
+  /* background: url('/pitches/basic3d.svg');
   background-size: cover;
-  background-position: center center;
+  background-position: center center; */
   position: absolute;
   display: block;
   transform-origin: bottom center;
-  transform: scale(1.12);
-  bottom: -1%;
+  transform: scale(1.41);
+  bottom: -13%;
   left: 5%;
   width: 90%;
   height: 76%;
