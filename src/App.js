@@ -37,8 +37,7 @@ export default class App extends React.Component {
   }
 
   createCanvas = () => {
-    // Remove hover styles
-    const hoveredElements = Array.from(document.querySelectorAll(".PlayerCard"))
+    // Fix playerCard hover style by overriding inline styles
     const style = document.createElement("style")
     style.type = "text/css"
     style.innerText = ".PlayerCard {background: transparent !important;}"
@@ -49,11 +48,12 @@ export default class App extends React.Component {
     const width = domPitch.getBoundingClientRect().width
     canvas.width = width
     canvas.height = width
+    // Reset Pitch transform to just before screenshot
     if (window.innerWidth <= 910) {
       domPitch.style.transform = "unset"
     }
     computedToInline(domPitch, {recursive: true})
-    // Revert pitch transform styling
+    // Revert Pitch transform back to normal
     if (window.innerWidth <= 910) {
       domPitch.classList.add("Transform")
     }
@@ -67,7 +67,20 @@ export default class App extends React.Component {
         button.classList.remove("disabled")
         button.download = "lineup.png"
         button.href = canvas.toDataURL("image/png")
-        //document.body.appendChild(canvas)
+        // Fix hover style on textedit
+        const editLineupName = document.querySelector(".Pitch .EditLineupName")
+        editLineupName.addEventListener("mouseenter", () => {
+          style.innerText = `
+            ${style.innerText}
+            .Pitch .EditLineupName {opacity: 1 !important;}
+          `
+        })
+        editLineupName.addEventListener("mouseleave", () => {
+          style.innerText = `
+            ${style.innerText}
+            .Pitch .EditLineupName {opacity: 0 !important;}
+          `
+        })
       })
   }
 
