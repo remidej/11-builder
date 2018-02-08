@@ -38,12 +38,22 @@ export default class App extends React.Component {
 
   createCanvas = () => {
     const canvas = document.createElement("canvas")
-    canvas.width = "540"
-    canvas.height = "540"
-    let domPitch = document.querySelector(".Pitch")
+    canvas.width = 540
+    canvas.height = 540
+    const domPitch = document.querySelector(".Pitch")
+    if (window.innerWidth <= 910) {
+      domPitch.style.transform = "unset"
+    }
     computedToInline(domPitch, {recursive: true})
-    rasterizeHTML.drawDocument(domPitch, canvas)
+    rasterizeHTML.drawDocument(domPitch)
       .then(renderResult => {
+        // Revert pitch transform styling
+        if (window.innerWidth <= 910) {
+          domPitch.style.transform = "translate(-50%, 65px)"
+        }
+        // Create canvas
+        const context = canvas.getContext("2d")
+        context.drawImage(renderResult.image, 0, 0, window.innerWidth, window.innerWidth, 0, 0, 540, 540)
         // Prepare download
         const button = document.querySelector(".CTA")
         button.classList.remove("disabled")
