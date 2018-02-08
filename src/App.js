@@ -1,11 +1,13 @@
 // Team of the week: https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22page%22:1,%22quality%22:%22totw_gold%22,%22position%22:%22GK%22%7D
 
+// Import components
 import React from 'react'
 import './App.css'
 import SearchPlayer from './components/SearchPlayer.jsx'
 import Customize from './components/Customize.jsx'
 import Pitch from './components/Pitch.jsx'
-//const html2canvas = require("html2canvas")
+
+// Import dependencies
 const rasterizeHTML = require("rasterizehtml")
 const computedToInline = require("computed-style-to-inline-style")
 
@@ -34,7 +36,6 @@ export default class App extends React.Component {
     const canvas = document.createElement("canvas", 800, 800)
     canvas.width = "540"
     canvas.height = "540"
-    document.body.appendChild(canvas)
     let domPitch = document.querySelector(".Pitch")
     computedToInline(domPitch, {recursive: true})
     rasterizeHTML.drawDocument(domPitch, canvas)
