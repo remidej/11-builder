@@ -65,7 +65,6 @@ export default class Pitch extends React.Component {
   }
 
   positionPlayer = (position, selector) => {
-    //console.log(position)
     const card = document.querySelector(`.${selector}`)
     // Position card
     card.style.left = `${this.props.tactic[position].x - 8.5}%`

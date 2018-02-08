@@ -43,6 +43,8 @@ export default class Customize extends React.Component {
     pitch.style.background = palette[color]
     // Save color change
     this.setState({ pitchColor: color })
+    // Update canvas
+    this.props.createCanvas()
   }
 
   outsideClickHandler = button => {

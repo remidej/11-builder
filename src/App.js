@@ -30,6 +30,8 @@ export default class App extends React.Component {
       activeTactic: newTactic,
       activeTacticName: tacticName
     })
+    // Update rendered canvas
+    this.createCanvas()
   }
 
   createCanvas = () => {
