@@ -31,11 +31,13 @@ export default class App extends React.Component {
       activeTacticName: tacticName
     })
     // Update rendered canvas
-    this.createCanvas()
+    if (this.state.selectedPlayers.length === 11) {
+      this.createCanvas()
+    }
   }
 
   createCanvas = () => {
-    const canvas = document.createElement("canvas", 800, 800)
+    const canvas = document.createElement("canvas")
     canvas.width = "540"
     canvas.height = "540"
     let domPitch = document.querySelector(".Pitch")
@@ -47,6 +49,7 @@ export default class App extends React.Component {
         button.classList.remove("disabled")
         button.download = "lineup.png"
         button.href = canvas.toDataURL("image/png")
+        //document.body.appendChild(canvas)
       })
   }
 
@@ -148,6 +151,7 @@ export default class App extends React.Component {
             activeTacticName={this.state.activeTacticName}
             setActiveTactic={this.setActiveTactic}
             createCanvas={this.createCanvas}
+            playersList={this.state.selectedPlayers}
           />
         </div>
         <Pitch

@@ -10,7 +10,6 @@ export default class PlayerCard extends React.Component {
       differenceY: 0,
       originX: 0,
       originY: 0,
-      toBeDeleted: false,
       lastTouch: {x: 0, y: 0}
     }
   }
@@ -185,7 +184,11 @@ export default class PlayerCard extends React.Component {
         // Reset position indicator
         this.props.unoccupyPosition(activePosition)
         document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
-        document.querySelector(".CTA").classList.add("disabled")
+        const button = document.querySelector(".CTA")
+        // Prevent downloads
+        button.classList.add("disabled")
+        button.removeAttribute("href")
+        button.removeAttribute("download")
       }, 300)
     }
     // Get card center relatively to Pitch

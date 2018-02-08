@@ -44,7 +44,9 @@ export default class Customize extends React.Component {
     // Save color change
     this.setState({ pitchColor: color })
     // Update canvas
-    this.props.createCanvas()
+    if (this.props.playersList.length === 11) {
+      this.props.createCanvas()
+    }
   }
 
   outsideClickHandler = button => {
