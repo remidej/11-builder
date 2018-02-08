@@ -427,6 +427,10 @@
     transform: translate(-50%, 65px);
   }
 
+  .Pitch.Transform {
+    transform: translate(-50%, 65px) !important;
+  }
+
   .Pitch .Trash {
     width: 90%;
     margin: 0 5%;

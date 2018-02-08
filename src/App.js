@@ -45,12 +45,12 @@ export default class App extends React.Component {
       domPitch.style.transform = "unset"
     }
     computedToInline(domPitch, {recursive: true})
+    // Revert pitch transform styling
+    if (window.innerWidth <= 910) {
+      domPitch.classList.add("Transform")
+    }
     rasterizeHTML.drawDocument(domPitch)
       .then(renderResult => {
-        // Revert pitch transform styling
-        if (window.innerWidth <= 910) {
-          domPitch.style.transform = "translate(-50%, 65px)"
-        }
         // Create canvas
         const context = canvas.getContext("2d")
         context.drawImage(renderResult.image, 0, 0, window.innerWidth, window.innerWidth, 0, 0, 540, 540)
