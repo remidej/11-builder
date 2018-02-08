@@ -304,7 +304,7 @@
 .PlayerCard {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   width: 17%;
   height: 17.5%;
@@ -456,6 +456,5 @@
 
   .PlayerCard p {
     font-size: 2.7vmin;
-    transform: translateY(-1.5vmin);
   }
 }
