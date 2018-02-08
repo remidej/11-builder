@@ -86,7 +86,7 @@ export default class Pitch extends React.Component {
     // Create skeleton
     return (
       <div className="Pitch">
-        <img className="Outlines" src="/pitches/basic3d.svg"/>
+        <img className="Outlines" src="/pitches/basic3d.svg" alt="Pitch outlines"/>
         <div>
           <div className="Trash">Drag out of pitch to remove player</div>
           <textarea

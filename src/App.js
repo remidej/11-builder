@@ -31,18 +31,20 @@ export default class App extends React.Component {
   }
 
   createCanvas = () => {
-    const canvas = document.createElement("canvas")
+    const canvas = document.createElement("canvas", 800, 800)
     canvas.width = "540"
     canvas.height = "540"
     document.body.appendChild(canvas)
     let domPitch = document.querySelector(".Pitch")
     computedToInline(domPitch, {recursive: true})
     rasterizeHTML.drawDocument(domPitch, canvas)
-    // Prepare download
-    const button = document.querySelector(".CTA")
-    button.classList.remove("disabled")
-    button.download = "lineup.png"
-    button.href = canvas.toDataURL("image/png")
+      .then(renderResult => {
+        // Prepare download
+        const button = document.querySelector(".CTA")
+        button.classList.remove("disabled")
+        button.download = "lineup.png"
+        button.href = canvas.toDataURL("image/png")
+      })
   }
 
   removeFromIndex = playerName => {
