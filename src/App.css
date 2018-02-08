@@ -319,8 +319,8 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.PlayerCard:hover, .PlayerCard.Selected {
-  background: rgba(0, 0, 0, 0.2);
+.PlayerCard.Selected {
+  background: rgba(0, 0, 0, 0.2) !important;
 }
 
 .PlayerCard .Portrait {

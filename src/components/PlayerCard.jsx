@@ -59,6 +59,14 @@ export default class PlayerCard extends React.Component {
         }
       }
     }
+    // Set hover style on desktop
+    ReactDOM.findDOMNode(this).addEventListener("mouseenter", () => {
+      ReactDOM.findDOMNode(this).classList.add("Selected")
+    })
+    // Remove hover style on desktop
+    ReactDOM.findDOMNode(this).addEventListener("mouseleave", () => {
+      ReactDOM.findDOMNode(this).classList.remove("Selected")
+    })
     // Start drag
     ReactDOM.findDOMNode(this).addEventListener("mousedown", e => {
       this.dragStart(e.clientX, e.clientY)
@@ -100,6 +108,8 @@ export default class PlayerCard extends React.Component {
     ReactDOM.findDOMNode(this).addEventListener("touchend", e => {
       if (this.state.isDragging) {
         this.dragEnd(this.state.lastTouch.x, this.state.lastTouch.y)
+        // Remove the hover style
+        ReactDOM.findDOMNode(this).classList.remove("Selected")
       }
     })
   }
@@ -245,8 +255,6 @@ export default class PlayerCard extends React.Component {
       previousMoveY: this.state.differenceY
     })
     ReactDOM.findDOMNode(this).style.zIndex = "300"
-    // Remove the hover style
-    ReactDOM.findDOMNode(this).classList.remove("Selected")
     // Hide bin
     document.querySelector(".Pitch .Trash").classList.remove("visible")
     // Update canvas if all players were added
@@ -266,7 +274,10 @@ export default class PlayerCard extends React.Component {
 
   render() {
     return(
-      <div className={ `PlayerCard Player${this.props.player.id}` } key={this.props.player.id}>
+      <div
+        className={`PlayerCard Player${this.props.player.id}`}
+        key={this.props.player.id}
+      >
         <img
           className="Portrait"
           src={ this.props.player.photo }

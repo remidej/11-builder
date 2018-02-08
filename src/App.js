@@ -37,10 +37,18 @@ export default class App extends React.Component {
   }
 
   createCanvas = () => {
+    // Remove hover styles
+    const hoveredElements = Array.from(document.querySelectorAll(".PlayerCard"))
+    const style = document.createElement("style")
+    style.type = "text/css"
+    style.innerText = ".PlayerCard {background: transparent !important;}"
+    document.body.appendChild(style)
+    // Create canvas to draw pitch
     const canvas = document.createElement("canvas")
-    canvas.width = 540
-    canvas.height = 540
     const domPitch = document.querySelector(".Pitch")
+    const width = domPitch.getBoundingClientRect().width
+    canvas.width = width
+    canvas.height = width
     if (window.innerWidth <= 910) {
       domPitch.style.transform = "unset"
     }
@@ -53,7 +61,7 @@ export default class App extends React.Component {
       .then(renderResult => {
         // Create canvas
         const context = canvas.getContext("2d")
-        context.drawImage(renderResult.image, 0, 0, window.innerWidth, window.innerWidth, 0, 0, 540, 540)
+        context.drawImage(renderResult.image, 0, 0, width, width, 0, 0, width, width)
         // Prepare download
         const button = document.querySelector(".CTA")
         button.classList.remove("disabled")
