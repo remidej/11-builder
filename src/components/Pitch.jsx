@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PlayerCard from './PlayerCard.jsx'
+import PositionIndicator from "./PositionIndicator.jsx"
 
 export default class Pitch extends React.Component {
   constructor(props) {
@@ -125,21 +126,6 @@ export default class Pitch extends React.Component {
           }) }
         </div>
       </div>
-    )
-  }
-}
-
-class PositionIndicator extends React.Component {
-  render() {
-    return(
-      <div
-        className="PositionIndicator"
-        data-position={this.props.position}
-        style={{
-          left: this.props.leftValue,
-          top: this.props.topValue
-        }}
-      ></div>
     )
   }
 }
