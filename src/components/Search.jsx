@@ -53,6 +53,8 @@ export default class Search extends React.Component {
     if (this.props.selectedPlayers.length < 11) {
       // Trigger search
       this.getPlayersData(e.target.value.toLocaleLowerCase().normalize().replace(/\s/g, ''))
+    } else {
+      this.setState({ isLoading: false })
     }
   }
 
@@ -96,7 +98,7 @@ export default class Search extends React.Component {
               <p className="Status">Loading players...</p>
             </div>
           }
-          {this.props.selectedPlayers.length >= 11 &&
+          {this.props.selectedPlayers.length >= 11 && window.innerWidth > 910 &&
             <div className="Result-player">
               <p className="Status">Can't add more players</p>
             </div>

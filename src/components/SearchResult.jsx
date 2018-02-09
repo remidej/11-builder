@@ -34,7 +34,8 @@ export default class SearchResult extends React.Component {
         key={this.props.player.id}
         className="Result-player grabbable"
         onClick={() => {
-          if (this.props.lastPlayerToAdd) {
+          if (this.props.lastPlayerToAdd && window.innerWidth <= 910) {
+            // Close keyboard before creating screenshot
             document.querySelector('.Search-player').blur()
             this.props.updateValue("")
             window.setTimeout(() => {
