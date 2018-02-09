@@ -484,7 +484,7 @@ h1 {
   }
 
   .PlayerCard p {
-    font-size: 2.7vmin;
+    font-size: 2.7vw;
   }
 }
 
@@ -517,6 +517,10 @@ h1 {
   }
 
   .App .Pitch .PlayerCard p {
-    font-style: 17px;
+    font-size: 17px;
+  }
+
+  .App .Pitch.Transform {
+    transform: translate(0, 65px) !important;
   }
 }
