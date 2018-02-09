@@ -55,6 +55,10 @@ export default class SearchPlayer extends React.Component {
     }
   }
 
+  updateValue = newValue => {
+    this.setState({ value: newValue })
+  }
+
   render() {
     return (
       <div>
@@ -77,7 +81,11 @@ export default class SearchPlayer extends React.Component {
           this.state.value !== "" &&
           this.props.results.map(player => (
             // Create result list from search results
-            <SearchResult player={player}/>
+            <SearchResult
+              player={player}
+              selectPlayer={this.props.selectPlayer}
+              updateValue={this.updateValue}
+            />
           ))}
           {this.state.isLoading &&
             // Display loading messages while waiting for results
@@ -131,7 +139,7 @@ class SearchResult extends React.Component {
         className="Result-player grabbable"
         onClick={() => {
           this.props.selectPlayer(this.props.player)
-          this.setState({ value: "" })
+          this.props.updateValue("")
         }}
       >
         <img alt={this.props.player.name} src={this.state.picture} className="Photo" />
