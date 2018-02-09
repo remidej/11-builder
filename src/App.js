@@ -47,7 +47,7 @@ export default class App extends React.Component {
     // Create canvas to draw pitch
     const canvas = document.createElement("canvas")
     const domPitch = document.querySelector(".Pitch")
-    const width = domPitch.getBoundingClientRect().width
+    const width = domPitch.getBoundingClientRect().width * 2
     canvas.width = width
     canvas.height = width
     // Reset Pitch transform to just before screenshot
@@ -59,7 +59,7 @@ export default class App extends React.Component {
     if (window.innerWidth <= 910) {
       domPitch.classList.add("Transform")
     }
-    rasterizeHTML.drawDocument(domPitch)
+    rasterizeHTML.drawDocument(domPitch, {zoom: 2})
       .then(renderResult => {
         // Create canvas
         const context = canvas.getContext("2d")
