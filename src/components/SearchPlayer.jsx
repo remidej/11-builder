@@ -101,9 +101,27 @@ class SearchResult extends React.Component {
     super(props)
     this.state = {
       picture: "./data/images/placeholders/portrait.svg",
+      logo: "./data/images/placeholders/logo.svg",
       pictureBackup: this.props.player.photo,
       logoBackup: this.props.player.club.logo
     }
+  }
+
+  componentDidMount() {
+    // Lazyload player picture
+    const actualPicture = new Image()
+    actualPicture.addEventListener("load", () => {
+      // Replace placeholder with real photo once it's ready
+      this.setState({ picture: actualPicture.src })
+    })
+    actualPicture.src = this.state.pictureBackup
+    // Lazyload club logo
+    const actualLogo = new Image()
+    actualLogo.addEventListener("load", () => {
+      // Replace placeholder with real photo once it's ready
+      this.setState({ logo: actualLogo.src })
+    })
+    actualLogo.src = this.state.pictureBackup
   }
 
   render() {
@@ -121,7 +139,7 @@ class SearchResult extends React.Component {
         <img
           className="Icon"
           alt={this.props.player.club.name}
-          src={this.props.player.club.logo}
+          src={this.state.logo}
         />
       </div>
     )
