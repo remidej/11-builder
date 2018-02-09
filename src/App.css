@@ -462,3 +462,25 @@
     font-size: 2.7vmin;
   }
 }
+
+@media screen and (min-width: 600px) and (max-width: 900px) {
+  .App {
+    width: 580px;
+  }
+
+  .App .Settings {
+    position: absolute;
+    left: 0;
+    transform: unset;
+  }
+
+  .App .Settings .Customize {
+    top: calc(580px + 64px);
+  }
+
+  .App .Pitch {
+    width: 100%;
+    height: 580px;
+    transform: translate(0%, 65px);
+  }
+}
