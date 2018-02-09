@@ -463,6 +463,8 @@
   }
 }
 
+/* TABLET LAYOUT */
+
 @media screen and (min-width: 600px) and (max-width: 900px) {
   .App {
     width: 580px;
@@ -482,5 +484,10 @@
     width: 100%;
     height: 580px;
     transform: translate(0%, 65px);
+  }
+
+  .App .Pitch .LineupName, .EditLineupName {
+    font-size: 54px !important;
+    top: 4.5% !important;
   }
 }
