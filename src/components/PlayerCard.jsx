@@ -10,7 +10,9 @@ export default class PlayerCard extends React.Component {
       differenceY: 0,
       originX: 0,
       originY: 0,
-      lastTouch: {x: 0, y: 0}
+      lastTouch: {x: 0, y: 0},
+      picture: "./data/images/placeholders/portrait.svg",
+      pictureBackup: this.props.player.photo
     }
   }
 
@@ -59,6 +61,14 @@ export default class PlayerCard extends React.Component {
         }
       }
     }
+    // Lazyload player picture
+    const actualPicture = new Image()
+    actualPicture.addEventListener("load", () => {
+      // Replace placeholder with real photo once it's ready
+      this.setState({ picture: actualPicture.src })
+    })
+    actualPicture.src = this.state.pictureBackup
+
     // Set hover style on desktop
     ReactDOM.findDOMNode(this).addEventListener("mouseenter", () => {
       ReactDOM.findDOMNode(this).classList.add("Selected")
@@ -284,7 +294,7 @@ export default class PlayerCard extends React.Component {
       >
         <img
           className="Portrait"
-          src={ this.props.player.photo }
+          src={ this.state.picture }
           alt={ this.props.player.name }
           onDragStart={ e => { e.preventDefault() } }
         />
