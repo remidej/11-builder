@@ -116,6 +116,10 @@ export default class App extends React.Component {
   }
 
   selectPlayer = playerObject => {
+    // Focus Search if not all players were added
+    if (this.state.selectedPlayers.length < 10) {
+      document.querySelector('.Search-player').focus()
+    }
     let newSelection = this.state.selectedPlayers
     newSelection.push(playerObject)
     this.setState({ selectedPlayers: newSelection })
@@ -134,10 +138,6 @@ export default class App extends React.Component {
     // Prevent adding more than 11 players
     if (this.state.selectedPlayers.length > 10) {
       this.setState({ maxPlayersAmount: true })
-    }
-    // Hide other results on mobile
-    if (this.state.selectedPlayers.length < 11) {
-      document.querySelector('.Search-player').focus()
     }
   }
 

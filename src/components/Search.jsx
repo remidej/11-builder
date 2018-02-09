@@ -87,6 +87,7 @@ export default class Search extends React.Component {
               selectPlayer={this.props.selectPlayer}
               updateValue={this.updateValue}
               key={`Result${player.id}`}
+              lastPlayerToAdd={this.props.selectedPlayers.length === 10}
             />
           ))}
           {this.state.isLoading &&

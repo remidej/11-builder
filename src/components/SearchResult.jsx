@@ -34,8 +34,16 @@ export default class SearchResult extends React.Component {
         key={this.props.player.id}
         className="Result-player grabbable"
         onClick={() => {
-          this.props.selectPlayer(this.props.player)
-          this.props.updateValue("")
+          if (this.props.lastPlayerToAdd) {
+            document.querySelector('.Search-player').blur()
+            window.setTimeout(() => {
+              this.props.selectPlayer(this.props.player)
+              this.props.updateValue("")
+            }, 400)
+          } else {
+            this.props.selectPlayer(this.props.player)
+            this.props.updateValue("")
+          }
         }}
       >
         <img alt={this.props.player.name} src={this.state.picture} className="Photo" />
