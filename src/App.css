@@ -466,6 +466,11 @@ h1 {
     font-size: 8vw;
   }
 
+  .Pitch .PositionIndicator {
+    width: 4%;
+    height: 4%;
+  }
+
   .PlayerCard {
     height: 19%;
   }
