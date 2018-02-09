@@ -77,22 +77,7 @@ export default class SearchPlayer extends React.Component {
           this.state.value !== "" &&
           this.props.results.map(player => (
             // Create result list from search results
-            <div
-              key={player.id}
-              className="Result-player grabbable"
-              onClick={() => {
-                this.props.selectPlayer(player)
-                this.setState({ value: "" })
-              }}
-            >
-              <img alt={player.name} src={player.photo} className="Photo" />
-              <p className="Name">{player.name}</p>
-              <img
-                className="Icon"
-                alt={player.club.name}
-                src={player.club.logo}
-              />
-            </div>
+            <SearchResult player={player}/>
           ))}
           {this.state.isLoading &&
             // Display loading messages while waiting for results
@@ -106,6 +91,38 @@ export default class SearchPlayer extends React.Component {
             </div>
           }
         </div>
+      </div>
+    )
+  }
+}
+
+class SearchResult extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      picture: "./data/images/placeholders/portrait.svg",
+      pictureBackup: this.props.player.photo,
+      logoBackup: this.props.player.club.logo
+    }
+  }
+
+  render() {
+    return(
+      <div
+        key={this.props.player.id}
+        className="Result-player grabbable"
+        onClick={() => {
+          this.props.selectPlayer(this.props.player)
+          this.setState({ value: "" })
+        }}
+      >
+        <img alt={this.props.player.name} src={this.state.picture} className="Photo" />
+        <p className="Name">{this.props.player.name}</p>
+        <img
+          className="Icon"
+          alt={this.props.player.club.name}
+          src={this.props.player.club.logo}
+        />
       </div>
     )
   }

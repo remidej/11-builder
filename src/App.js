@@ -3,7 +3,7 @@
 // Import components
 import React from 'react'
 import './App.css'
-import SearchPlayer from './components/SearchPlayer.jsx'
+import Search from './components/SearchPlayer.jsx'
 import Customize from './components/Customize.jsx'
 import Pitch from './components/Pitch.jsx'
 
@@ -165,7 +165,7 @@ export default class App extends React.Component {
     return(
       <div className="App">
         <div className="Settings">
-          <SearchPlayer
+          <Search
             tactic={this.state.activeTactic}
             createCanvas={this.createCanvas}
             playersIndex={this.state.playersIndex}
