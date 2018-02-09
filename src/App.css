@@ -490,4 +490,8 @@
     font-size: 54px !important;
     top: 4.5% !important;
   }
+
+  .App .Pitch .PlayerCard p {
+    font-style: 17px;
+  }
 }
