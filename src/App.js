@@ -3,7 +3,7 @@
 // Import components
 import React from 'react'
 import './App.css'
-import Search from './components/SearchPlayer.jsx'
+import Search from './components/Search.jsx'
 import Customize from './components/Customize.jsx'
 import Pitch from './components/Pitch.jsx'
 
