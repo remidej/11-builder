@@ -36,9 +36,9 @@ export default class SearchResult extends React.Component {
         onClick={() => {
           if (this.props.lastPlayerToAdd) {
             document.querySelector('.Search-player').blur()
+            this.props.updateValue("")
             window.setTimeout(() => {
               this.props.selectPlayer(this.props.player)
-              this.props.updateValue("")
             }, 400)
           } else {
             this.props.selectPlayer(this.props.player)
