@@ -261,6 +261,10 @@ export default class PlayerCard extends React.Component {
     if (this.props.playersList.length === 11) {
       this.props.createCanvas()
     }
+    if (window.innerWidth <= 910) {
+      const card = document.querySelector(".PlayerCard.Selected")
+      card.classList.remove("Selected")
+    }
   }
 
   // Calculate distance between 2 points
