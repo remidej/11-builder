@@ -42,7 +42,9 @@ export default class Pitch extends React.Component {
     })
     // Update canvas
     if (this.props.playersList.length === 11) {
-      this.props.createCanvas()
+      window.setTimeout(() => {
+        this.props.createCanvas()
+      }, 400)
     }
   }
 

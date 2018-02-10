@@ -77,8 +77,8 @@ h1 {
 
 .Settings .Results .Result-player .Status {
   display: inline-block;
-  line-height: 50px;
-  margin: 6px 0 0 0;
+  line-height: 56px;
+  margin: 0;
   vertical-align: top;
   transform: translateX(10px);
 }

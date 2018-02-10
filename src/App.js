@@ -40,7 +40,7 @@ export default class App extends React.Component {
     // Fix playerCard hover style by overriding inline styles
     const style = document.createElement("style")
     style.type = "text/css"
-    style.innerText = ".PlayerCard {background: transparent !important;}"
+    style.innerText = ".PlayerCard {background: transparent !important;} .EditLineupName {opacity: 0 !important;}"
     document.body.appendChild(style)
     // Create canvas to draw pitch
     const canvas = document.createElement("canvas")

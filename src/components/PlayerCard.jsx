@@ -269,7 +269,9 @@ export default class PlayerCard extends React.Component {
     document.querySelector(".Pitch .Trash").classList.remove("visible")
     // Update canvas if all players were added
     if (this.props.playersList.length === 11) {
-      this.props.createCanvas()
+      window.setTimeout(() => {
+        this.props.createCanvas()
+      }, 400)
     }
     if (window.innerWidth <= 910) {
       const card = document.querySelector(".PlayerCard.Selected")
