@@ -32,7 +32,9 @@ export default class App extends React.Component {
     })
     // Update rendered canvas
     if (this.state.selectedPlayers.length === 11) {
-      this.createCanvas()
+      window.setTimeout(() => {
+        this.createCanvas()
+      }, 400)
     }
   }
 
@@ -50,6 +52,7 @@ export default class App extends React.Component {
     canvas.height = width
     // Reset Pitch transform to just before screenshot
     if (window.innerWidth <= 910) {
+      domPitch.classList.remove("Transform")
       domPitch.style.transform = "unset"
     }
     computedToInline(domPitch, {recursive: true})

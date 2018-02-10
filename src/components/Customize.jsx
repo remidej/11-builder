@@ -44,7 +44,9 @@ export default class Customize extends React.Component {
     this.setState({ pitchColor: color })
     // Update canvas
     if (this.props.playersList.length === 11) {
-      this.props.createCanvas()
+      window.setTimeout(() => {
+        this.props.createCanvas()
+      }, 400)
     }
   }
 
