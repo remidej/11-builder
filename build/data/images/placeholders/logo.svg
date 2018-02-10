@@ -4,13 +4,13 @@
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
 	 style="enable-background:new 0 0 24 24;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#CCCCCC;}
+	.st0{opacity:0.3;}
 </style>
 <title>Crest-24x24</title>
 <desc>Created with Sketch.</desc>
-<g id="Page-1" sketch:type="MSPage">
+<g id="Page-1" sketch:type="MSPage" class="st0">
 	<g id="Crest-24x24" sketch:type="MSArtboardGroup">
-		<path class="st0" d="M12,22C2,18,3,5,3,5s7-1,9-3c2,2,9,3,9,3S22,18,12,22z"/>
+		<path d="M12,22C2,18,3,5,3,5s7-1,9-3c2,2,9,3,9,3S22,18,12,22z"/>
 	</g>
 </g>
 </svg>
