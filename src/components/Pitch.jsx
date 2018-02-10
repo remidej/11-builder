@@ -40,11 +40,9 @@ export default class Pitch extends React.Component {
     this.setState({
       lineupName: e.target.value
     })
-    // Update canvas
+    // Disable direct download
     if (this.props.playersList.length === 11) {
-      window.setTimeout(() => {
-        this.props.createCanvas()
-      }, 400)
+      this.props.markDownloadAsObsolete()
     }
   }
 
@@ -78,9 +76,9 @@ export default class Pitch extends React.Component {
     card.dataset.activePosition = position
     // Hide position indicator 
     document.querySelector(`[data-position='${position}']`).style.opacity = 0
-    // Create canvas if all players were added
+    // Disable direct download
     if (this.props.playersList.length === 11) {
-      this.props.createCanvas()
+      this.props.markDownloadAsObsolete()
     }
   }
 
@@ -122,7 +120,7 @@ export default class Pitch extends React.Component {
                 occupyPosition={this.occupyPosition}
                 unoccupyPosition={this.unoccupyPosition}
                 positionPlayer={this.positionPlayer}
-                createCanvas={this.props.createCanvas}
+                markDownloadAsObsolete={this.props.markDownloadAsObsolete}
               />
             )
           }) }

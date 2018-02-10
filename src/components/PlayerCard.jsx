@@ -267,11 +267,9 @@ export default class PlayerCard extends React.Component {
     ReactDOM.findDOMNode(this).style.zIndex = "300"
     // Hide bin
     document.querySelector(".Pitch .Trash").classList.remove("visible")
-    // Update canvas if all players were added
+    // Disable direct download
     if (this.props.playersList.length === 11) {
-      window.setTimeout(() => {
-        this.props.createCanvas()
-      }, 400)
+      this.props.markDownloadAsObsolete()
     }
     if (window.innerWidth <= 910) {
       const card = document.querySelector(".PlayerCard.Selected")

@@ -20,7 +20,9 @@ export default class App extends React.Component {
       activeTacticName: "4-3-3",
       fileBackups: {},
       selectedPlayers: [],
-      results: []
+      results: [],
+      downloadStatus: "disabled",
+      downloadLink: ""
     }
   }
 
@@ -30,15 +32,16 @@ export default class App extends React.Component {
       activeTactic: newTactic,
       activeTacticName: tacticName
     })
-    // Update rendered canvas
+    // Disable direct download
     if (this.state.selectedPlayers.length === 11) {
-      window.setTimeout(() => {
-        this.createCanvas()
-      }, 400)
+      this.markDownloadAsObsolete()
     }
   }
 
   createCanvas = () => {
+    console.log("create canvas")
+    // Display loading message
+    this.setState({ downloadStatus: "loading" })
     // Fix playerCard hover style by overriding inline styles
     const style = document.createElement("style")
     style.type = "text/css"
@@ -66,10 +69,10 @@ export default class App extends React.Component {
         const context = canvas.getContext("2d")
         context.drawImage(renderResult.image, 0, 0, width, width, 0, 0, width, width)
         // Prepare download
-        const button = document.querySelector(".CTA")
-        button.classList.remove("disabled")
-        button.download = "lineup.png"
-        button.href = canvas.toDataURL("image/png")
+        this.setState({
+          downloadStatus: "download",
+          downloadLink: canvas.toDataURL("image/png")
+        })
         // Fix hover style on textedit
         const editLineupName = document.querySelector(".Pitch .EditLineupName")
         editLineupName.addEventListener("mouseenter", () => {
@@ -85,6 +88,10 @@ export default class App extends React.Component {
           `
         })
       })
+  }
+
+  markDownloadAsObsolete = () => {
+    this.setState({ downloadStatus: "create" })
   }
 
   removeFromIndex = playerName => {
@@ -138,7 +145,8 @@ export default class App extends React.Component {
     this.setState({ results: newResults })
     // Prevent adding more than 11 players
     if (this.state.selectedPlayers.length > 10) {
-      this.setState({ maxPlayersAmount: true })
+      // Enable donwload button
+      this.setState({ downloadStatus: "create" })
     }
   }
 
@@ -149,13 +157,14 @@ export default class App extends React.Component {
         newSelection.splice(i, 1)
       }
     }
-    this.setState({ selectedPlayers: newSelection })
+    this.setState({
+      selectedPlayers: newSelection,
+      downloadStatus: "disabled"
+    })
     // Put player back in index
     const formattedName = playerObject.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
     this.addToIndex(formattedName)
     this.removeFromBackups(formattedName)
-    // Make room for new players
-    this.setState({ maxPlayersAmount: false })
   }
 
   setResults = newResults => {
@@ -168,7 +177,6 @@ export default class App extends React.Component {
         <div className="Settings">
           <Search
             tactic={this.state.activeTactic}
-            createCanvas={this.createCanvas}
             playersIndex={this.state.playersIndex}
             addToIndex={this.addToIndex}
             removeFromIndex={this.removeFromIndex}
@@ -184,8 +192,11 @@ export default class App extends React.Component {
           <Customize
             activeTacticName={this.state.activeTacticName}
             setActiveTactic={this.setActiveTactic}
-            createCanvas={this.createCanvas}
             playersList={this.state.selectedPlayers}
+            markDownloadAsObsolete={this.markDownloadAsObsolete}
+            downloadStatus={this.state.downloadStatus}
+            createCanvas={this.createCanvas}
+            downloadLink={this.state.downloadLink}
           />
         </div>
         <Pitch
@@ -193,8 +204,8 @@ export default class App extends React.Component {
           className="Pitch"
           unselectPlayer={this.unselectPlayer}
           tactic={this.state.activeTactic}
-          createCanvas={this.createCanvas}
           selectPlayer={this.state.selectPlayer}
+          markDownloadAsObsolete={this.markDownloadAsObsolete}
         />
       </div>
     )

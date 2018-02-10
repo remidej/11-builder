@@ -42,11 +42,9 @@ export default class Customize extends React.Component {
     pitch.style.background = palette[color]
     // Save color change
     this.setState({ pitchColor: color })
-    // Update canvas
+    // Disable direct download
     if (this.props.playersList.length === 11) {
-      window.setTimeout(() => {
-        this.props.createCanvas()
-      }, 400)
+      this.props.markDownloadAsObsolete()
     }
   }
 
@@ -69,6 +67,31 @@ export default class Customize extends React.Component {
   }
 
   render() {
+    let DownloadButton = null
+    if (this.props.downloadStatus === "disabled") {
+      DownloadButton = <a
+        title="Generate lineup"
+        className="CTA disabled"
+      >Get my lineup</a>
+    } else if (this.props.downloadStatus === "create") {
+      DownloadButton = <a
+        title="Generate lineup"
+        className="CTA disabled"
+        onClick={() => {this.props.createCanvas()}}
+      >Get my lineup</a>
+    } else if (this.props.downloadStatus === "loading") {
+      DownloadButton = <a
+        title="Generate lineup"
+        className="CTA disabled"
+      >Creating lineup...</a>
+    } else {
+      DownloadButton = <a
+        title="Generate lineup"
+        className="CTA"
+        download="11builder"
+        href={this.props.downloadLink}
+      >Donwload lineup as a PNG</a>
+    }
     return(
       <div className="Customize">
         <div
@@ -95,10 +118,7 @@ export default class Customize extends React.Component {
           </div>
           <p className="Selected">{`Colour: ${this.state.pitchColor}`}</p>
         </div>
-        <a
-          title="Generate lineup"
-          className="CTA disabled"
-        >Download your lineup as a JPEG</a>
+        {DownloadButton}
       </div>
     )
   }
