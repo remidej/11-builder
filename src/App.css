@@ -202,16 +202,6 @@ h1 {
   cursor: pointer;
 }
 
-.Settings .CTA.disabled:hover::after {
-  content: "Add all 11 players first";
-  background: #fafafa;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .Pitch {
   position: relative;
   width: 540px;
@@ -359,7 +349,6 @@ h1 {
 }
 
 .disabled {
-  opacity: 0.6;
   cursor: default !important;
 }
 
