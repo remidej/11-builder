@@ -39,11 +39,9 @@ export default class App extends React.Component {
   createCanvas = () => {
     // Fix playerCard hover style by overriding inline styles
     const style = document.createElement("style")
-    if (window.innerWidth > 910) {
-      style.type = "text/css"
-      style.innerText = ".PlayerCard {background: transparent !important;}"
-      document.body.appendChild(style)
-    }
+    style.type = "text/css"
+    style.innerText = ".PlayerCard {background: transparent !important;}"
+    document.body.appendChild(style)
     // Create canvas to draw pitch
     const canvas = document.createElement("canvas")
     const domPitch = document.querySelector(".Pitch")
