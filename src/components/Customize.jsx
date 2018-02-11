@@ -77,7 +77,10 @@ export default class Customize extends React.Component {
       DownloadButton = <a
         title="Generate lineup"
         className="CTA"
-        onClick={() => {this.props.createCanvas()}}
+        onClick={() => {
+          this.props.markDownloadAsLoading()
+          this.props.createCanvas()
+        }}
       >Get my lineup</a>
     } else if (this.props.downloadStatus === "loading") {
       DownloadButton = <a

@@ -39,9 +39,6 @@ export default class App extends React.Component {
   }
 
   createCanvas = () => {
-    console.log("create canvas")
-    // Display loading message
-    this.setState({ downloadStatus: "loading" })
     // Fix playerCard hover style by overriding inline styles
     const style = document.createElement("style")
     style.type = "text/css"
@@ -92,6 +89,11 @@ export default class App extends React.Component {
 
   markDownloadAsObsolete = () => {
     this.setState({ downloadStatus: "create" })
+  }
+
+  markDownloadAsLoading = () => {
+    // Display loading message
+    this.setState({ downloadStatus: "loading" })
   }
 
   markDownloadAsLoading = () => {
