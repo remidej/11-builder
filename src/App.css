@@ -357,11 +357,11 @@ h1 {
 
   h1 {
     font-size: 35px;
-    margin: 13px auto;
+    margin: 8px auto;
   }
 
   .App {
-    top: 71px;
+    top: 61px;
     transform: translate(-50%, 0);
     width: 100vw;
     flex-wrap: wrap;
@@ -406,7 +406,7 @@ h1 {
   .Settings .Customize {
     bottom: unset;
     left: 0;
-    top: calc(100vw + 64px);
+    top: calc(100vw + 56px);
     margin: 0;
     width: 100%;
     pointer-events: auto;
@@ -419,8 +419,8 @@ h1 {
     line-height: 45px;
   }
 
-  .Settings .Customize .Menu .Options div, .Menu .Selected {
-    height: 45px;
+  .Settings .Customize .Menu .Options div, .Menu .Selected, .Search-player, .Result-player {
+    height: 45px !important;
     line-height: 45px;
   }
 
@@ -434,7 +434,7 @@ h1 {
   .Pitch {
     width: 100vw;
     height: 100vw;
-    transform: translate(-50%, 65px);
+    transform: translate(-50%, 56px);
   }
 
   .Pitch.Transform {
