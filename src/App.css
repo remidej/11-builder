@@ -386,7 +386,7 @@ h1 {
   }
 
   .Settings .Results {
-    top: 56px;
+    top: 50px;
     pointer-events: auto;
   }
 
@@ -422,6 +422,26 @@ h1 {
   .Settings .Customize .Menu .Options div, .Menu .Selected, .Search-player, .Result-player {
     height: 45px !important;
     line-height: 45px;
+  }
+
+  .Settings .Results .Result-player .Status {
+    height: 45px;
+    line-height: 45px;
+  }
+
+  .Settings .Results .Result-player .Name {
+    margin: 0;
+    height: 45px;
+    line-height: 45px;
+  }
+
+  .Settings .Results .Result-player .Photo {
+    height: 45px;
+  }
+
+  .Settings .Results .Result-player .Icon {
+    height: 35px;
+    margin-top: 5px;
   }
 
   .Settings .CTA {
