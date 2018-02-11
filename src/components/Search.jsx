@@ -63,6 +63,17 @@ export default class Search extends React.Component {
   }
 
   render() {
+    let customPlayer = {
+      club: {
+        logo: "./data/images/placeholders/logo.svg",
+        name: "Unknown FC"
+      },
+      id: this.state.value,
+      name: this.state.value,
+      positions: ["MC"],
+      rating: "0",
+      shortName: this.state.value
+    }
     return (
       <div>
         <input
@@ -92,6 +103,17 @@ export default class Search extends React.Component {
               lastPlayerToAdd={this.props.selectedPlayers.length === 10}
             />
           ))}
+          {this.props.selectedPlayers.length < 11 &&
+          this.state.value !== "" &&
+            // Add custom player
+            <SearchResult
+              player={customPlayer}
+              selectPlayer={this.props.selectPlayer}
+              updateValue={this.updateValue}
+              key={`Result${customPlayer.id}`}
+              lastPlayerToAdd={this.props.selectedPlayers.length === 10}
+            />
+          }
           {this.state.isLoading &&
             // Display loading messages while waiting for results
             <div className="Result-player">

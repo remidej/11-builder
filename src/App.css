@@ -59,7 +59,7 @@ h1 {
 .Settings .Results {
   background: #fafafa;
   margin-top: 15px;
-  max-height: 340px;
+  max-height: 330px;
   overflow-y: scroll;
   border-radius: 3px;
   color: rgba(0, 0, 0, 0.95);
@@ -110,6 +110,7 @@ h1 {
   max-width: 144px;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-transform: capitalize;
 }
 
 .Settings .Customize {

@@ -48,7 +48,12 @@ export default class SearchResult extends React.Component {
         }}
       >
         <img alt={this.props.player.name} src={this.state.picture} className="Photo" />
-        <p className="Name">{this.props.player.name}</p>
+        {this.props.player.rating !== "0" &&
+          <p className="Name">{this.props.player.name}</p>
+        }
+        {this.props.player.rating === "0" &&
+          <p className="Name">Add "{this.props.player.name}"</p>
+        }
         <img
           className="Icon"
           alt={this.props.player.club.name}
