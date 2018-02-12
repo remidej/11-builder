@@ -52,6 +52,7 @@ h1 {
   font-size: 16px;
   text-transform: capitalize;
   border-radius: 3px;
+  -webkit-appearance: none;
   border: none;
   box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
