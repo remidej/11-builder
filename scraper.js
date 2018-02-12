@@ -45,7 +45,6 @@ let getData = url => {
 				}
 				player.positions = positions
 				player.photoFolderIndex = rows.indexOf(row) % 5
-				console.log(player.photoFolderIndex)
 				dataList.push(player)
 			}
 		})
