@@ -21,10 +21,10 @@ let jsonIndex = {}
 const urlToScrape = "https://www.fifaindex.com/fr/players/"
 const urlRoot = "https://www.fifaindex.com"
 
-let getData = (url) => {
+let getData = url => {
 	console.log(`scraping pages : ${Math.trunc(i*100/totalPages)}%`)
 	requestPromise(url)
-		.then((html) => {
+		.then(html => {
 			// Scrape data
 			let $ = cheerio.load(html)
 			const rows = $(".table.table-striped.players tbody tr:not(.table-ad, .hidden)").toArray()
@@ -44,13 +44,14 @@ let getData = (url) => {
 					positions.push($(position).text())
 				}
 				player.positions = positions
+				player.photoFolderIndex = rows.indexOf(row) % 5
+				console.log(player.photoFolderIndex)
 				dataList.push(player)
 			}
 		})
 		.then(() => {
 			// Stop at last page
 			if (i === totalPages) {
-				console.log('stopped after loading ' + i)
 				// Scraping is done, save data to JSON
 				saveImages()
 			} else {
@@ -132,11 +133,11 @@ let retryDownloads = () => {
 }
 retryDownloads = limit(retryDownloads).to(1).per(600)
 
-let downloadClubLogos = (playerObject) => {
+let downloadClubLogos = playerObject => {
 	// Download club logo if not done already
 	let formattedClubName = 'undefined'
 	if (playerObject.club.name !== undefined) {
-		formattedClubName = playerObject.club.name.replace(/\s/g, "").replace(/[\u0300-\u036f]/g, "")
+		formattedClubName = playerObject.club.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
 	}
 	download
 		.image({
@@ -182,14 +183,15 @@ const checkDownloadSuccess = () => {
 	}
 }
 
-let downloadPictures = (playerObject) => {
+let downloadPictures = playerObject => {
+	// Split downloads across several folders to respect GitHub's limitations
 	download
 		.image({
 			url: playerObject.photo,
-			dest: "public/data/images/photos/",
+			dest: `public/data/images/photos/${playerObject.photoFolderIndex}/`,
 			timeout: 15000
 		})
-		.catch((error) => {
+		.catch(error => {
 			console.log('Failed loading ' + playerObject.photo)
 			failedDownloads.push({
 				url: playerObject.photo,
@@ -204,8 +206,12 @@ let downloadPictures = (playerObject) => {
 downloadPictures = limit(downloadPictures).to(1).per(600)
 
 let saveImages = () => {
-  fs.mkdir('public/data/images/photos')
   fs.mkdir('public/data/images/clubs')
+  fs.mkdir('public/data/images/photos/0')
+  fs.mkdir('public/data/images/photos/1')
+  fs.mkdir('public/data/images/photos/2')
+  fs.mkdir('public/data/images/photos/3')
+  fs.mkdir('public/data/images/photos/4')
 	console.log(`datalist length: ${dataList.length}`)
   for (const playerObject of dataList) {
 		// Download player photo
@@ -223,16 +229,18 @@ const savePlayersData = () => {
 		if (typeof dataList[j].club.name !== 'undefined') {
 			clubName = dataList[j].club.name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
 		}
-		dataList[j].photo = `./data/images/photos/${dataList[j].id}.png`
-		fs.access(`/public/data/images/photos/${dataList[j].id}.png`, (error) => {
+		dataList[j].photo = `./data/images/photos/${dataList[j].photoFolderIndex}/${dataList[j].id}.png`
+		fs.access(`/public/data/images/photos/${dataList[j].photoFolderIndex}/${dataList[j].id}.png`, error => {
 			if (!error) {
 				console.log('changed path')
-				dataList[j].photo = `./data/images/photos/${dataList[j].id}.png`
+				dataList[j].photo = `./data/images/photos/${dataList[j].photoFolderIndex}/${dataList[j].id}.png`
 			} else {
 				console.log('default path')
 				// Link placeholder image
 				dataList[j].photo = './data/images/photos/none.png'
 			}
+			// Remove already used player data
+			delete dataList[j].photoFolderIndex
 		})
 		dataList[j].club.logo = `./data/images/clubs/${clubName}.png`
 		// Create JSON file
