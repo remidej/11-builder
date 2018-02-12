@@ -10,7 +10,7 @@ const download = require('image-downloader')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 3 // 604 for all data
+let totalPages = 150 // 604 for all data
 let count = 0
 let lastFail
 let failCount = 0
