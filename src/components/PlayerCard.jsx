@@ -197,19 +197,14 @@ export default class PlayerCard extends React.Component {
       // Prevent further dragging
       this.dragEnd()
       ReactDOM.findDOMNode(this).style.opacity = "0"
-      window.setTimeout(() => {
-        const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
-        // Delete player
-        this.props.unselectPlayer(this.props.player)
-        // Reset position indicator
-        this.props.unoccupyPosition(activePosition)
-        document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
-        const button = document.querySelector(".CTA")
-        // Prevent downloads
-        button.classList.add("disabled")
-        button.removeAttribute("href")
-        button.removeAttribute("download")
-      }, 300)
+      const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
+      // Delete player
+      this.props.unselectPlayer(this.props.player)
+      // Reset position indicator
+      this.props.unoccupyPosition(activePosition)
+      document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
+      // Prevent direct downloads
+      this.props.markDownloadAsObsolete()
     }
     // Get card center relatively to Pitch
     const cardCenterPos = {}
@@ -284,7 +279,6 @@ export default class PlayerCard extends React.Component {
     const differenceY = y0 - y1
     return Math.sqrt(Math.pow(differenceX, 2) + Math.pow(differenceY, 2))
   }
-
 
   render() {
     return(

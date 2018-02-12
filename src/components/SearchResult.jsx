@@ -19,6 +19,7 @@ export default class SearchResult extends React.Component {
       this.setState({ picture: actualPicture.src })
     })
     actualPicture.src = this.state.pictureBackup
+    console.log(this.state.pictureBackup)
     // Lazyload club logo
     const actualLogo = new Image()
     actualLogo.addEventListener("load", () => {
@@ -38,9 +39,7 @@ export default class SearchResult extends React.Component {
             // Close keyboard before creating screenshot
             document.querySelector('.Search-player').blur()
             this.props.updateValue("")
-            window.setTimeout(() => {
-              this.props.selectPlayer(this.props.player)
-            }, 400)
+            this.props.selectPlayer(this.props.player)
           } else {
             this.props.selectPlayer(this.props.player)
             this.props.updateValue("")
