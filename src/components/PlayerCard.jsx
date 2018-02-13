@@ -102,6 +102,9 @@ export default class PlayerCard extends React.Component {
       if (this.state.isDragging) {
         // Prevent scroll
         e.preventDefault()
+        // Close keyboard
+        document.querySelector('.Search-player').blur()
+        // Move card around
         this.dragMove(e.touches[0].clientX, e.touches[0].clientY)
         // Save position to prepare touchend
         this.setState({

@@ -19,7 +19,6 @@ export default class SearchResult extends React.Component {
       this.setState({ picture: actualPicture.src })
     })
     actualPicture.src = this.state.pictureBackup
-    console.log(this.state.pictureBackup)
     // Lazyload club logo
     const actualLogo = new Image()
     actualLogo.addEventListener("load", () => {
