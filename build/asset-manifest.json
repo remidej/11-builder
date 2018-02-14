@@ -1,6 +1,9 @@
 {
   "main.css": "static/css/main.4fa1059d.css",
   "main.css.map": "static/css/main.4fa1059d.css.map",
-  "main.js": "static/js/main.d2cae1a5.js",
-  "main.js.map": "static/js/main.d2cae1a5.js.map"
+  "main.js": "static/js/main.4d335852.js",
+  "main.js.map": "static/js/main.4d335852.js.map",
+  "static/media/logo.svg": "static/media/logo.6dd620bc.svg",
+  "static/media/pitch.svg": "static/media/pitch.6ee6555c.svg",
+  "static/media/portrait.svg": "static/media/portrait.622446f6.svg"
 }

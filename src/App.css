@@ -220,9 +220,6 @@ h1 {
 }
 
 .Pitch .Outlines {
-  /* background: url('/pitches/basic3d.svg');
-  background-size: cover;
-  background-position: center center; */
   position: absolute;
   display: block;
   transform-origin: bottom center;

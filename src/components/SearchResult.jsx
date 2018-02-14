@@ -4,8 +4,8 @@ export default class SearchResult extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      picture: "./data/images/placeholders/portrait.svg",
-      logo: "./data/images/placeholders/logo.svg",
+      picture: this.props.portraitPlaceholder,
+      logo: this.props.logoPlaceholder,
       pictureBackup: this.props.player.photo,
       logoBackup: this.props.player.club.logo
     }

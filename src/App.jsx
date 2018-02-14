@@ -1,5 +1,4 @@
 // Team of the week: https://www.easports.com/fifa/ultimate-team/api/fut/item?jsonParamObject=%7B%22page%22:1,%22quality%22:%22totw_gold%22,%22position%22:%22GK%22%7D
-
 // Import components
 import React from 'react'
 import './App.css'
@@ -10,6 +9,11 @@ import Pitch from './components/Pitch.jsx'
 // Import dependencies
 const rasterizeHTML = require("rasterizehtml")
 const computedToInline = require("computed-style-to-inline-style")
+
+// Save placeholder images for offline use
+const portraitPlaceholder = require("./data/placeholders/portrait.svg")
+const logoPlaceholder = require("./data/placeholders/logo.svg")
+console.log(logoPlaceholder)
 
 export default class App extends React.Component {
   constructor(props) {
@@ -194,6 +198,8 @@ export default class App extends React.Component {
             selectPlayer={this.selectPlayer}
             results={this.state.results}
             setResults={this.setResults}
+            logoPlaceholder={logoPlaceholder}
+            portraitPlaceholder={portraitPlaceholder}
           />
           <Customize
             activeTacticName={this.state.activeTacticName}
@@ -213,6 +219,7 @@ export default class App extends React.Component {
           tactic={this.state.activeTactic}
           selectPlayer={this.state.selectPlayer}
           markDownloadAsObsolete={this.markDownloadAsObsolete}
+          portraitPlaceholder={portraitPlaceholder}
         />
       </div>
     )

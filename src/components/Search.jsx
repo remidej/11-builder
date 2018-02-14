@@ -101,6 +101,8 @@ export default class Search extends React.Component {
               updateValue={this.updateValue}
               key={`Result${player.id}`}
               lastPlayerToAdd={this.props.selectedPlayers.length === 10}
+              logoPlaceholder={this.props.logoPlaceholder}
+              portraitPlaceholder={this.props.portraitPlaceholder}
             />
           ))}
           {this.props.selectedPlayers.length < 11 &&
@@ -112,6 +114,8 @@ export default class Search extends React.Component {
               updateValue={this.updateValue}
               key={`Result${customPlayer.id}`}
               lastPlayerToAdd={this.props.selectedPlayers.length === 10}
+              logoPlaceholder={this.props.logoPlaceholder}
+              portraitPlaceholder={this.props.portraitPlaceholder}
             />
           }
           {this.state.isLoading &&

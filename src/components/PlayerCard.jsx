@@ -11,7 +11,7 @@ export default class PlayerCard extends React.Component {
       originX: 0,
       originY: 0,
       lastTouch: {x: 0, y: 0},
-      picture: "./data/images/placeholders/portrait.svg",
+      picture: this.props.portraitPlaceholder,
       pictureBackup: this.props.player.photo
     }
   }

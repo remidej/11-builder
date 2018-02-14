@@ -1,13 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import PlayerCard from './PlayerCard.jsx'
+import React from "react"
+import ReactDOM from "react-dom"
+import PlayerCard from "./PlayerCard.jsx"
 import PositionIndicator from "./PositionIndicator.jsx"
+
+// Cache pitch image for offline use
+import pitchImage from "../data/pitch.svg"
 
 export default class Pitch extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: '',
+      value: "",
       occupiedPositions: []
     }
   }
@@ -86,7 +89,7 @@ export default class Pitch extends React.Component {
     // Create skeleton
     return (
       <div className="Pitch">
-        <img className="Outlines" src="/pitches/basic3d.svg" alt="Pitch outlines"/>
+        <img className="Outlines" src={pitchImage} alt="Pitch outlines"/>
         <div>
           <div className="Trash">Drag out of pitch to remove player</div>
           <textarea
@@ -121,6 +124,7 @@ export default class Pitch extends React.Component {
                 unoccupyPosition={this.unoccupyPosition}
                 positionPlayer={this.positionPlayer}
                 markDownloadAsObsolete={this.props.markDownloadAsObsolete}
+                portraitPlaceholder={this.props.portraitPlaceholder}
               />
             )
           }) }
