@@ -100,10 +100,6 @@ export default class App extends React.Component {
     this.setState({ downloadStatus: "loading" })
   }
 
-  markDownloadAsLoading = () => {
-    this.setState({ downloadStatus: "create" })
-  }
-
   removeFromIndex = playerName => {
     let newIndex = this.state.playersIndex
     delete newIndex[playerName]

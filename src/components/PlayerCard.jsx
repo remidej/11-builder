@@ -196,63 +196,67 @@ export default class PlayerCard extends React.Component {
         translateX(${this.state.differenceX}px)
         translateY(${this.state.differenceY}px)
       `
+      // Get card center relatively to Pitch
+      const cardCenterPos = {}
+      const pitch = document.querySelector('.Pitch')
+      cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - pitch.getBoundingClientRect().left) / pitch.getBoundingClientRect().width
+      cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - pitch.getBoundingClientRect().top) / pitch.getBoundingClientRect().height
+
+      // Snap to position if dragged next to position indicator
+      for (const indicator of Object.keys(this.props.tactic)) {
+        if (
+          indicator !== ReactDOM.findDOMNode(this).dataset.activePosition &&
+          this.getDistance(
+            this.props.tactic[indicator].x,
+            this.props.tactic[indicator].y,
+            cardCenterPos.x,
+            cardCenterPos.y
+          ) < 8
+        ) {
+          let isAvailable = true
+          for (const occupied of this.props.occupiedPositions) {
+            if (occupied === indicator) {
+              isAvailable = false
+            }
+          }
+          if (this.props.playersList.length === 11) {
+            isAvailable = false
+          }
+          const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
+
+          // Swap players if position is occupied
+          if (!isAvailable) {
+            // Do the reverse travel with the other player
+            const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
+            this.props.unoccupyPosition(indicator)
+            this.props.positionPlayer(activePosition, cardToMove.classList[1])
+          }
+          // Update position indicators
+          document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
+          // Prepare next drag
+          this.props.unoccupyPosition(activePosition)
+          this.setState({
+            differenceX: 0,
+            differenceY: 0,
+          })
+          this.dragEnd()
+          this.props.positionPlayer(indicator, `Player${this.props.player.id}`)
+        }
+      }
     } else {
       // Prevent further dragging
       this.dragEnd()
       ReactDOM.findDOMNode(this).style.opacity = "0"
       const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
       // Delete player
-      this.props.unselectPlayer(this.props.player)
+      window.setTimeout(() => {
+        this.props.unselectPlayer(this.props.player)
+      }, 300)
       // Reset position indicator
       this.props.unoccupyPosition(activePosition)
       document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
       // Prevent direct downloads
       this.props.markDownloadAsObsolete()
-    }
-    // Get card center relatively to Pitch
-    const cardCenterPos = {}
-    const pitch = document.querySelector('.Pitch')
-    cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - pitch.getBoundingClientRect().left) / pitch.getBoundingClientRect().width
-    cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - pitch.getBoundingClientRect().top) / pitch.getBoundingClientRect().height
-    // Snap to position if dragged next to position indicator
-    for (const indicator of Object.keys(this.props.tactic)) {
-      if (
-        indicator !== ReactDOM.findDOMNode(this).dataset.activePosition &&
-        this.getDistance(
-          this.props.tactic[indicator].x,
-          this.props.tactic[indicator].y,
-          cardCenterPos.x,
-          cardCenterPos.y
-        ) < 8
-      ) {
-        let isAvailable = true
-        for (const occupied of this.props.occupiedPositions) {
-          if (occupied === indicator) {
-            isAvailable = false
-          }
-        }
-        if (this.props.playersList.length === 11) {
-          isAvailable = false
-        }
-        const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
-        // Swap players is position is occupied
-        if (!isAvailable) {
-          // Do the reverse travel with the other player
-          const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
-          this.props.unoccupyPosition(indicator)
-          this.props.positionPlayer(activePosition, cardToMove.classList[1])
-        }
-        // Update position indicators
-        document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
-        // Prepare next drag
-        this.props.unoccupyPosition(activePosition)
-        this.setState({
-          differenceX: 0,
-          differenceY: 0,
-        })
-        this.dragEnd()
-        this.props.positionPlayer(indicator, `Player${this.props.player.id}`)
-      }
     }
   }
 
