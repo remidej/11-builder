@@ -198,9 +198,8 @@ export default class PlayerCard extends React.Component {
       `
       // Get card center relatively to Pitch
       const cardCenterPos = {}
-      const pitch = document.querySelector('.Pitch')
-      cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - pitch.getBoundingClientRect().left) / pitch.getBoundingClientRect().width
-      cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - pitch.getBoundingClientRect().top) / pitch.getBoundingClientRect().height
+      cardCenterPos.x = 100 * (currentPos.left + (currentPos.width / 2) - this.props.parentFrame.left) / this.props.parentFrame.width
+      cardCenterPos.y = 100 * (currentPos.top + (currentPos.height / 2) - this.props.parentFrame.top) / this.props.parentFrame.height
 
       // Snap to position if dragged next to position indicator
       for (const indicator of Object.keys(this.props.tactic)) {
@@ -230,9 +229,9 @@ export default class PlayerCard extends React.Component {
             const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
             this.props.unoccupyPosition(indicator)
             this.props.positionPlayer(activePosition, cardToMove.classList[1])
+            // Make sure position indicator is hidden
+            document.querySelector(`.PositionIndicator[data-position="${activePosition}"`).style.opacity = 0
           }
-          // Update position indicators
-          document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
           // Prepare next drag
           this.props.unoccupyPosition(activePosition)
           this.setState({
@@ -253,8 +252,8 @@ export default class PlayerCard extends React.Component {
         this.props.unselectPlayer(this.props.player)
       }, 300)
       // Reset position indicator
+      console.log(activePosition)
       this.props.unoccupyPosition(activePosition)
-      document.querySelector(`[data-position='${activePosition}']`).style.opacity = 1
       // Prevent direct downloads
       this.props.markDownloadAsObsolete()
     }

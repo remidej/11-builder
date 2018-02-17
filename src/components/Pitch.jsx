@@ -16,14 +16,9 @@ export default class Pitch extends React.Component {
   }
 
   componentDidMount() {
-    const boundings = ReactDOM.findDOMNode(this).getBoundingClientRect()
-    const frame = {
-      top: boundings.top,
-      right: boundings.right,
-      bottom: boundings.bottom,
-      left: boundings.left
-    }
-    this.setState({ frame, lineupName: 'My team' })
+    window.addEventListener("resize", this.getPitchCoords)
+    this.getPitchCoords()
+    this.setState({ lineupName: 'My team' })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -37,6 +32,11 @@ export default class Pitch extends React.Component {
         this.positionPlayer(position, cardToMove.classList[1])
       }
     }
+  }
+
+  getPitchCoords = () => {
+    const frame = ReactDOM.findDOMNode(this).getBoundingClientRect()
+    this.setState({ frame })
   }
 
   editLineupName = e => {
@@ -55,6 +55,7 @@ export default class Pitch extends React.Component {
     this.setState({
       occupiedPositions: newPositions
     })
+    document.querySelector(`.PositionIndicator[data-position="${position}"`).style.opacity = 0
   }
 
   unoccupyPosition = position => {
@@ -66,6 +67,7 @@ export default class Pitch extends React.Component {
       }
     }
     this.setState({ occupiedPositions: newPositions })
+    document.querySelector(`.PositionIndicator[data-position="${position}"`).style.opacity = 1
   }
 
   positionPlayer = (position, selector) => {

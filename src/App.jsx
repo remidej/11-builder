@@ -13,7 +13,6 @@ const computedToInline = require("computed-style-to-inline-style")
 // Save placeholder images for offline use
 const portraitPlaceholder = require("./data/placeholders/portrait.svg")
 const logoPlaceholder = require("./data/placeholders/logo.svg")
-console.log(logoPlaceholder)
 
 export default class App extends React.Component {
   constructor(props) {
