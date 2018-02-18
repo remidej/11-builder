@@ -153,6 +153,8 @@ export default class App extends React.Component {
       // Enable donwload button
       this.setState({ downloadStatus: "create" })
     }
+    // Reset results
+    this.setResults([])
   }
 
   unselectPlayer = playerObject => {
@@ -173,6 +175,7 @@ export default class App extends React.Component {
   }
 
   setResults = newResults => {
+    console.log(newResults)
     this.setState({ results: newResults })
   }
 
@@ -212,7 +215,6 @@ export default class App extends React.Component {
           className="Pitch"
           unselectPlayer={this.unselectPlayer}
           tactic={this.state.activeTactic}
-          selectPlayer={this.state.selectPlayer}
           markDownloadAsObsolete={this.markDownloadAsObsolete}
           portraitPlaceholder={portraitPlaceholder}
         />

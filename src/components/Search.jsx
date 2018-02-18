@@ -12,33 +12,35 @@ export default class Search extends React.Component {
   }
 
   getPlayersData = searchValue => {
-    // Find matching players from JSON players index
-    const playerFilesPaths = []
-    for (const player in this.props.playersIndex) {
-      const playerName = player.toLocaleLowerCase()
-      // Store the 5 best matches
-      if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
-        playerFilesPaths.push(this.props.playersIndex[player])
-        this.setState({ isLoading: false })
-      }
-    }
-    // Display loading message if no results are found
-    if (playerFilesPaths.length === 0 && !this.state.isLoading) {
-      this.setState({
-        noMatches: true,
-        isLoading: false
-      })
-    }
-    // Get relevant data from JSON files
     let searchResults = []
-    for (const playerFilePath of playerFilesPaths) {
-      let playerFile = this.props.getPlayerFile(playerFilePath)
-      playerFile.shortName = playerFile.name.split(' ').slice(-1).join(' ')
-      searchResults.push(playerFile)
+    // Only search if user input isn't null
+    if (searchValue.length > 0) {
+      // Find matching players from JSON players index
+      const playerFilesPaths = []
+      for (const player in this.props.playersIndex) {
+        const playerName = player.toLocaleLowerCase()
+        // Store the 5 best matches
+        if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
+          playerFilesPaths.push(this.props.playersIndex[player])
+          this.setState({ isLoading: false })
+        }
+      }
+      // Display loading message if no results are found
+      if (playerFilesPaths.length === 0 && !this.state.isLoading) {
+        this.setState({
+          noMatches: true,
+          isLoading: false
+        })
+      }
+      // Get relevant data from JSON files
+      for (const playerFilePath of playerFilesPaths) {
+        let playerFile = this.props.getPlayerFile(playerFilePath)
+        playerFile.shortName = playerFile.name.split(' ').slice(-1).join(' ')
+        searchResults.push(playerFile)
+      }
+      // Sort results by players ranking
+      searchResults.sort((a, b) => { return b.rating - a.rating })
     }
-    // Sort results by players ranking
-    searchResults.sort((a, b) => { return b.rating - a.rating })
-    //this.setState({ results: searchResults })
     this.props.setResults(searchResults)
   }
 
@@ -85,7 +87,9 @@ export default class Search extends React.Component {
           placeholder="Search for a player..."
           autoFocus
         />
-        <div className="Results">
+        <div className="Results" style={{
+          height: this.props.results.length > 0 ? "auto" : "0"
+        }}>
           {this.state.noMatches &&
             <div className="Result-player">
               <p className="Status">No matching player</p>
