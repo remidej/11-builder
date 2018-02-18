@@ -34,6 +34,7 @@ export default class PlayerCard extends React.Component {
       if (preferredPosition === "ATT") {
         preferredPosition = "BU"
       } else if (preferredPosition === "MDC" || preferredPosition === "MOC") {
+        console.log("moc")
         preferredPosition = "MC"
       } else if (preferredPosition === "DLG") {
         preferredPosition = "DG"
@@ -55,7 +56,8 @@ export default class PlayerCard extends React.Component {
             this.props.positionPlayer(position, `Player${ this.props.player.id }`)
             break mainLoop
           } else if (i === this.props.player.positions.length - 1) {
-            this.findClosestPosition()
+            // Last loop, add player anyway
+            this.findClosestPosition(preferredPosition)
             break mainLoop
           }
         }
@@ -127,12 +129,12 @@ export default class PlayerCard extends React.Component {
     })
   }
 
-  findClosestPosition = () => {
+  findClosestPosition = preferredPosition => {
     let positionIndex = -1
     const keys = Object.keys(this.props.tactic)
     // Find index of preferred position
     for (let i=0; i<keys.length; i++) {
-      if (this.props.player.positions[0] === keys[i]) {
+      if (preferredPosition === keys[i]) {
         positionIndex = i
       }
     }
@@ -151,6 +153,7 @@ export default class PlayerCard extends React.Component {
         }
         if (isAvailable) {
           closestPosition = keys.indexOf(position)
+          console.log(`set ${position}`)
         }
       }
     }

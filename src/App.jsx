@@ -175,7 +175,6 @@ export default class App extends React.Component {
   }
 
   setResults = newResults => {
-    console.log(newResults)
     this.setState({ results: newResults })
   }
 
