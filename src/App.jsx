@@ -94,11 +94,6 @@ export default class App extends React.Component {
     this.setState({ downloadStatus: "create" })
   }
 
-  markDownloadAsLoading = () => {
-    // Display loading message
-    this.setState({ downloadStatus: "loading" })
-  }
-
   removeFromIndex = playerName => {
     let newIndex = this.state.playersIndex
     delete newIndex[playerName]
@@ -203,7 +198,6 @@ export default class App extends React.Component {
             setActiveTactic={this.setActiveTactic}
             playersList={this.state.selectedPlayers}
             markDownloadAsObsolete={this.markDownloadAsObsolete}
-            markDownloadAsLoading={this.markDownloadAsLoading}
             downloadStatus={this.state.downloadStatus}
             createCanvas={this.createCanvas}
             downloadLink={this.state.downloadLink}
