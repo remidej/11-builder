@@ -42,6 +42,8 @@ export default class App extends React.Component {
   }
 
   createCanvas = () => {
+    // Loading message
+    this.setState({ downloadStatus: "loading" })
     // Fix playerCard hover style by overriding inline styles
     const style = document.createElement("style")
     style.type = "text/css"

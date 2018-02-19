@@ -79,7 +79,6 @@ export default class Customize extends React.Component {
         className="CTA"
         onClick={() => {
           // Display loading message
-          this.setState({ downloadStatus: "loading" })
           this.props.createCanvas()
         }}
       >Get my lineup</a>
