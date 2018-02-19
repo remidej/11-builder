@@ -60,6 +60,10 @@ export default class App extends React.Component {
       domPitch.classList.remove("Transform")
       domPitch.style.transform = "unset"
     }
+    const names = document.querySelectorAll(".PlayerCard p")
+    for (const name of names) {
+      name.style.fontSize = `${window.getComputedStyle(name).fontSize} !important`
+    }
     computedToInline(domPitch, {recursive: true})
     // Revert Pitch transform back to normal
     if (window.innerWidth <= 910) {

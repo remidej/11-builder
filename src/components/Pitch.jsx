@@ -51,11 +51,11 @@ export default class Pitch extends React.Component {
 
   occupyPosition = position => {
     let newPositions = this.state.occupiedPositions
-    newPositions[newPositions.length] = position
+    newPositions.push(position)
     this.setState({
       occupiedPositions: newPositions
     })
-    document.querySelector(`.PositionIndicator[data-position="${position}"`).style.opacity = 0
+    document.querySelector(`.PositionIndicator[data-position="${position}"]`).style.opacity = "0"
   }
 
   unoccupyPosition = position => {
@@ -67,7 +67,7 @@ export default class Pitch extends React.Component {
       }
     }
     this.setState({ occupiedPositions: newPositions })
-    document.querySelector(`.PositionIndicator[data-position="${position}"`).style.opacity = 1
+    document.querySelector(`.PositionIndicator[data-position="${position}"]`).style.opacity = "1"
   }
 
   positionPlayer = (position, selector) => {
