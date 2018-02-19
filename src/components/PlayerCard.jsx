@@ -153,7 +153,6 @@ export default class PlayerCard extends React.Component {
         }
         if (isAvailable) {
           closestPosition = keys.indexOf(position)
-          console.log(`set ${position}`)
         }
       }
     }
@@ -255,7 +254,6 @@ export default class PlayerCard extends React.Component {
         this.props.unselectPlayer(this.props.player)
       }, 300)
       // Reset position indicator
-      console.log(activePosition)
       this.props.unoccupyPosition(activePosition)
       // Prevent direct downloads
       this.props.markDownloadAsObsolete()
