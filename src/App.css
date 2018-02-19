@@ -474,18 +474,25 @@ h1 {
     transform: translate(-50%, 65px) !important;
   }
 
+  .Pitch .Signature {
+    font-size: 2.5vw;
+    width: 20vw;
+  }
+
   .Pitch .Trash {
     width: 90%;
+    height: 40px;
+    line-height: 40px;
     margin: 0 5%;
   }
 
   .Pitch .LineupName {
-    top: 1.5%;
+    top: 3.5%;
     font-size: 8vw;
   }
 
   .Pitch .EditLineupName {
-    top: 1.5%;
+    top: 3.5%;
     font-size: 8vw;
   }
 
@@ -534,9 +541,13 @@ h1 {
     transform: translate(0%, 65px);
   }
 
+  .Pitch .Signature {
+    font-size: 15px;
+  }
+
   .App .Pitch .LineupName, .EditLineupName {
-    font-size: 54px !important;
-    top: 4.5% !important;
+    font-size: 48px !important;
+    top: 6% !important;
   }
 
   .App .Pitch .PlayerCard p {
