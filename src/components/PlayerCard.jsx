@@ -34,7 +34,6 @@ export default class PlayerCard extends React.Component {
       if (preferredPosition === "ATT") {
         preferredPosition = "BU"
       } else if (preferredPosition === "MDC" || preferredPosition === "MOC") {
-        console.log("moc")
         preferredPosition = "MC"
       } else if (preferredPosition === "DLG") {
         preferredPosition = "DG"

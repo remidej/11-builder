@@ -88,7 +88,7 @@ export default class Search extends React.Component {
           autoFocus
         />
         <div className="Results" style={{
-          height: this.props.results.length > 0 ? "auto" : "0"
+          height: this.state.value.length > 0 ? "auto" : "0"
         }}>
           {this.state.noMatches &&
             <div className="Result-player">
