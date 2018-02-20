@@ -227,14 +227,14 @@ export default class PlayerCard extends React.Component {
           // Swap players if position is occupied
           if (!isAvailable) {
             // Do the reverse travel with the other player
-            const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
             this.props.unoccupyPosition(indicator)
+            const cardToMove = document.querySelector(`[data-active-position='${indicator}']`)
             this.props.positionPlayer(activePosition, cardToMove.classList[1])
-            // Make sure position indicator is hidden
-            document.querySelector(`.PositionIndicator[data-position="${activePosition}"`).style.opacity = 0
+          } else {
+            // Prepare next drag
+            this.props.unoccupyPosition(activePosition)
+            this.props.unoccupyPosition(indicator)
           }
-          // Prepare next drag
-          this.props.unoccupyPosition(activePosition)
           this.setState({
             differenceX: 0,
             differenceY: 0,
@@ -248,7 +248,7 @@ export default class PlayerCard extends React.Component {
       this.dragEnd()
       ReactDOM.findDOMNode(this).style.opacity = "0"
       const activePosition = ReactDOM.findDOMNode(this).dataset.activePosition
-      // Delete player
+      // Delete player after animation end
       window.setTimeout(() => {
         this.props.unselectPlayer(this.props.player)
       }, 300)

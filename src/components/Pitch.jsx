@@ -50,12 +50,15 @@ export default class Pitch extends React.Component {
   }
 
   occupyPosition = position => {
-    let newPositions = this.state.occupiedPositions
-    newPositions.push(position)
-    this.setState({
-      occupiedPositions: newPositions
-    })
-    document.querySelector(`.PositionIndicator[data-position="${position}"]`).style.opacity = "0"
+    if (typeof (this.state.occupiedPositions.find(e => e === position)) === "undefined") {
+      let newPositions = this.state.occupiedPositions
+      newPositions.push(position)
+      this.setState({
+        occupiedPositions: newPositions
+      })
+    } else {
+      console.log("doublon")
+    }
   }
 
   unoccupyPosition = position => {
@@ -67,20 +70,17 @@ export default class Pitch extends React.Component {
       }
     }
     this.setState({ occupiedPositions: newPositions })
-    document.querySelector(`.PositionIndicator[data-position="${position}"]`).style.opacity = "1"
   }
 
   positionPlayer = (position, selector) => {
     const card = document.querySelector(`.${selector}`)
     // Position card
     card.style.left = `${this.props.tactic[position].x - 8.5}%`
-    card.style.top = `${this.props.tactic[position].y - 8.75}%`
+    card.style.top = `${this.props.tactic[position].y - 7.5}%`
     card.style.transform = 'unset'
     // Update data
     this.occupyPosition(position)
     card.dataset.activePosition = position
-    // Hide position indicator 
-    document.querySelector(`[data-position='${position}']`).style.opacity = 0
     // Disable direct download
     if (this.props.playersList.length === 11) {
       this.props.markDownloadAsObsolete()
@@ -110,6 +110,9 @@ export default class Pitch extends React.Component {
                 position={positionKey}
                 leftValue={`${this.props.tactic[positionKey].x}%`}
                 topValue={`${this.props.tactic[positionKey].y}%`}
+                occupied={
+                  typeof(this.state.occupiedPositions.find(e => e===positionKey)) !== "undefined"
+                }
               />
             )
           }) }
