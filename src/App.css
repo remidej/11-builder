@@ -364,6 +364,7 @@ h1 {
 
 .disabled {
   cursor: default !important;
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 910px) {
