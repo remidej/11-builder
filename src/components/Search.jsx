@@ -20,7 +20,7 @@ export default class Search extends React.Component {
       for (const player in this.props.playersIndex) {
         const playerName = player.toLocaleLowerCase()
         // Store the 5 best matches
-        if (playerName.includes(searchValue) && playerFilesPaths.length < 5) {
+        if (playerName.includes(searchValue) && playerFilesPaths.length < 8) {
           playerFilesPaths.push(this.props.playersIndex[player])
           this.setState({ isLoading: false })
         }
