@@ -161,6 +161,8 @@ export default class App extends React.Component {
     }
     // Reset results
     this.setResults([])
+    // Prevent bugs on iOS Safari
+    this.hideNameInput()
   }
 
   unselectPlayer = playerObject => {
@@ -182,6 +184,12 @@ export default class App extends React.Component {
 
   setResults = newResults => {
     this.setState({ results: newResults })
+  }
+
+  hideNameInput = () => {
+    // Remove focus on lineup name
+    document.querySelector(".EditLineupName").style.opacity = "0 !important"
+    document.querySelector(".EditLineupName").blur()
   }
 
   render() {
@@ -221,6 +229,7 @@ export default class App extends React.Component {
           tactic={this.state.activeTactic}
           markDownloadAsObsolete={this.markDownloadAsObsolete}
           portraitPlaceholder={portraitPlaceholder}
+          hideNameInput={this.hideNameInput}
         />
       </div>
     )

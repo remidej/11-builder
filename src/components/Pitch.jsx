@@ -19,6 +19,12 @@ export default class Pitch extends React.Component {
     window.addEventListener("resize", this.getPitchCoords)
     this.getPitchCoords()
     this.setState({ lineupName: 'My team' })
+    // Hide lineup name field on every click outside of it
+    document.addEventListener("touchstart", e => {
+      if (e.target !== document.querySelector(".EditLineupName")) {
+        this.props.hideNameInput()
+      }
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,6 +91,10 @@ export default class Pitch extends React.Component {
     }
   }
 
+  showNameInput = () => {
+    document.querySelector(".EditLineupName").style.opacity = "1 !important"
+  }
+
   render() {
     // Create skeleton
     return (
@@ -99,6 +109,9 @@ export default class Pitch extends React.Component {
             maxLength="21"
             value={this.state.lineupName}
             onChange={this.editLineupName}
+            onMouseEnter={() => {this.showNameInput()}}
+            onMouseLeave={() => {this.props.hideNameInput()}}
+            onTouchStart={() => {this.showNameInput()}}
           />
           <h2 className="LineupName">{this.state.lineupName}</h2>
           { Object.keys(this.props.tactic).map(positionKey => {
