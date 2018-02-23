@@ -92,7 +92,10 @@ export default class Pitch extends React.Component {
   }
 
   showNameInput = () => {
-    document.querySelector(".EditLineupName").style.opacity = "1 !important"
+    if (window.innerWidth >= 910 || document.querySelectorAll(".Result-player").length >= 0) {
+      document.querySelector(".EditLineupName").focus()
+      document.querySelector(".EditLineupName").style.opacity = "1 !important"
+    }
   }
 
   render() {
@@ -109,7 +112,10 @@ export default class Pitch extends React.Component {
             maxLength="21"
             value={this.state.lineupName}
             onChange={this.editLineupName}
-            onMouseEnter={() => {this.showNameInput()}}
+            onMouseEnter={e => {
+              e.preventDefault()
+              this.showNameInput()
+            }}
             onMouseLeave={() => {this.props.hideNameInput()}}
             onTouchStart={() => {this.showNameInput()}}
           />

@@ -161,8 +161,6 @@ export default class App extends React.Component {
     }
     // Reset results
     this.setResults([])
-    // Prevent bugs on iOS Safari
-    this.hideNameInput()
   }
 
   unselectPlayer = playerObject => {

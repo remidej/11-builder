@@ -54,7 +54,6 @@ h1 {
   border-radius: 3px;
   -webkit-appearance: none;
   border: none;
-  box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
 
 .Settings .Results {
@@ -64,7 +63,6 @@ h1 {
   overflow-y: scroll;
   border-radius: 3px;
   color: rgba(0, 0, 0, 0.95);
-  box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
 
 .Settings .Results .Result-player {
@@ -137,11 +135,16 @@ h1 {
   transform-origin: bottom left;
   transition: 0.3s transform ease-in-out;
   will-change: transform;
+  -webkit-tap-highlight-color: rgba(104, 27, 39, 0.1);
 }
 
 .Settings .Menu .Selected {
   margin: 0;
   transition: 0.3s transform ease-in-out;
+}
+
+.Settings .Menu.expanded {
+  border-radius: 0 0 3px 3px;
 }
 
 .Settings .Menu.expanded .Selected {
@@ -153,28 +156,32 @@ h1 {
   flex-direction: column-reverse;
   transform-origin: bottom center;
   width: 162px;
-  border-radius: 5px;
+  border-radius: 3px 3px 0 0;  
   position: absolute;
   left: 0;
   background: #fafafa;
-  padding-bottom: 5px;
-  bottom: 51px;
+  bottom: 56px;
   overflow: hidden;
   margin: 0;
   transition: 0.3s transform ease-in-out;
   will-change: transform;
   transform: scaleY(0);
+  /* box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06); */
 }
 
 .Settings .Menu.expanded .Options {
   transform: scaleY(1);
 }
 
-.Settings .Menu .Options div {
+.Settings .Menu .Options div:not(:last-child) {
   background: #fafafa;
   height: 56px;
   width: 162px;
   border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.Settings .Menu .Options div:first-child {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .Settings .Menu .Options div:hover {
@@ -202,6 +209,7 @@ h1 {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.95);
   cursor: pointer;
+  box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
 }
 
 .Pitch {
@@ -281,10 +289,6 @@ h1 {
   line-height: 50px;
   user-select: none;
 }
-
-/* .Pitch .LineupName:hover {
-  opacity: 0;
-} */
 
 .Pitch .EditLineupName {
   font-family: 'saira condensed', Arial, Helvetica, sans-serif;
@@ -400,6 +404,7 @@ h1 {
     position: absolute;
     z-index: 100;
     pointer-events: auto;
+    box-shadow: 0 3px 6px 1px rgba(0, 0, 0, 0.06);
   }
 
   .Settings .Results {
@@ -434,6 +439,14 @@ h1 {
     margin: 10px;
     height: 45px;
     line-height: 45px;
+  }
+
+  .Settings .Customize .Menu .Options {
+    bottom: 45px;
+  }
+
+  .Settings .Customize .Options, .Settings .Customize .Options div {
+    width: 100% !important;
   }
 
   .Settings .Customize .Menu .Options div, .Menu .Selected, .Search-player, .Result-player {
