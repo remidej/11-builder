@@ -5,6 +5,7 @@ import './App.css'
 import Search from './components/Search.jsx'
 import Customize from './components/Customize.jsx'
 import Pitch from './components/Pitch.jsx'
+import fonts from "./data/fonts.js"
 
 // Import dependencies
 const rasterizeHTML = require("rasterizehtml")
@@ -27,6 +28,10 @@ export default class App extends React.Component {
       downloadStatus: "disabled",
       downloadLink: ""
     }
+  }
+
+  componentDidMount() {
+    document.body.prepend(fonts.fontsStyle)
   }
 
   setActiveTactic = tacticName => {
@@ -64,6 +69,7 @@ export default class App extends React.Component {
     for (const name of names) {
       name.style.fontSize = `${window.getComputedStyle(name).fontSize} !important`
     }
+    domPitch.prepend(fonts.fontsStyle)
     computedToInline(domPitch, {recursive: true})
     // Revert Pitch transform back to normal
     if (window.innerWidth <= 910) {

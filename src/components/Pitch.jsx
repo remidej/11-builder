@@ -56,8 +56,6 @@ export default class Pitch extends React.Component {
       this.setState({
         occupiedPositions: newPositions
       })
-    } else {
-      console.log("doublon")
     }
   }
 
