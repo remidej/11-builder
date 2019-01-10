@@ -10,7 +10,7 @@ const download = require('image-downloader')
 let dataList = []
 let failedDownloads = []
 let i = 1 // count url pages
-let totalPages = 150 // 604 for all data
+let totalPages = 150 // 604 for all data, 150 for most
 let count = 0
 let lastFail
 let failCount = 0
@@ -243,7 +243,12 @@ const savePlayersData = () => {
 		})
 		dataList[j].club.logo = `./data/images/clubs/${clubName}.png`
 		// Create JSON file
-		const formattedName = dataList[j].name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+		let formattedName = dataList[j].name.replace(/\s/g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+		let uniqueIndex = 0
+		while (fs.exists(`src/data/players/${formattedName}${uniqueIndex.toString()}.json`)) {
+			uniqueIndex++
+		}
+		formattedName = `${formattedName}${uniqueIndex.toString()}`
 		if (formattedName !== 'undefined') {
 			fs.writeFileSync(`src/data/players/${formattedName}.json`, JSON.stringify(dataList[j]))
 			jsonIndex[formattedName] = `./data/players/${formattedName}.json`
