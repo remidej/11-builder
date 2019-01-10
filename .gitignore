@@ -1,7 +1,6 @@
 node_modules/
 
 log.txt
-public/data/
 
 # Created by https://www.gitignore.io/api/node,macos,visualstudio,visualstudiocode
 
